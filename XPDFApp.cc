@@ -89,7 +89,7 @@ struct XPDFAppResources {
 };
 
 static Bool defInstallCmap = False;
-static int defRGBCubeSize = defaultRGBCube;
+static int defRGBCubeSize = 5; //defaultRGBCube;
 static Bool defReverseVideo = False;
 static Bool defViKeys = False;
 
