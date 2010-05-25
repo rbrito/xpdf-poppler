@@ -13,7 +13,7 @@ static char *aboutWinText[] = {
   "Licensed under the GNU General Public License (GPL).",
   "See the 'COPYING' file for details.",
   " ",
-  "Supports PDF version " supportedPDFVersionStr ".",
+  /* "Supports PDF version " supportedPDFVersionStr ".", */
   " ",
   "The PDF data structures, operators, and specification",
   "are copyright 1985-2004 Adobe Systems Inc.",
