@@ -1788,7 +1788,7 @@ void XPDFViewer::initAboutDialog() {
   XmStringFree(s);
   XtManageChild(label);
   n = 0;
-  s = XmStringCreateLocalized("Version " xpdfVersion);
+  // s = XmStringCreateLocalized("Version " xpdfVersion);
   XtSetArg(args[n], XmNlabelString, s); ++n;
   XtSetArg(args[n], XmNfontList, aboutVersionFont); ++n;
   label = XmCreateLabel(col, "h1", args, n);

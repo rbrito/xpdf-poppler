@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
   // parse args
   ok = parseArgs(argDesc, &argc, argv);
   if (!ok || printVersion || printHelp) {
-    fprintf(stderr, "xpdf version %s\n", xpdfVersion);
+    // fprintf(stderr, "xpdf version %s\n", xpdfVersion);
     fprintf(stderr, "%s\n", xpdfCopyright);
     if (!printVersion) {
       printUsage("xpdf", "[<PDF-file> [<page> | +<dest>]]", argDesc);
@@ -222,7 +222,7 @@ int main(int argc, char *argv[]) {
     ok = ok && remoteName[5] && argc == 1;
   }
   if (!ok || printVersion || printHelp) {
-    fprintf(stderr, "xpdf version %s\n", xpdfVersion);
+    // fprintf(stderr, "xpdf version %s\n", xpdfVersion);
     fprintf(stderr, "%s\n", xpdfCopyright);
     if (!printVersion) {
       printUsage("xpdf", "[<PDF-file> [<page> | +<dest>]]", argDesc);
