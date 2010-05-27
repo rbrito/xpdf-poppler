@@ -30,7 +30,7 @@ class CoreOutputDev: public SplashOutputDev {
 public:
 
   CoreOutputDev(SplashColorMode colorModeA, int bitmapRowPadA,
-		GBool reverseVideoA, SplashColorPtr paperColorA,
+		GBool reverseVideoA, SplashColor paperColorA,
 		GBool incrementalUpdateA,
 		CoreOutRedrawCbk redrawCbkA,
 		void *redrawCbkDataA);
