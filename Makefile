@@ -4,7 +4,7 @@ INCLUDES=$(POPPLERBASE) $(POPPLERBASE)/goo $(POPPLERBASE)/splash
 
 CPPFLAGS+= $(INCLUDES)
 
-xpdf: CoreOutputDev.o PDFCore.o XPDFApp.o XPDFCore.o XPDFTree.o XPDFViewer.o parseargs.o xpdf.o 
+xpdf: CoreOutputDev.o PDFCore.o XPDFApp.o XPDFCore.o XPDFTree.o XPDFViewer.o parseargs.o xpdf.o
 	$(CXX) -o xpdf $(LIBS) *.o
 
 clean:
