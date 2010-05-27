@@ -41,15 +41,15 @@ PDFCorePage::PDFCorePage(int pageA, int wA, int hA, int tileWA, int tileHA) {
   text = NULL;
 }
 
-// PDFCorePage::~PDFCorePage() {
-//   deleteGooList(tiles, PDFCoreTile);
-//   if (links) {
-//     delete links;
-//   }
-//   if (text) {
-//     delete text;
-//   }
-// }
+PDFCorePage::~PDFCorePage() {
+  deleteGooList(tiles, PDFCoreTile);
+  if (links) {
+    delete links;
+  }
+  // if (text) {
+  //   delete text;
+  // }
+}
 
 //------------------------------------------------------------------------
 // PDFCoreTile
