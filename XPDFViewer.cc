@@ -2390,10 +2390,10 @@ void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
   PSOutputDev *psOut;
 
   doc = viewer->core->getDoc();
-  if (!doc->okToPrint()) {
-    error(-1, "Printing this document is not allowed.");
-    return;
-  }
+  // if (!doc->okToPrint()) {
+  //   error(-1, "Printing this document is not allowed.");
+  //   return;
+  // }
 
   viewer->core->setBusyCursor(gTrue);
 
