@@ -90,6 +90,10 @@ struct ZoomMenuInfo {
 };
 
 static ZoomMenuInfo zoomMenuInfo[nZoomMenuItems] = {
+  { "1600%",    1600 },
+  { "1200%",    1200 },
+  { "800%",      800 },
+  { "600%",      600 },
   { "400%",      400 },
   { "200%",      200 },
   { "150%",      150 },

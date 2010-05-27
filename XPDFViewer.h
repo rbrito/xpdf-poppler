@@ -38,7 +38,7 @@ class XPDFApp;
 //------------------------------------------------------------------------
 
 // NB: this must match the defn of zoomMenuBtnInfo in XPDFViewer.cc
-#define nZoomMenuItems 10
+#define nZoomMenuItems 14
 
 //------------------------------------------------------------------------
 // XPDFViewer
