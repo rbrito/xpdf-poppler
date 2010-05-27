@@ -1693,8 +1693,8 @@ void XPDFViewer::setupOutlineItems(GooList *items, Widget parent,
     XmStringFree(s);
     if (outlineLabelsLength == outlineLabelsSize) {
       outlineLabelsSize += 64;
-      outlineLabels = (Widget *)greallocn(outlineLabels,
-					  outlineLabelsSize, sizeof(Widget *));
+      outlineLabels = (Widget *) realloc(outlineLabels,
+					  outlineLabelsSize * sizeof(Widget *));
     }
     outlineLabels[outlineLabelsLength++] = label;
     item->open();
