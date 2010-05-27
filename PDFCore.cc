@@ -789,9 +789,9 @@ void PDFCore::needTile(PDFCorePage *page, int x, int y) {
   tile->bitmap = out->takeBitmap();
   memcpy(tile->ctm, out->getDefCTM(), 6 * sizeof(double));
   memcpy(tile->ictm, out->getDefICTM(), 6 * sizeof(double));
-  if (!page->links) {
-    page->links = doc->takeLinks();
-  }
+  // if (!page->links) {
+  //   page->links = doc->takeLinks();
+  // }
   if (!page->text) {
     if ((textOut = new TextOutputDev(NULL, gTrue, gFalse, gFalse))) {
       doc->displayPage(textOut, page->page, dpi, dpi, rotate,
