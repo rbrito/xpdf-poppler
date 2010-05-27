@@ -135,8 +135,7 @@ int PDFCore::loadFile(GooString *fileName, GooString *ownerPassword,
   int err;
 
   setBusyCursor(gTrue);
-  err = loadFile2(new PDFDoc(fileName->copy(), ownerPassword, userPassword,
-			     this));
+  err = loadFile2(new PDFDoc(fileName->copy(), ownerPassword, userPassword));
   setBusyCursor(gFalse);
   return err;
 }
@@ -159,7 +158,7 @@ int PDFCore::loadFile(BaseStream *stream, GooString *ownerPassword,
   int err;
 
   setBusyCursor(gTrue);
-  err = loadFile2(new PDFDoc(stream, ownerPassword, userPassword, this));
+  err = loadFile2(new PDFDoc(stream, ownerPassword, userPassword));
   setBusyCursor(gFalse);
   return err;
 }
@@ -1213,7 +1212,7 @@ void PDFCore::xorRectangle(int pg, int x0, int y0, int x1, int y1,
     for (i = 0; i < page->tiles->getLength(); ++i) {
       tile = (PDFCoreTile *)page->tiles->get(i);
       if (!oneTile || tile == oneTile) {
-	splash = new Splash(tile->bitmap);
+	      splash = new Splash(tile->bitmap, gTrue);
 	splash->setFillPattern(pattern->copy());
 	xx0 = (SplashCoord)(x0 - tile->xMin);
 	yy0 = (SplashCoord)(y0 - tile->yMin);
@@ -1583,7 +1582,7 @@ void PDFCore::cvtUserToDev(int pg, double xu, double yu, int *xd, int *yd) {
     *yd = (int)(tile->yMin + tile->ctm[1] * xu +
 		tile->ctm[3] * yu + tile->ctm[5] + 0.5);
   } else {
-    doc->getCatalog()->getPage(pg)->getDefaultCTM(ctm, dpi, dpi, rotate,
+	  doc->getCatalog()->getPage(pg)->getDefaultCTM(ctm, dpi, dpi, rotate, gTrue,
 						  out->upsideDown());
     *xd = (int)(ctm[0] * xu + ctm[2] * yu + ctm[4] + 0.5);
     *yd = (int)(ctm[1] * xu + ctm[3] * yu + ctm[5] + 0.5);
