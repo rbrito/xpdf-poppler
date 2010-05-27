@@ -64,7 +64,7 @@ static ArgDesc argDesc[] = {
    "initial zoom level (percent, 'page', 'width')"},
   {"-cont",       argFlag,        &contView,      0,
    "start in continuous view mode" },
-#if HAVE_T1LIB_H
+#if 0
   {"-t1lib",      argString,      enableT1libStr, sizeof(enableT1libStr),
    "enable t1lib font rasterizer: yes, no"},
 #endif
