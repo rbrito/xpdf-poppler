@@ -149,7 +149,7 @@ XPDFCore::XPDFCore(Widget shellA, Widget parentWidgetA,
   drawArea = NULL;
 
   // get the initial zoom value
-  initialZoom = globalParams->getInitialZoom();
+  initialZoom = new GooString("width"); //globalParams->getInitialZoom();
   if (!initialZoom->cmp("page")) {
     zoom = zoomPage;
   } else if (!initialZoom->cmp("width")) {
@@ -548,10 +548,11 @@ void XPDFCore::doAction(LinkAction *action) {
 
   // URI action
   case actionURI:
-    if (!(cmd = globalParams->getURLCommand())) {
-      error(-1, "No urlCommand defined in config file");
-      break;
-    }
+    cmd = new GooString("sensible-browser '%s'");
+    // if (!(cmd = globalParams->getURLCommand())) {
+    //   error(-1, "No urlCommand defined in config file");
+    //   break;
+    // }
     runCommand(cmd, ((LinkURI *)action)->getURI());
     break;
 
@@ -585,51 +586,52 @@ void XPDFCore::doAction(LinkAction *action) {
 
   // Movie action
   case actionMovie:
-    if (!(cmd = globalParams->getMovieCommand())) {
-      error(-1, "No movieCommand defined in config file");
-      break;
-    }
-    if (((LinkMovie *)action)->hasAnnotRef()) {
-      doc->getXRef()->fetch(((LinkMovie *)action)->getAnnotRef()->num,
-			    ((LinkMovie *)action)->getAnnotRef()->gen,
-			    &movieAnnot);
-    } else {
-      //~ need to use the correct page num here
-      doc->getCatalog()->getPage(topPage)->getAnnots(&obj1);
-      if (obj1.isArray()) {
-	for (i = 0; i < obj1.arrayGetLength(); ++i) {
-	  if (obj1.arrayGet(i, &movieAnnot)->isDict()) {
-	    if (movieAnnot.dictLookup("Subtype", &obj2)->isName("Movie")) {
-	      obj2.free();
-	      break;
-	    }
-	    obj2.free();
-	  }
-	  movieAnnot.free();
-	}
-	obj1.free();
-      }
-    }
-    if (movieAnnot.isDict()) {
-      if (movieAnnot.dictLookup("Movie", &obj1)->isDict()) {
-	if (obj1.dictLookup("F", &obj2)) {
-	  if ((fileName = LinkAction::getFileSpecName(&obj2))) {
-	    if (!isAbsolutePath(fileName->getCString())) {
-	      fileName2 = appendToPath(
-			      grabPath(doc->getFileName()->getCString()),
-			      fileName->getCString());
-	      delete fileName;
-	      fileName = fileName2;
-	    }
-	    runCommand(cmd, fileName);
-	    delete fileName;
-	  }
-	  obj2.free();
-	}
-	obj1.free();
-      }
-    }
-    movieAnnot.free();
+	  break;
+    // // if (!(cmd = globalParams->getMovieCommand())) {
+    // //   error(-1, "No movieCommand defined in config file");
+    // //   break;
+    // // }
+    // if (((LinkMovie *)action)->hasAnnotRef()) {
+    //   doc->getXRef()->fetch(((LinkMovie *)action)->getAnnotRef()->num,
+    // 			    ((LinkMovie *)action)->getAnnotRef()->gen,
+    // 			    &movieAnnot);
+    // } else {
+    //   //~ need to use the correct page num here
+    //   doc->getCatalog()->getPage(topPage)->getAnnots(&obj1);
+    //   if (obj1.isArray()) {
+    // 	for (i = 0; i < obj1.arrayGetLength(); ++i) {
+    // 	  if (obj1.arrayGet(i, &movieAnnot)->isDict()) {
+    // 	    if (movieAnnot.dictLookup("Subtype", &obj2)->isName("Movie")) {
+    // 	      obj2.free();
+    // 	      break;
+    // 	    }
+    // 	    obj2.free();
+    // 	  }
+    // 	  movieAnnot.free();
+    // 	}
+    // 	obj1.free();
+    //   }
+    // }
+    // if (movieAnnot.isDict()) {
+    //   if (movieAnnot.dictLookup("Movie", &obj1)->isDict()) {
+    // 	if (obj1.dictLookup("F", &obj2)) {
+    // 	  if ((fileName = LinkAction::getFileSpecName(&obj2))) {
+    // 	    if (!isAbsolutePath(fileName->getCString())) {
+    // 	      fileName2 = appendToPath(
+    // 			      grabPath(doc->getFileName()->getCString()),
+    // 			      fileName->getCString());
+    // 	      delete fileName;
+    // 	      fileName = fileName2;
+    // 	    }
+    // 	    runCommand(cmd, fileName);
+    // 	    delete fileName;
+    // 	  }
+    // 	  obj2.free();
+    // 	}
+    // 	obj1.free();
+    //   }
+    // }
+    // movieAnnot.free();
     break;
 
   // unknown action type

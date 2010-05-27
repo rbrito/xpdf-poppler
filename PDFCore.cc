@@ -81,7 +81,7 @@ PDFCore::PDFCore(SplashColorMode colorModeA, int bitmapRowPadA,
   int i;
 
   doc = NULL;
-  continuousMode = globalParams->getContinuousView();
+  // continuousMode = globalParams->getContinuousView();
   drawAreaWidth = drawAreaHeight = 0;
   maxPageW = totalDocH = 0;
   pageY = NULL;

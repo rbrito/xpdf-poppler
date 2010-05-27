@@ -2300,7 +2300,7 @@ void XPDFViewer::initPrintDialog() {
   XtSetValues(printDialog, args, n);
 
   //----- initial values
-  if ((psFileName = globalParams->getPSFile())) {
+  if ((psFileName = new GooString("foo.ps"))) {
     if (psFileName->getChar(0) == '|') {
       XmTextFieldSetString(printCmdText,
 			   psFileName->getCString() + 1);
@@ -2318,7 +2318,7 @@ void XPDFViewer::setupPrintDialog() {
   char *p;
 
   doc = core->getDoc();
-  psFileName = globalParams->getPSFile();
+  psFileName = new GooString("foo.ps"); //globalParams->getPSFile();
   if (!psFileName || psFileName->getChar(0) == '|') {
     pdfFileName = doc->getFileName();
     p = pdfFileName->getCString() + pdfFileName->getLength() - 4;
@@ -2418,12 +2418,15 @@ void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
     lastPage = doc->getNumPages();
   }
 
-  psOut = new PSOutputDev(psFileName->getCString(), doc->getXRef(),
-			  doc->getCatalog(), firstPage, lastPage,
+  psOut = new PSOutputDev(psFileName->getCString(), doc->getXRef(), doc->getCatalog(),
+			  "foo",
+			  firstPage, lastPage,
 			  psModePS);
   if (psOut->isOk()) {
-    doc->displayPages(psOut, firstPage, lastPage, 72, 72,
-		      0, gTrue, globalParams->getPSCrop(), gFalse);
+    doc->displayPages(psOut, firstPage, lastPage,
+		      72, 72,
+		      0,
+		      gTrue, gTrue, /*globalParams->getPSCrop(),*/ gFalse);
   }
   delete psOut;
   delete psFileName;

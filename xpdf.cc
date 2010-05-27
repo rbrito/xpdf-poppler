@@ -150,24 +150,24 @@ int main(int argc, char *argv[]) {
   // read config file
   globalParams = new GlobalParams(cfgFileName);
   //globalParams->setupBaseFonts(NULL);
-  if (contView) {
-    globalParams->setContinuousView(contView);
-  }
-  if (psFileArg[0]) {
-    globalParams->setPSFile(psFileArg);
-  }
-  if (paperSize[0]) {
-    if (!globalParams->setPSPaperSize(paperSize)) {
-      fprintf(stderr, "Invalid paper size\n");
-    }
-  } else {
-    if (paperWidth) {
-      globalParams->setPSPaperWidth(paperWidth);
-    }
-    if (paperHeight) {
-      globalParams->setPSPaperHeight(paperHeight);
-    }
-  }
+  // if (contView) {
+  //   // globalParams->setContinuousView(contView);
+  // }
+  // // if (psFileArg[0]) {
+  // //   globalParams->setPSFile(psFileArg);
+  // // }
+  // if (paperSize[0]) {
+  //   if (!globalParams->setPSPaperSize(paperSize)) {
+  //     fprintf(stderr, "Invalid paper size\n");
+  //   }
+  // } else {
+  //   if (paperWidth) {
+  //     globalParams->setPSPaperWidth(paperWidth);
+  //   }
+  //   if (paperHeight) {
+  //     globalParams->setPSPaperHeight(paperHeight);
+  //   }
+  // }
   if (level1) {
     globalParams->setPSLevel(psLevel1);
   }
@@ -179,11 +179,11 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Bad '-eol' value on command line\n");
     }
   }
-  if (enableT1libStr[0]) {
-    if (!globalParams->setEnableT1lib(enableT1libStr)) {
-      fprintf(stderr, "Bad '-t1lib' value on command line\n");
-    }
-  }
+  // if (enableT1libStr[0]) {
+  //   if (!globalParams->setEnableT1lib(enableT1libStr)) {
+  //     fprintf(stderr, "Bad '-t1lib' value on command line\n");
+  //   }
+  // }
   if (enableFreeTypeStr[0]) {
     if (!globalParams->setEnableFreeType(enableFreeTypeStr)) {
       fprintf(stderr, "Bad '-freetype' value on command line\n");
@@ -206,9 +206,9 @@ int main(int argc, char *argv[]) {
 
   // the initialZoom parameter can be set in either the config file or
   // as an X resource (or command line arg)
-  if (app->getInitialZoom()) {
-    globalParams->setInitialZoom(app->getInitialZoom()->getCString());
-  }
+  // if (app->getInitialZoom()) {
+  //   globalParams->setInitialZoom(app->getInitialZoom()->getCString());
+  // }
 
   // check command line
   ok = ok && argc >= 1 && argc <= 3;
