@@ -1,0 +1,46 @@
+.\" Please adjust this date whenever revising the manpage.
+.\" 
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.TH "update-xpdfrc" "8" "October 22, 2002" "Hamish Moffatt"
+.SH "NAME"
+update\-xpdfrc \- program to generate xpdf's configuration file
+.SH "SYNOPSIS"
+.B update\-xdfrc
+.SH "DESCRIPTION"
+.B \fBupdate\-xpdfrc\fR
+is a program used to generate part of the \fIxpdfrc(5)\fR file used 
+by xpdf. The generated configuration file contains a list of the
+configuration snippets provided by the xpdf-* language packages.
+
+You may edit the file \fI/etc/xpdfrc\fR to configure xpdf.
+However, do not edit the generated file \fI/etc/xpdf/includes\fR.
+It is updated whenever a language package is added or removed.
+You must include the file /etc/xpdf/includes in your xpdfrc
+to make use of this functionality.
+
+The language support packages (xpdf-japanese etc) provide additional
+configuration files such as \fI/etc/xpdf/xpdfrc-japanese\fR, which will be
+listed in the generated \fI/etc/xpdf/includes\fR.
+
+.SH "FILES"
+.nf
+.ta \w'/etc/xpdf/xpdfrc\-*	'u
+/etc/xpdf/xpdfrc	main configuration file
+.br
+/etc/xpdf/xpdf\-*	additional configuration files
+.SH "SEE ALSO"
+.BR xpdfrc (5),
+.BR xpdf (1).
+.SH "AUTHOR"
+This manual page and the update-xpdfrc utility was written by Hamish Moffatt <hamish@debian.org>
+for the Debian GNU/Linux system (but may be used by others).
+.\" vim:syn=nroff

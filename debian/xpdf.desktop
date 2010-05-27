@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=xpdf
+GenericName=PDF viewer
+Comment=View PDF files
+Exec=xpdf
+Icon=xpdf.xpm
+Terminal=false
+Type=Application
+MimeType=application/pdf;
+Categories=Viewer;Graphics;

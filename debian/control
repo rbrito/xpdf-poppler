@@ -1,0 +1,20 @@
+Source: xpdf
+Section: text
+Priority: optional
+Maintainer: Rogério Brito <rbrito@ime.usp.br>
+Standards-Version: 3.8.4
+Build-Depends: debhelper (>= 5), lesstif2-dev, libpoppler-dev
+Homepage: http://www.foolabs.com/xpdf/
+
+Package: xpdf
+Architecture: any
+Depends: ${shlibs:Depends}, poppler-utils, ${misc:Depends}
+Recommends: poppler-utils
+Suggests: www-browser
+Description: Portable Document Format (PDF) suite
+ xpdf is a suite of tools for Portable Document Format (PDF) files. (These are
+ sometimes called 'Acrobat' files after the name of Adobe's PDF software.)
+ .
+ The tools include xpdf, a PDF viewer (in the package xpdf-reader),
+ and PDF converters (including to/from PostScript) (in the package
+ xpdf-utils).

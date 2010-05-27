@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Copyright (c) 2001 Alcove - http://www.alcove.com/
+# Please distribute under the terms of the GNU GPL, version 2
+
+# Author: Yann Dirson <yann.dirson@fr.alcove.com>
+# $Id: zxpdf,v 1.1 2001/09/28 10:23:35 ydirson Exp $
+
+set -e
+
+file=
+flags=
+title="zxpdf"
+while [ $# -gt 0 ]
+do
+    case "$1" in
+    -z|-g|-geometry|-remote|-rgb|-papercolor|-eucjp|-t1lib|-ps|-paperw|-paperh)
+	flags="$flags $1 $2"; shift ;;
+    -title) title="$2"; shift ;;
+    -*) flags="$flags $1" ;;
+    *.pdf|*.PDF) file="$1"; shift; pages="$@"; cat=; break ;;
+    *.gz|*.Z) file="$1"; shift; pages="$@"; cat=zcat; break ;;
+    *.bz2) file="$1"; shift; pages="$@"; cat=bzcat; break ;;
+    *) echo >&2 "ERROR: unknown suffix in file \`$1'"; exit 1 ;;
+    esac
+    shift
+done
+
+if [ $# -ge 1 ] # optional page argument
+then
+    echo >&2 "ERROR: Too many arguments"
+fi
+
+if [ x"$title" == x -a x"$tmp" != x ]
+then
+    title="zxpdf: $file"
+fi
+
+if [ -z "$cat" ]
+then
+    tmp="$file"
+else
+    tmp=$(basename "$file")
+    tmp=$(tempfile -p "${tmp%.pdf*}" -s .pdf)
+    $cat "$file" >"$tmp"
+fi
+
+if [ "$tmp" == "" ]; then
+    exec xpdf -title $title $flags
+else
+    exec xpdf -title $title $flags "$tmp" $pages
+fi
