@@ -123,7 +123,7 @@ XPDFCoreTile::~XPDFCoreTile() {
 //------------------------------------------------------------------------
 
 XPDFCore::XPDFCore(Widget shellA, Widget parentWidgetA,
-		   SplashColorPtr paperColorA, Gulong paperPixelA,
+		   SplashColor paperColorA, Gulong paperPixelA,
 		   Gulong mattePixelA, GBool fullScreenA, GBool reverseVideoA,
 		   GBool installCmap, int rgbCubeSizeA):
   PDFCore(splashModeRGB8, 4, reverseVideoA, paperColorA)

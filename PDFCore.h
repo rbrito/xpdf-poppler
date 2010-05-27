@@ -112,7 +112,7 @@ class PDFCore {
 public:
 
   PDFCore(SplashColorMode colorModeA, int bitmapRowPadA,
-	  GBool reverseVideoA, SplashColorPtr paperColorA);
+	  GBool reverseVideoA, SplashColor paperColorA);
   virtual ~PDFCore();
 
   //----- loadFile / displayPage / displayDest

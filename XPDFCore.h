@@ -53,7 +53,7 @@ public:
 
   // Create viewer core inside <parentWidgetA>.
   XPDFCore(Widget shellA, Widget parentWidgetA,
-	   SplashColorPtr paperColorA, Gulong paperPixelA,
+	   SplashColor paperColorA, Gulong paperPixelA,
 	   Gulong mattePixelA, GBool fullScreenA, GBool reverseVideoA,
 	   GBool installCmap, int rgbCubeSizeA);
 

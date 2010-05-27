@@ -77,7 +77,7 @@ PDFCoreTile::~PDFCoreTile() {
 //------------------------------------------------------------------------
 
 PDFCore::PDFCore(SplashColorMode colorModeA, int bitmapRowPadA,
-		 GBool reverseVideoA, SplashColorPtr paperColorA) {
+		 GBool reverseVideoA, SplashColor paperColorA) {
   int i;
 
   doc = NULL;
