@@ -8,7 +8,7 @@ Homepage: http://www.foolabs.com/xpdf/
 
 Package: xpdf
 Architecture: any
-Depends: ${shlibs:Depends}, poppler-utils, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: poppler-utils
 Suggests: www-browser
 Description: Portable Document Format (PDF) suite
