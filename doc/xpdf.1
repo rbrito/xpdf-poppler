@@ -7,10 +7,15 @@ xpdf \- Portable Document Format (PDF) file viewer for X (version 3.02)
 [options]
 .RI [ PDF-file
 .RI [ page " | +" dest ]]
+.sp
+.B zxpdf
+[options]
+.RI [ PDF-file
+.RI [ page " | +" dest ]]
 .SH DESCRIPTION
 .B Xpdf
 is a viewer for Portable Document Format (PDF) files.  (These are also
-sometimes also called \'Acrobat' files, from the name of Adobe's PDF
+sometimes also called 'Acrobat' files, from the name of Adobe's PDF
 software.)  Xpdf runs under the X Window System on UNIX, VMS, and
 OS/2.
 .PP
@@ -29,7 +34,7 @@ specifying the page which should be displayed first, e.g.:
 xpdf file.pdf 18
 .RE
 .PP
-You can also give a named destination, prefixed with \'+' in place of
+You can also give a named destination, prefixed with '+' in place of
 the page number.  (This is only useful with PDF files that provide
 named destination targets.)
 .PP
@@ -38,11 +43,17 @@ You can also start xpdf without opening any files:
 .RS
 xpdf
 .RE
+.PP
+Compressed files (gz and bz2) may be viewed using the command:
+.PP
+.RS
+zxpdf file.pdf.gz
+.RE
+.PP
 .SH CONFIGURATION FILE
 Xpdf reads a configuration file at startup.  It first tries to find
 the user's private config file, ~/.xpdfrc.  If that doesn't exist, it
-looks for a system-wide config file, typically /usr/local/etc/xpdfrc
-(but this location can be changed when xpdf is built).  See the
+looks for a system-wide config file, /etc/xpdf/xpdfrc.  See the
 .BR xpdfrc (5)
 man page for details.
 .SH OPTIONS
@@ -122,8 +133,8 @@ Enable or disable vector anti-aliasing.  This defaults to "yes".
 .TP
 .BI \-ps " PS-file"
 Set the default file name for PostScript output (i.e., the name which
-will appear in the print dialog).  This can also be of the form
-\'|command' to pipe the PostScript through a command.
+will appear in the print dialog).  This can also be of the
+form '|command' to pipe the PostScript through a command.
 .RB "[config file: " psFile ]
 .TP
 .BI \-paper " size"
@@ -176,16 +187,16 @@ section below).
 .BI \-exec " command"
 Execute a command (see the
 .B COMMANDS
-section below) in an xpdf remote server window (with -remote only).
+section below) in an xpdf remote server window (with \-remote only).
 .TP
 .B \-reload
-Reload xpdf remote server window (with -remote only).
+Reload xpdf remote server window (with \-remote only).
 .TP
 .B \-raise
-Raise xpdf remote server window (with -remote only).
+Raise xpdf remote server window (with \-remote only).
 .TP
 .B \-quit
-Kill xpdf remote server (with -remote only).
+Kill xpdf remote server (with \-remote only).
 .TP
 .B \-cmd
 Print commands as they're executed (useful for debugging).
@@ -231,7 +242,7 @@ is equivalent.)
 .RB "[X resource: " xpdf*fontList ]
 .PP
 The color and font options only affect the user interface elements,
-not the PDF display (the \'paper').
+not the PDF display (the 'paper').
 .PP
 The following X resources do not have command line option equivalents:
 .TP
@@ -254,12 +265,12 @@ Move backward or forward by ten pages.
 .B "dashed left/right arrow buttons"
 Move backward or forward along the history path.
 .TP
-.B "\'Page' entry box"
+.B "'Page' entry box"
 Move to a specific page number.  Click in the box to activate it, type
 the page number, then hit return.
 .TP
 .B "zoom popup menu"
-Change the zoom factor (see the description of the -z option above).
+Change the zoom factor (see the description of the \-z option above).
 .TP
 .B "binoculars button"
 Find a text string.
@@ -267,17 +278,17 @@ Find a text string.
 .B "print button"
 Bring up a dialog for generating a PostScript file.  The dialog has
 options to set the pages to be printed and the PostScript file name.
-The file name can be \'-' for stdout or \'|command' to pipe the
-PostScript through a command, e.g., \'|lpr'.
+The file name can be '-' for stdout or '|command' to pipe the
+PostScript through a command, e.g., '|lpr'.
 .TP
-.B "\'?' button"
-Bring up the \'about xpdf' window.
+.B "'?' button"
+Bring up the 'about xpdf' window.
 .TP
 .B "link info"
-The space between the \'?' and \'Quit' buttons is used to show the URL
+The space between the '?' and 'Quit' buttons is used to show the URL
 or external file name when the mouse is over a link.
 .TP
-.B "\'Quit' button"
+.B "'Quit' button"
 Quit xpdf.
 .PP
 .SS Menu
@@ -333,9 +344,9 @@ the X selection buffer.
 .PP
 .SS Links
 Clicking on a hyperlink will jump to the link's destination.  A link
-to another PDF document will make xpdf load that document.  A
-\'launch' link to an executable program will display a dialog, and if
-you click \'ok', execute the program.  URL links call an external
+to another PDF document will make xpdf load that document.  A 'launch'
+link to an executable program will display a dialog, and if
+you click 'ok', execute the program.  URL links call an external
 command (see the
 .B WEB BROWSERS
 section below).
@@ -451,18 +462,18 @@ add the lines:
 # Use xpdf to view PDF files.
 .RE
 .RS
-application/pdf; xpdf -q %s
+application/pdf; xpdf \-q %s
 .RE
 .PP
 Make sure that xpdf is on your executable search path.
 .PP
 When you click on a URL link in a PDF file, xpdf will execute the
 command specified by the urlCommand config file option, replacing an
-occurrence of \'%s' with the URL.  For example, to call netscape with
+occurrence of '%s' with the URL.  For example, to call netscape with
 the URL, add this line to your config file:
 .PP
 .RS
-urlCommand "netscape -remote 'openURL(%s)'"
+urlCommand "netscape \-remote 'openURL(%s)'"
 .RE
 .SH COMMANDS
 Xpdf's key and mouse bindings are user-configurable, using the bind and
@@ -806,14 +817,14 @@ Xpdf can be started in remote server mode by specifying a server name
 (in addition to the file name and page number).  For example:
 .PP
 .RS
-xpdf -remote myServer file.pdf
+xpdf \-remote myServer file.pdf
 .RE
 .PP
-If there is currently no xpdf running in server mode with the name
-\'myServer', a new xpdf window will be opened.  If another command:
+If there is currently no xpdf running in server mode with the name 'myServer',
+a new xpdf window will be opened.  If another command:
 .PP
 .RS
-xpdf -remote myServer another.pdf 9
+xpdf \-remote myServer another.pdf 9
 .RE
 .PP
 is issued, a new copy of xpdf will not be started.  Instead, the first
@@ -822,15 +833,15 @@ xpdf (the server) will load
 and display page nine.  If the file name is the same:
 .PP
 .RS
-xpdf -remote myServer another.pdf 4
+xpdf \-remote myServer another.pdf 4
 .RE
 .PP
 the xpdf server will simply display the specified page.
 .PP
-The -raise option tells the server to raise its window; it can be
+The \-raise option tells the server to raise its window; it can be
 specified with or without a file name and page number.
 .PP
-The -quit option tells the server to close its window and exit.
+The \-quit option tells the server to close its window and exit.
 .SH EXIT CODES
 The Xpdf tools use the following exit codes:
 .TP
