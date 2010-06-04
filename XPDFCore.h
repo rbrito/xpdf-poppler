@@ -9,6 +9,8 @@
 #ifndef XPDFCORE_H
 #define XPDFCORE_H
 
+#include <aconf.h>
+
 #ifdef USE_GCC_PRAGMAS
 #pragma interface
 #endif
@@ -21,7 +23,7 @@
 #include "SplashTypes.h"
 #include "PDFCore.h"
 
-class GooString;
+class GString;
 class BaseStream;
 class PDFDoc;
 class LinkAction;
@@ -34,13 +36,13 @@ class LinkAction;
 // callbacks
 //------------------------------------------------------------------------
 
-typedef void (*XPDFUpdateCbk)(void *data, GooString *fileName,
+typedef void (*XPDFUpdateCbk)(void *data, GString *fileName,
 			      int pageNum, int numPages, char *linkLabel);
 
 typedef void (*XPDFActionCbk)(void *data, char *action);
 
-typedef void (*XPDFKeyPressCbk)(void *data, char *s, KeySym key,
-				Guint modifiers);
+typedef void (*XPDFKeyPressCbk)(void *data, KeySym key, Guint modifiers,
+				XEvent *event);
 
 typedef void (*XPDFMouseCbk)(void *data, XEvent *event);
 
@@ -62,13 +64,16 @@ public:
   //----- loadFile / displayPage / displayDest
 
   // Load a new file.  Returns pdfOk or error code.
-  virtual int loadFile(GooString *fileName, GooString *ownerPassword = NULL,
-		       GooString *userPassword = NULL);
+  virtual int loadFile(GString *fileName, GString *ownerPassword = NULL,
+		       GString *userPassword = NULL);
 
   // Load a new file, via a Stream instead of a file name.  Returns
   // pdfOk or error code.
-  virtual int loadFile(BaseStream *stream, GooString *ownerPassword = NULL,
-		       GooString *userPassword = NULL);
+  virtual int loadFile(BaseStream *stream, GString *ownerPassword = NULL,
+		       GString *userPassword = NULL);
+
+  // Load an already-created PDFDoc object.
+  virtual void loadDoc(PDFDoc *docA);
 
   // Resize the window to fit page <pg> of the current document.
   void resizeToPage(int pg);
@@ -87,11 +92,17 @@ public:
 
   //----- selection
 
+  void startSelection(int wx, int wy);
+  void endSelection(int wx, int wy);
   void copySelection();
+  void startPan(int wx, int wy);
+  void endPan(int wx, int wy);
 
   //----- hyperlinks
 
   void doAction(LinkAction *action);
+  LinkAction *getLinkAction() { return linkAction; }
+  GString *mungeURL(GString *url);
 
   //----- find
 
@@ -102,13 +113,13 @@ public:
 
   //----- simple modal dialogs
 
-  GBool doQuestionDialog(char *title, GooString *msg);
-  void doInfoDialog(char *title, GooString *msg);
-  void doErrorDialog(char *title, GooString *msg);
+  GBool doQuestionDialog(char *title, GString *msg);
+  void doInfoDialog(char *title, GString *msg);
+  void doErrorDialog(char *title, GString *msg);
 
   //----- password dialog
 
-  GooString *getPassword();
+  GString *getPassword();
 
   //----- misc access
 
@@ -118,6 +129,7 @@ public:
   Cursor getBusyCursor() { return busyCursor; }
   void takeFocus();
   void enableHyperlinks(GBool on) { hyperlinksEnabled = on; }
+  GBool getHyperlinksEnabled() { return hyperlinksEnabled; }
   void enableSelect(GBool on) { selectEnabled = on; }
   void setUpdateCbk(XPDFUpdateCbk cbk, void *data)
     { updateCbk = cbk; updateCbkData = data; }
@@ -127,15 +139,14 @@ public:
     { keyPressCbk = cbk; keyPressCbkData = data; }
   void setMouseCbk(XPDFMouseCbk cbk, void *data)
     { mouseCbk = cbk; mouseCbkData = data; }
+  GBool getFullScreen() { return fullScreen; }
 
 private:
 
   virtual GBool checkForNewFile();
 
   //----- hyperlinks
-  GBool doLink(int pg, int x, int y);
-  void runCommand(GooString *cmdFmt, GooString *arg);
-  GooString *mungeURL(GooString *url);
+  void runCommand(GString *cmdFmt, GString *arg);
 
   //----- selection
   static Boolean convertSelectionCbk(Widget widget, Atom *selection,
@@ -157,16 +168,16 @@ private:
   static void resizeCbk(Widget widget, XtPointer ptr, XtPointer callData);
   static void redrawCbk(Widget widget, XtPointer ptr, XtPointer callData);
   static void inputCbk(Widget widget, XtPointer ptr, XtPointer callData);
-  void keyPress(char *s, KeySym key, Guint modifiers);
   virtual PDFCoreTile *newTile(int xDestA, int yDestA);
-  virtual void updateTileData(PDFCoreTile *tileA,
-			      int xSrc, int ySrc, int width, int height);
+  virtual void updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
+			      int width, int height, GBool composited);
   virtual void redrawRect(PDFCoreTile *tileA, int xSrc, int ySrc,
-			  int xDest, int yDest, int width, int height);
+			  int xDest, int yDest, int width, int height,
+			  GBool composited);
   virtual void updateScrollbars();
   void setCursor(Cursor cursor);
   GBool doDialog(int type, GBool hasCancel,
-		 char *title, GooString *msg);
+		 char *title, GString *msg);
   static void dialogOkCbk(Widget widget, XtPointer ptr,
 			  XtPointer callData);
   static void dialogCancelCbk(Widget widget, XtPointer ptr,
@@ -207,7 +218,7 @@ private:
   Cursor currentCursor;
   GC drawAreaGC;		// GC for blitting into drawArea
 
-  static GooString *currentSelection;  // selected text
+  static GString *currentSelection;  // selected text
   static XPDFCore *currentSelectionOwner;
   static Atom targetsAtom;
 
@@ -234,7 +245,7 @@ private:
 
   Widget passwordDialog;
   Widget passwordText;
-  GooString *password;
+  GString *password;
 };
 
 #endif

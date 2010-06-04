@@ -9,6 +9,8 @@
 #ifndef XPDFAPP_H
 #define XPDFAPP_H
 
+#include <aconf.h>
+
 #ifdef USE_GCC_PRAGMAS
 #pragma interface
 #endif
@@ -19,8 +21,9 @@
 #include "gtypes.h"
 #include "SplashTypes.h"
 
-class GooString;
-class GooList;
+class GString;
+class GList;
+class PDFDoc;
 class XPDFViewer;
 
 //------------------------------------------------------------------------
@@ -37,12 +40,14 @@ public:
   XPDFApp(int *argc, char *argv[]);
   ~XPDFApp();
 
-  XPDFViewer *open(GooString *fileName, int page = 1,
-		   GooString *ownerPassword = NULL,
-		   GooString *userPassword = NULL);
-  XPDFViewer *openAtDest(GooString *fileName, GooString *dest,
-			 GooString *ownerPassword = NULL,
-			 GooString *userPassword = NULL);
+  XPDFViewer *open(GString *fileName, int page = 1,
+		   GString *ownerPassword = NULL,
+		   GString *userPassword = NULL);
+  XPDFViewer *openAtDest(GString *fileName, GString *dest,
+			 GString *ownerPassword = NULL,
+			 GString *userPassword = NULL);
+  XPDFViewer *reopen(XPDFViewer *viewer, PDFDoc *doc, int page,
+		     GBool fullScreenA);
   void close(XPDFViewer *viewer, GBool closeLast);
   void quit();
 
@@ -51,23 +56,24 @@ public:
   //----- remote server
   void setRemoteName(char *remoteName);
   GBool remoteServerRunning();
-  void remoteOpen(GooString *fileName, int page, GBool raise);
-  void remoteOpenAtDest(GooString *fileName, GooString *dest, GBool raise);
+  void remoteExec(char *cmd);
+  void remoteOpen(GString *fileName, int page, GBool raise);
+  void remoteOpenAtDest(GString *fileName, GString *dest, GBool raise);
   void remoteReload(GBool raise);
   void remoteRaise();
   void remoteQuit();
 
   //----- resource/option values
-  GooString *getGeometry() { return geometry; }
-  GooString *getTitle() { return title; }
+  GString *getGeometry() { return geometry; }
+  GString *getTitle() { return title; }
   GBool getInstallCmap() { return installCmap; }
   int getRGBCubeSize() { return rgbCubeSize; }
   GBool getReverseVideo() { return reverseVideo; }
   SplashColorPtr getPaperRGB() { return paperRGB; }
   Gulong getPaperPixel() { return paperPixel; }
-  Gulong getMattePixel() { return mattePixel; }
-  GooString *getInitialZoom() { return initialZoom; }
-  GBool getViKeys() { return viKeys; }
+  Gulong getMattePixel(GBool fullScreenA)
+    { return fullScreenA ? fullScreenMattePixel : mattePixel; }
+  GString *getInitialZoom() { return initialZoom; }
   void setFullScreen(GBool fullScreenA) { fullScreen = fullScreenA; }
   GBool getFullScreen() { return fullScreen; }
 
@@ -84,7 +90,7 @@ private:
   int screenNum;
   XtAppContext appContext;
   Widget appShell;
-  GooList *viewers;		// [XPDFViewer]
+  GList *viewers;		// [XPDFViewer]
 
   Atom remoteAtom;
   Window remoteXWin;
@@ -92,16 +98,16 @@ private:
   Widget remoteWin;
 
   //----- resource/option values
-  GooString *geometry;
-  GooString *title;
+  GString *geometry;
+  GString *title;
   GBool installCmap;
   int rgbCubeSize;
   GBool reverseVideo;
   SplashColor paperRGB;
   Gulong paperPixel;
   Gulong mattePixel;
-  GooString *initialZoom;
-  GBool viKeys;
+  Gulong fullScreenMattePixel;
+  GString *initialZoom;
   GBool fullScreen;
 };
 

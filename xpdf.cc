@@ -6,16 +6,16 @@
 //
 //========================================================================
 
-#include <dirent.h>
+#include <aconf.h>
 #include "gtypes.h"
-#include "GooString.h"
+#include "GString.h"
 #include "parseargs.h"
 #include "gfile.h"
 #include "gmem.h"
 #include "GlobalParams.h"
 #include "Object.h"
 #include "XPDFApp.h"
-#include "poppler-config.h"
+#include "config.h"
 
 //------------------------------------------------------------------------
 // command line options
@@ -25,6 +25,7 @@ static GBool contView = gFalse;
 static char enableT1libStr[16] = "";
 static char enableFreeTypeStr[16] = "";
 static char antialiasStr[16] = "";
+static char vectorAntialiasStr[16] = "";
 static char psFileArg[256];
 static char paperSize[15] = "";
 static int paperWidth = 0;
@@ -36,6 +37,7 @@ static char ownerPassword[33] = "\001";
 static char userPassword[33] = "\001";
 static GBool fullScreen = gFalse;
 static char remoteName[100] = "xpdf_";
+static char remoteCmd[512] = "";
 static GBool doRemoteReload = gFalse;
 static GBool doRemoteRaise = gFalse;
 static GBool doRemoteQuit = gFalse;
@@ -74,6 +76,8 @@ static ArgDesc argDesc[] = {
 #endif
   {"-aa",         argString,      antialiasStr,   sizeof(antialiasStr),
    "enable font anti-aliasing: yes, no"},
+  {"-aaVector",   argString,      vectorAntialiasStr, sizeof(vectorAntialiasStr),
+   "enable vector anti-aliasing: yes, no"},
   {"-ps",         argString,      psFileArg,      sizeof(psFileArg),
    "default PostScript file name or command"},
   {"-paper",      argString,      paperSize,      sizeof(paperSize),
@@ -96,6 +100,8 @@ static ArgDesc argDesc[] = {
    "run in full-screen (presentation) mode"},
   {"-remote",     argString,      remoteName + 5, sizeof(remoteName) - 5,
    "start/contact xpdf remote server with specified name"},
+  {"-exec",       argString,      remoteCmd,      sizeof(remoteCmd),
+   "execute command on xpdf remote server (with -remote only)"},
   {"-reload",     argFlag,        &doRemoteReload, 0,
    "reload xpdf remove server window (with -remote only)"},
   {"-raise",      argFlag,        &doRemoteRaise, 0,
@@ -125,10 +131,10 @@ static ArgDesc argDesc[] = {
 
 int main(int argc, char *argv[]) {
   XPDFApp *app;
-  GooString *fileName;
+  GString *fileName;
   int pg;
-  GooString *destName;
-  GooString *userPasswordStr, *ownerPasswordStr;
+  GString *destName;
+  GString *userPasswordStr, *ownerPasswordStr;
   GBool ok;
   int exitCode;
 
@@ -149,7 +155,7 @@ int main(int argc, char *argv[]) {
 
   // read config file
   globalParams = new GlobalParams(cfgFileName);
-  //globalParams->setupBaseFonts(NULL);
+  globalParams->setupBaseFonts(NULL);
   if (contView) {
     globalParams->setContinuousView(contView);
   }
@@ -194,6 +200,11 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Bad '-aa' value on command line\n");
     }
   }
+  if (vectorAntialiasStr[0]) {
+    if (!globalParams->setVectorAntialias(vectorAntialiasStr)) {
+      fprintf(stderr, "Bad '-aaVector' value on command line\n");
+    }
+  }
   if (printCommands) {
     globalParams->setPrintCommands(printCommands);
   }
@@ -212,6 +223,10 @@ int main(int argc, char *argv[]) {
 
   // check command line
   ok = ok && argc >= 1 && argc <= 3;
+  if (remoteCmd[0]) {
+    ok = ok && remoteName[5] && !doRemoteReload && !doRemoteRaise &&
+         !doRemoteQuit && argc == 1;
+  }
   if (doRemoteReload) {
     ok = ok && remoteName[5] && !doRemoteQuit && argc == 1;
   }
@@ -231,7 +246,7 @@ int main(int argc, char *argv[]) {
     goto done1;
   }
   if (argc >= 2) {
-    fileName = new GooString(argv[1]);
+    fileName = new GString(argv[1]);
   } else {
     fileName = NULL;
   }
@@ -239,7 +254,7 @@ int main(int argc, char *argv[]) {
   destName = NULL;
   if (argc == 3) {
     if (argv[2][0] == '+') {
-      destName = new GooString(&argv[2][1]);
+      destName = new GString(&argv[2][1]);
     } else {
       pg = atoi(argv[2]);
       if (pg < 0) {
@@ -260,6 +275,8 @@ int main(int argc, char *argv[]) {
 	} else {
 	  app->remoteOpen(fileName, pg, doRemoteRaise);
 	}
+      } else if (remoteCmd[0]) {
+	app->remoteExec(remoteCmd);
       } else if (doRemoteReload) {
 	app->remoteReload(doRemoteRaise);
       } else if (doRemoteRaise) {
@@ -278,10 +295,10 @@ int main(int argc, char *argv[]) {
   app->setFullScreen(fullScreen);
 
   // check for password string(s)
-  ownerPasswordStr = ownerPassword[0] != '\001' ? new GooString(ownerPassword)
-                                                : (GooString *)NULL;
-  userPasswordStr = userPassword[0] != '\001' ? new GooString(userPassword)
-                                              : (GooString *)NULL;
+  ownerPasswordStr = ownerPassword[0] != '\001' ? new GString(ownerPassword)
+                                                : (GString *)NULL;
+  userPasswordStr = userPassword[0] != '\001' ? new GString(userPassword)
+                                              : (GString *)NULL;
 
   // open the file and run the main loop
   if (destName) {

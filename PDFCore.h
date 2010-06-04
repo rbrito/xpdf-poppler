@@ -9,6 +9,8 @@
 #ifndef PDFCORE_H
 #define PDFCORE_H
 
+#include <aconf.h>
+
 #ifdef USE_GCC_PRAGMAS
 #pragma interface
 #endif
@@ -17,8 +19,8 @@
 #include "SplashTypes.h"
 #include "CharTypes.h"
 
-class GooString;
-class GooList;
+class GString;
+class GList;
 class SplashBitmap;
 class SplashPattern;
 class BaseStream;
@@ -27,6 +29,7 @@ class Links;
 class LinkDest;
 class LinkAction;
 class TextPage;
+class HighlightFile;
 class CoreOutputDev;
 class PDFCore;
 
@@ -57,7 +60,7 @@ public:
   ~PDFCorePage();
 
   int page;
-  GooList *tiles;			// cached tiles [PDFCoreTile]
+  GList *tiles;			// cached tiles [PDFCoreTile]
   int xDest, yDest;		// position of upper-left corner
 				//   in the drawing area
   int w, h;			// size of whole page bitmap
@@ -97,7 +100,7 @@ public:
 //------------------------------------------------------------------------
 
 struct PDFHistory {
-  GooString *fileName;
+  GString *fileName;
   int page;
 };
 
@@ -112,29 +115,37 @@ class PDFCore {
 public:
 
   PDFCore(SplashColorMode colorModeA, int bitmapRowPadA,
-	  GBool reverseVideoA, SplashColorPtr paperColorA);
+	  GBool reverseVideoA, SplashColorPtr paperColorA,
+	  GBool incrementalUpdate);
   virtual ~PDFCore();
 
   //----- loadFile / displayPage / displayDest
 
   // Load a new file.  Returns pdfOk or error code.
-  virtual int loadFile(GooString *fileName, GooString *ownerPassword = NULL,
-		       GooString *userPassword = NULL);
+  virtual int loadFile(GString *fileName, GString *ownerPassword = NULL,
+		       GString *userPassword = NULL);
 
 #ifdef WIN32
   // Load a new file.  Returns pdfOk or error code.
   virtual int loadFile(wchar_t *fileName, int fileNameLen,
-		       GooString *ownerPassword = NULL,
-		       GooString *userPassword = NULL);
+		       GString *ownerPassword = NULL,
+		       GString *userPassword = NULL);
 #endif
 
   // Load a new file, via a Stream instead of a file name.  Returns
   // pdfOk or error code.
-  virtual int loadFile(BaseStream *stream, GooString *ownerPassword = NULL,
-		       GooString *userPassword = NULL);
+  virtual int loadFile(BaseStream *stream, GString *ownerPassword = NULL,
+		       GString *userPassword = NULL);
+
+  // Load an already-created PDFDoc object.
+  virtual void loadDoc(PDFDoc *docA);
 
   // Clear out the current document, if any.
   virtual void clear();
+
+  // Same as clear(), but returns the PDFDoc object instead of
+  // deleting it.
+  virtual PDFDoc *takeDoc(GBool redraw);
 
   // Display (or redisplay) the specified page.  If <scrollToTop> is
   // set, the window is vertically scrolled to the top; otherwise, no
@@ -155,18 +166,28 @@ public:
 
   virtual GBool gotoNextPage(int inc, GBool top);
   virtual GBool gotoPrevPage(int dec, GBool top, GBool bottom);
-  virtual GBool gotoNamedDestination(GooString *dest);
+  virtual GBool gotoNamedDestination(GString *dest);
   virtual GBool goForward();
   virtual GBool goBackward();
-  virtual void scrollLeft(int nCols = 1);
-  virtual void scrollRight(int nCols = 1);
-  virtual void scrollUp(int nLines = 1);
-  virtual void scrollDown(int nLines = 1);
+  virtual void scrollLeft(int nCols = 16);
+  virtual void scrollRight(int nCols = 16);
+  virtual void scrollUp(int nLines = 16);
+  virtual void scrollUpPrevPage(int nLines = 16);
+  virtual void scrollDown(int nLines = 16);
+  virtual void scrollDownNextPage(int nLines = 16);
   virtual void scrollPageUp();
   virtual void scrollPageDown();
   virtual void scrollTo(int x, int y);
+  virtual void scrollToLeftEdge();
+  virtual void scrollToRightEdge();
+  virtual void scrollToTopEdge();
+  virtual void scrollToBottomEdge();
+  virtual void scrollToTopLeft();
+  virtual void scrollToBottomRight();
   virtual void zoomToRect(int pg, double ulx, double uly,
 			  double lrx, double lry);
+  virtual void zoomCentered(double zoomA);
+  virtual void zoomToCurrentWidth();
   virtual void setContinuousMode(GBool cm);
 
   //----- selection
@@ -180,7 +201,7 @@ public:
 		     double *lrx, double *lry);
 
   // Text extraction.
-  GooString *extractText(int pg, double xMin, double yMin,
+  GString *extractText(int pg, double xMin, double yMin,
 		       double xMax, double yMax);
 
   //----- find
@@ -229,19 +250,23 @@ protected:
   void needTile(PDFCorePage *page, int x, int y);
   void xorRectangle(int pg, int x0, int y0, int x1, int y1,
 		    SplashPattern *pattern, PDFCoreTile *oneTile = NULL);
+  int loadHighlightFile(HighlightFile *hf, SplashColorPtr color,
+			SplashColorPtr selectColor, GBool selectable);
   PDFCorePage *findPage(int pg);
-  static void redrawCbk(void *data, int x0, int y0, int x1, int y1);
+  static void redrawCbk(void *data, int x0, int y0, int x1, int y1,
+			GBool composited);
   void redrawWindow(int x, int y, int width, int height,
 		    GBool needUpdate);
   virtual PDFCoreTile *newTile(int xDestA, int yDestA);
-  virtual void updateTileData(PDFCoreTile *tileA,
-			      int xSrc, int ySrc, int width, int height);
+  virtual void updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
+			      int width, int height, GBool composited);
   virtual void redrawRect(PDFCoreTile *tileA, int xSrc, int ySrc,
-			  int xDest, int yDest, int width, int height) = 0;
+			  int xDest, int yDest, int width, int height,
+			  GBool composited) = 0;
   void clippedRedrawRect(PDFCoreTile *tile, int xSrc, int ySrc,
 			 int xDest, int yDest, int width, int height,
 			 int xClip, int yClip, int wClip, int hClip,
-			 GBool needUpdate);
+			 GBool needUpdate, GBool composited = gTrue);
   virtual void updateScrollbars() = 0;
   virtual GBool checkForNewFile() { return gFalse; }
 
@@ -283,8 +308,9 @@ protected:
                                 //   current entry
 
 
-  GooList *pages;			// cached pages [PDFCorePage]
+  GList *pages;			// cached pages [PDFCorePage]
   PDFCoreTile *curTile;		// tile currently being rasterized
+  PDFCorePage *curPage;		// page to which curTile belongs
 
   SplashColor paperColor;
   CoreOutputDev *out;

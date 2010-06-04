@@ -6,6 +6,8 @@
 //
 //========================================================================
 
+#include <aconf.h>
+
 #ifdef USE_GCC_PRAGMAS
 #pragma implementation
 #endif
@@ -36,7 +38,8 @@ CoreOutputDev::~CoreOutputDev() {
 void CoreOutputDev::endPage() {
   SplashOutputDev::endPage();
   if (!incrementalUpdate) {
-    (*redrawCbk)(redrawCbkData, 0, 0, getBitmapWidth(), getBitmapHeight());
+    (*redrawCbk)(redrawCbkData, 0, 0, getBitmapWidth(), getBitmapHeight(),
+		 gTrue);
   }
 }
 
@@ -47,7 +50,7 @@ void CoreOutputDev::dump() {
     getModRegion(&x0, &y0, &x1, &y1);
     clearModRegion();
     if (x1 >= x0 && y1 >= y0) {
-      (*redrawCbk)(redrawCbkData, x0, y0, x1, y1);
+      (*redrawCbk)(redrawCbkData, x0, y0, x1, y1, gFalse);
     }
   }
 }
