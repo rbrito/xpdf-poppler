@@ -839,6 +839,9 @@ void XPDFViewer::cmdFocusToDocWin(GString *args[], int nArgs,
 
 void XPDFViewer::cmdFocusToPageNum(GString *args[], int nArgs,
 				   XEvent *event) {
+  if (core->getFullScreen()) {
+    return;
+  }
   XmTextFieldSetSelection(pageNumText, 0,
 			  strlen(XmTextFieldGetString(pageNumText)),
 			  XtLastTimestampProcessed(display));
