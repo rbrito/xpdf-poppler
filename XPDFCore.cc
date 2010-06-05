@@ -8,7 +8,7 @@
 //
 //========================================================================
 
-#include <aconf.h>
+#include <poppler-config.h>
 
 #ifdef USE_GCC_PRAGMAS
 #pragma implementation
@@ -17,20 +17,20 @@
 #include <X11/keysym.h>
 #include <X11/cursorfont.h>
 #include <string.h>
-#include "gmem.h"
-#include "GString.h"
-#include "GList.h"
-#include "Error.h"
+#include "poppler/goo/gmem.h"
+#include "poppler/goo/GooString.h"
+#include "poppler/goo/GooList.h"
+#include "poppler/Error.h"
 #include "GlobalParams.h"
-#include "PDFDoc.h"
-#include "Link.h"
-#include "ErrorCodes.h"
-#include "GfxState.h"
+#include "poppler/PDFDoc.h"
+#include "poppler/Link.h"
+#include "poppler/ErrorCodes.h"
+#include "poppler/GfxState.h"
 #include "CoreOutputDev.h"
-#include "PSOutputDev.h"
-#include "TextOutputDev.h"
-#include "SplashBitmap.h"
-#include "SplashPattern.h"
+#include "poppler/PSOutputDev.h"
+#include "poppler/TextOutputDev.h"
+#include "poppler/splash/SplashBitmap.h"
+#include "poppler/splash/SplashPattern.h"
 #include "XPDFApp.h"
 #include "XPDFCore.h"
 

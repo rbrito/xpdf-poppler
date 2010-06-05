@@ -6,7 +6,7 @@
 //
 //========================================================================
 
-#include <aconf.h>
+#include <poppler-config.h>
 
 #ifdef USE_GCC_PRAGMAS
 #pragma implementation
@@ -26,18 +26,18 @@
 #if HAVE_PAPER_H
 #include <paper.h>
 #endif
-#include "gmem.h"
-#include "GString.h"
-#include "GList.h"
-#include "GHash.h"
-#include "gfile.h"
-#include "Error.h"
-#include "NameToCharCode.h"
-#include "CharCodeToUnicode.h"
-#include "UnicodeMap.h"
-#include "CMap.h"
-#include "BuiltinFontTables.h"
-#include "FontEncodingTables.h"
+#include "poppler/goo/gmem.h"
+#include "poppler/goo/GooString.h"
+#include "poppler/goo/GooList.h"
+#include "poppler/goo/GooHash.h"
+#include "poppler/goo/gfile.h"
+#include "poppler/Error.h"
+#include "poppler/NameToCharCode.h"
+#include "poppler/CharCodeToUnicode.h"
+#include "poppler/UnicodeMap.h"
+#include "poppler/CMap.h"
+#include "poppler/BuiltinFontTables.h"
+#include "poppler/FontEncodingTables.h"
 #ifdef ENABLE_PLUGINS
 #  include "XpdfPluginAPI.h"
 #endif

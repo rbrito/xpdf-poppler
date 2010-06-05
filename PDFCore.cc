@@ -8,25 +8,25 @@
 //
 //========================================================================
 
-#include <aconf.h>
+#include <poppler-config.h>
 
 #ifdef USE_GCC_PRAGMAS
 #pragma implementation
 #endif
 
 #include <math.h>
-#include "GString.h"
-#include "GList.h"
+#include "poppler/goo/GooString.h"
+#include "poppler/goo/GooList.h"
 #include "GlobalParams.h"
-#include "Splash.h"
-#include "SplashBitmap.h"
-#include "SplashPattern.h"
-#include "SplashPath.h"
-#include "Error.h"
-#include "ErrorCodes.h"
-#include "PDFDoc.h"
-#include "Link.h"
-#include "TextOutputDev.h"
+#include "poppler/splash/Splash.h"
+#include "poppler/splash/SplashBitmap.h"
+#include "poppler/splash/SplashPattern.h"
+#include "poppler/splash/SplashPath.h"
+#include "poppler/Error.h"
+#include "poppler/ErrorCodes.h"
+#include "poppler/PDFDoc.h"
+#include "poppler/Link.h"
+#include "poppler/TextOutputDev.h"
 #include "CoreOutputDev.h"
 #include "PDFCore.h"
 

@@ -13,8 +13,8 @@
 #pragma interface
 #endif
 
-#include "SplashTypes.h"
-#include "SplashOutputDev.h"
+#include "poppler/splash/SplashTypes.h"
+#include "poppler/SplashOutputDev.h"
 
 class TextPage;
 

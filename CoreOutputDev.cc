@@ -6,14 +6,14 @@
 //
 //========================================================================
 
-#include <aconf.h>
+#include <poppler-config.h>
 
 #ifdef USE_GCC_PRAGMAS
 #pragma implementation
 #endif
 
-#include "Object.h"
-#include "TextOutputDev.h"
+#include "poppler/Object.h"
+#include "poppler/TextOutputDev.h"
 #include "CoreOutputDev.h"
 
 //------------------------------------------------------------------------

@@ -9,7 +9,7 @@
 #ifndef XPDFAPP_H
 #define XPDFAPP_H
 
-#include <aconf.h>
+#include <poppler-config.h>
 
 #ifdef USE_GCC_PRAGMAS
 #pragma interface
@@ -18,8 +18,8 @@
 #define Object XtObject
 #include <Xm/XmAll.h>
 #undef Object
-#include "gtypes.h"
-#include "SplashTypes.h"
+#include "poppler/goo/gtypes.h"
+#include "poppler/splash/SplashTypes.h"
 
 class GooString;
 class GooList;

@@ -6,15 +6,15 @@
 //
 //========================================================================
 
-#include <aconf.h>
+#include <poppler-config.h>
 
 #ifdef USE_GCC_PRAGMAS
 #pragma implementation
 #endif
 
-#include "GString.h"
-#include "GList.h"
-#include "Error.h"
+#include "poppler/goo/GooString.h"
+#include "poppler/goo/GooList.h"
+#include "poppler/Error.h"
 #include "XPDFViewer.h"
 #include "XPDFApp.h"
 #include "config.h"

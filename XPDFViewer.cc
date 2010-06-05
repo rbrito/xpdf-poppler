@@ -8,7 +8,7 @@
 //
 //========================================================================
 
-#include <aconf.h>
+#include <poppler-config.h>
 
 #ifdef USE_GCC_PRAGMAS
 #pragma implementation
@@ -27,17 +27,17 @@
 #include <Sgm/HPanedW.h>
 #undef Object
 #endif
-#include "gmem.h"
-#include "gfile.h"
-#include "GString.h"
-#include "GList.h"
-#include "Error.h"
+#include "poppler/goo/gmem.h"
+#include "poppler/goo/gfile.h"
+#include "poppler/goo/GooString.h"
+#include "poppler/goo/GooList.h"
+#include "poppler/Error.h"
 #include "GlobalParams.h"
-#include "PDFDoc.h"
-#include "Link.h"
-#include "ErrorCodes.h"
-#include "Outline.h"
-#include "UnicodeMap.h"
+#include "poppler/PDFDoc.h"
+#include "poppler/Link.h"
+#include "poppler/ErrorCodes.h"
+#include "poppler/Outline.h"
+#include "poppler/UnicodeMap.h"
 #ifndef DISABLE_OUTLINE
 #define Object XtObject
 #include "XPDFTree.h"
@@ -45,7 +45,7 @@
 #endif
 #include "XPDFApp.h"
 #include "XPDFViewer.h"
-#include "PSOutputDev.h"
+#include "poppler/PSOutputDev.h"
 #include "config.h"
 
 // these macro defns conflict with xpdf's Object class

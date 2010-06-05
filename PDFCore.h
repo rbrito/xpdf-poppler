@@ -9,15 +9,15 @@
 #ifndef PDFCORE_H
 #define PDFCORE_H
 
-#include <aconf.h>
+#include <poppler-config.h>
 
 #ifdef USE_GCC_PRAGMAS
 #pragma interface
 #endif
 
 #include <stdlib.h>
-#include "SplashTypes.h"
-#include "CharTypes.h"
+#include "poppler/splash/SplashTypes.h"
+#include "poppler/CharTypes.h"
 
 class GooString;
 class GooList;

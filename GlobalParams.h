@@ -9,18 +9,19 @@
 #ifndef GLOBALPARAMS_H
 #define GLOBALPARAMS_H
 
-#include <aconf.h>
+#include <poppler-config.h>
 
 #ifdef USE_GCC_PRAGMAS
 #pragma interface
 #endif
 
 #include <stdio.h>
-#include "gtypes.h"
-#include "CharTypes.h"
+#include "config.h"
+#include "poppler/goo/gtypes.h"
+#include "poppler/CharTypes.h"
 
 #if MULTITHREADED
-#include "GMutex.h"
+#include "poppler/goo/GooMutex.h"
 #endif
 
 class GooString;

@@ -6,14 +6,14 @@
 //
 //========================================================================
 
-#include <aconf.h>
-#include "gtypes.h"
-#include "GString.h"
+#include <poppler-config.h>
+#include "poppler/goo/gtypes.h"
+#include "poppler/goo/GooString.h"
 #include "parseargs.h"
-#include "gfile.h"
-#include "gmem.h"
+#include "poppler/goo/gfile.h"
+#include "poppler/goo/gmem.h"
 #include "GlobalParams.h"
-#include "Object.h"
+#include "poppler/Object.h"
 #include "XPDFApp.h"
 #include "config.h"
 
