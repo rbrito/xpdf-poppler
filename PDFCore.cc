@@ -51,7 +51,7 @@ PDFCorePage::~PDFCorePage() {
     delete links;
   }
   if (text) {
-    delete text;
+    text->decRefCnt(); // this will delete text itself
   }
 }
 
