@@ -140,7 +140,11 @@ struct ZoomMenuInfo {
   double zoom;
 };
 
-static ZoomMenuInfo zoomMenuInfo[nZoomMenuItems] = {
+static ZoomMenuInfo zoomMenuInfo[] = {
+  { "1600%",    1600 },
+  { "1200%",    1200 },
+  { "800%",      800 },
+  { "600%",      600 },
   { "400%",      400 },
   { "200%",      200 },
   { "150%",      150 },
@@ -153,11 +157,13 @@ static ZoomMenuInfo zoomMenuInfo[nZoomMenuItems] = {
   { "fit width", zoomWidth }
 };
 
+#define nZoomMenuItems (sizeof(zoomMenuInfo)/sizeof(struct ZoomMenuInfo))
+
 #define maxZoomIdx   0
-#define defZoomIdx   3
-#define minZoomIdx   7
-#define zoomPageIdx  8
-#define zoomWidthIdx 9
+#define defZoomIdx   7
+#define minZoomIdx   nZoomMenuItems - 3
+#define zoomPageIdx  nZoomMenuItems - 2
+#define zoomWidthIdx nZoomMenuItems - 1
 
 //------------------------------------------------------------------------
 
@@ -361,6 +367,7 @@ XPDFViewer::XPDFViewer(XPDFApp *appA, PDFDoc *doc, int pageA,
 
 XPDFViewer::~XPDFViewer() {
   delete core;
+  delete zoomMenuBtns;
   XmFontListFree(aboutBigFont);
   XmFontListFree(aboutVersionFont);
   XmFontListFree(aboutFixedFont);
@@ -1731,6 +1738,7 @@ void XPDFViewer::initToolbar(Widget parent) {
 #else
   Widget menuPane;
   char buf[16];
+  zoomMenuBtns = new Widget[nZoomMenuItems];
   n = 0;
   menuPane = XmCreatePulldownMenu(toolBar, "zoomMenuPane", args, n);
   for (i = 0; i < nZoomMenuItems; ++i) {
