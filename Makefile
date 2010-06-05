@@ -1,10 +1,9 @@
 LIBS=$(shell pkg-config --libs poppler) -lXm
-POPPLERBASE=$(strip $(shell pkg-config --cflags poppler))
-INCLUDES=$(POPPLERBASE) $(POPPLERBASE)/goo $(POPPLERBASE)/splash
+INCLUDES=$(strip $(shell pkg-config --cflags poppler))
 
-CPPFLAGS+= $(INCLUDES)
+CPPFLAGS+= $(INCLUDES) -DHAVE_DIRENT_H
 
-xpdf: CoreOutputDev.o GlobalParams.o PDFCore.o XPDFApp.o XPDFCore.o XPDFTree.o XPDFViewer.o parseargs.o xpdf.o 
+xpdf: CoreOutputDev.o GlobalParams.o PDFCore.o XPDFApp.o XPDFCore.o XPDFTree.o XPDFViewer.o parseargs.o xpdf.o
 	$(CXX) -o xpdf $(LIBS) *.o
 
 clean:
