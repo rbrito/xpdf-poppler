@@ -19,8 +19,8 @@
 #include "SplashTypes.h"
 #include "CharTypes.h"
 
-class GString;
-class GList;
+class GooString;
+class GooList;
 class SplashBitmap;
 class SplashPattern;
 class BaseStream;
@@ -60,7 +60,7 @@ public:
   ~PDFCorePage();
 
   int page;
-  GList *tiles;			// cached tiles [PDFCoreTile]
+  GooList *tiles;			// cached tiles [PDFCoreTile]
   int xDest, yDest;		// position of upper-left corner
 				//   in the drawing area
   int w, h;			// size of whole page bitmap
@@ -100,7 +100,7 @@ public:
 //------------------------------------------------------------------------
 
 struct PDFHistory {
-  GString *fileName;
+  GooString *fileName;
   int page;
 };
 
@@ -122,20 +122,20 @@ public:
   //----- loadFile / displayPage / displayDest
 
   // Load a new file.  Returns pdfOk or error code.
-  virtual int loadFile(GString *fileName, GString *ownerPassword = NULL,
-		       GString *userPassword = NULL);
+  virtual int loadFile(GooString *fileName, GooString *ownerPassword = NULL,
+		       GooString *userPassword = NULL);
 
 #ifdef WIN32
   // Load a new file.  Returns pdfOk or error code.
   virtual int loadFile(wchar_t *fileName, int fileNameLen,
-		       GString *ownerPassword = NULL,
-		       GString *userPassword = NULL);
+		       GooString *ownerPassword = NULL,
+		       GooString *userPassword = NULL);
 #endif
 
   // Load a new file, via a Stream instead of a file name.  Returns
   // pdfOk or error code.
-  virtual int loadFile(BaseStream *stream, GString *ownerPassword = NULL,
-		       GString *userPassword = NULL);
+  virtual int loadFile(BaseStream *stream, GooString *ownerPassword = NULL,
+		       GooString *userPassword = NULL);
 
   // Load an already-created PDFDoc object.
   virtual void loadDoc(PDFDoc *docA);
@@ -166,7 +166,7 @@ public:
 
   virtual GBool gotoNextPage(int inc, GBool top);
   virtual GBool gotoPrevPage(int dec, GBool top, GBool bottom);
-  virtual GBool gotoNamedDestination(GString *dest);
+  virtual GBool gotoNamedDestination(GooString *dest);
   virtual GBool goForward();
   virtual GBool goBackward();
   virtual void scrollLeft(int nCols = 16);
@@ -201,7 +201,7 @@ public:
 		     double *lrx, double *lry);
 
   // Text extraction.
-  GString *extractText(int pg, double xMin, double yMin,
+  GooString *extractText(int pg, double xMin, double yMin,
 		       double xMax, double yMax);
 
   //----- find
@@ -308,7 +308,7 @@ protected:
                                 //   current entry
 
 
-  GList *pages;			// cached pages [PDFCorePage]
+  GooList *pages;			// cached pages [PDFCorePage]
   PDFCoreTile *curTile;		// tile currently being rasterized
   PDFCorePage *curPage;		// page to which curTile belongs
 

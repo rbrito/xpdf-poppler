@@ -155,7 +155,7 @@ XPDFApp::XPDFApp(int *argc, char *argv[]) {
 
   getResources();
 
-  viewers = new GList();
+  viewers = new GooList();
 
 }
 
@@ -166,9 +166,9 @@ void XPDFApp::getResources() {
   
   XtGetApplicationResources(appShell, &resources, xResources, nXResources,
 			    NULL, 0);
-  geometry = resources.geometry ? new GString(resources.geometry)
-                                : (GString *)NULL;
-  title = resources.title ? new GString(resources.title) : (GString *)NULL;
+  geometry = resources.geometry ? new GooString(resources.geometry)
+                                : (GooString *)NULL;
+  title = resources.title ? new GooString(resources.title) : (GooString *)NULL;
   installCmap = (GBool)resources.installCmap;
   rgbCubeSize = resources.rgbCubeSize;
   reverseVideo = (GBool)resources.reverseVideo;
@@ -203,12 +203,12 @@ void XPDFApp::getResources() {
   } else {
     fullScreenMattePixel = paperPixel;
   }
-  initialZoom = resources.initialZoom ? new GString(resources.initialZoom)
-                                      : (GString *)NULL;
+  initialZoom = resources.initialZoom ? new GooString(resources.initialZoom)
+                                      : (GooString *)NULL;
 }
 
 XPDFApp::~XPDFApp() {
-  deleteGList(viewers, XPDFViewer);
+  deleteGooList(viewers, XPDFViewer);
   if (geometry) {
     delete geometry;
   }
@@ -220,8 +220,8 @@ XPDFApp::~XPDFApp() {
   }
 }
 
-XPDFViewer *XPDFApp::open(GString *fileName, int page,
-			  GString *ownerPassword, GString *userPassword) {
+XPDFViewer *XPDFApp::open(GooString *fileName, int page,
+			  GooString *ownerPassword, GooString *userPassword) {
   XPDFViewer *viewer;
 
   viewer = new XPDFViewer(this, fileName, page, NULL, fullScreen,
@@ -241,9 +241,9 @@ XPDFViewer *XPDFApp::open(GString *fileName, int page,
   return viewer;
 }
 
-XPDFViewer *XPDFApp::openAtDest(GString *fileName, GString *dest,
-				GString *ownerPassword,
-				GString *userPassword) {
+XPDFViewer *XPDFApp::openAtDest(GooString *fileName, GooString *dest,
+				GooString *ownerPassword,
+				GooString *userPassword) {
   XPDFViewer *viewer;
 
   viewer = new XPDFViewer(this, fileName, 1, dest, fullScreen,
@@ -361,7 +361,7 @@ void XPDFApp::remoteExec(char *cmd) {
   XFlush(display);
 }
 
-void XPDFApp::remoteOpen(GString *fileName, int page, GBool raise) {
+void XPDFApp::remoteOpen(GooString *fileName, int page, GBool raise) {
   char cmd[remoteCmdSize];
 
   sprintf(cmd, "openFileAtPage(%.200s,%d)\n",
@@ -374,7 +374,7 @@ void XPDFApp::remoteOpen(GString *fileName, int page, GBool raise) {
   XFlush(display);
 }
 
-void XPDFApp::remoteOpenAtDest(GString *fileName, GString *dest, GBool raise) {
+void XPDFApp::remoteOpenAtDest(GooString *fileName, GooString *dest, GBool raise) {
   char cmd[remoteCmdSize];
 
   sprintf(cmd, "openFileAtDest(%.200s,%.256s)\n",
@@ -418,7 +418,7 @@ void XPDFApp::remoteMsgCbk(Widget widget, XtPointer ptr,
   Atom type;
   int format;
   Gulong size, remain;
-  GString *cmdStr;
+  GooString *cmdStr;
 
   if (event->xproperty.atom != app->remoteAtom) {
     *cont = True;
@@ -438,7 +438,7 @@ void XPDFApp::remoteMsgCbk(Widget widget, XtPointer ptr,
   }
   p0 = cmd;
   while (*p0 && (p1 = strchr(p0, '\n'))) {
-    cmdStr = new GString(p0, p1 - p0);
+    cmdStr = new GooString(p0, p1 - p0);
     app->remoteViewer->execCmd(cmdStr, NULL);
     delete cmdStr;
     p0 = p1 + 1;

@@ -31,8 +31,8 @@
 #  undef USE_COMBO_BOX
 #endif
 
-class GString;
-class GList;
+class GooString;
+class GooList;
 class UnicodeMap;
 class LinkDest;
 class XPDFApp;
@@ -50,7 +50,7 @@ struct XPDFViewerCmd {
   int nArgs;
   GBool requiresDoc;
   GBool requiresEvent;
-  void (XPDFViewer::*func)(GString *args[], int nArgs, XEvent *event);
+  void (XPDFViewer::*func)(GooString *args[], int nArgs, XEvent *event);
 };
 
 //------------------------------------------------------------------------
@@ -60,32 +60,32 @@ struct XPDFViewerCmd {
 class XPDFViewer {
 public:
 
-  XPDFViewer(XPDFApp *appA, GString *fileName,
-	     int pageA, GString *destName, GBool fullScreen,
-	     GString *ownerPassword, GString *userPassword);
+  XPDFViewer(XPDFApp *appA, GooString *fileName,
+	     int pageA, GooString *destName, GBool fullScreen,
+	     GooString *ownerPassword, GooString *userPassword);
   XPDFViewer(XPDFApp *appA, PDFDoc *doc, int pageA,
-	     GString *destName, GBool fullScreen);
+	     GooString *destName, GBool fullScreen);
   GBool isOk() { return ok; }
   ~XPDFViewer();
 
-  void open(GString *fileName, int pageA, GString *destName);
+  void open(GooString *fileName, int pageA, GooString *destName);
   void clear();
   void reloadFile();
 
-  void execCmd(GString *cmd, XEvent *event);
+  void execCmd(GooString *cmd, XEvent *event);
 
   Widget getWindow() { return win; }
 
 private:
 
   //----- load / display
-  GBool loadFile(GString *fileName, GString *ownerPassword = NULL,
-		 GString *userPassword = NULL);
+  GBool loadFile(GooString *fileName, GooString *ownerPassword = NULL,
+		 GooString *userPassword = NULL);
   void displayPage(int pageA, double zoomA, int rotateA,
                    GBool scrollToTop, GBool addToHist);
   void displayDest(LinkDest *dest, double zoomA, int rotateA,
 		   GBool addToHist);
-  void getPageAndDest(int pageA, GString *destName,
+  void getPageAndDest(int pageA, GooString *destName,
 		      int *pageOut, LinkDest **destOut);
 
   //----- hyperlinks / actions
@@ -100,77 +100,77 @@ private:
   int getContext(Guint modifiers);
 
   //----- command functions
-  void cmdAbout(GString *args[], int nArgs, XEvent *event);
-  void cmdCloseOutline(GString *args[], int nArgs, XEvent *event);
-  void cmdCloseWindow(GString *args[], int nArgs, XEvent *event);
-  void cmdContinuousMode(GString *args[], int nArgs, XEvent *event);
-  void cmdEndPan(GString *args[], int nArgs, XEvent *event);
-  void cmdEndSelection(GString *args[], int nArgs, XEvent *event);
-  void cmdFind(GString *args[], int nArgs, XEvent *event);
-  void cmdFindNext(GString *args[], int nArgs, XEvent *event);
-  void cmdFocusToDocWin(GString *args[], int nArgs, XEvent *event);
-  void cmdFocusToPageNum(GString *args[], int nArgs, XEvent *event);
-  void cmdFollowLink(GString *args[], int nArgs, XEvent *event);
-  void cmdFollowLinkInNewWin(GString *args[], int nArgs, XEvent *event);
-  void cmdFollowLinkInNewWinNoSel(GString *args[], int nArgs, XEvent *event);
-  void cmdFollowLinkNoSel(GString *args[], int nArgs, XEvent *event);
-  void cmdFullScreenMode(GString *args[], int nArgs, XEvent *event);
-  void cmdGoBackward(GString *args[], int nArgs, XEvent *event);
-  void cmdGoForward(GString *args[], int nArgs, XEvent *event);
-  void cmdGotoDest(GString *args[], int nArgs, XEvent *event);
-  void cmdGotoLastPage(GString *args[], int nArgs, XEvent *event);
-  void cmdGotoLastPageNoScroll(GString *args[], int nArgs, XEvent *event);
-  void cmdGotoPage(GString *args[], int nArgs, XEvent *event);
-  void cmdGotoPageNoScroll(GString *args[], int nArgs, XEvent *event);
-  void cmdNextPage(GString *args[], int nArgs, XEvent *event);
-  void cmdNextPageNoScroll(GString *args[], int nArgs, XEvent *event);
-  void cmdOpen(GString *args[], int nArgs, XEvent *event);
-  void cmdOpenFile(GString *args[], int nArgs, XEvent *event);
-  void cmdOpenFileAtDest(GString *args[], int nArgs, XEvent *event);
-  void cmdOpenFileAtDestInNewWin(GString *args[], int nArgs, XEvent *event);
-  void cmdOpenFileAtPage(GString *args[], int nArgs, XEvent *event);
-  void cmdOpenFileAtPageInNewWin(GString *args[], int nArgs, XEvent *event);
-  void cmdOpenFileInNewWin(GString *args[], int nArgs, XEvent *event);
-  void cmdOpenInNewWin(GString *args[], int nArgs, XEvent *event);
-  void cmdOpenOutline(GString *args[], int nArgs, XEvent *event);
-  void cmdPageDown(GString *args[], int nArgs, XEvent *event);
-  void cmdPageUp(GString *args[], int nArgs, XEvent *event);
-  void cmdPostPopupMenu(GString *args[], int nArgs, XEvent *event);
-  void cmdPrevPage(GString *args[], int nArgs, XEvent *event);
-  void cmdPrevPageNoScroll(GString *args[], int nArgs, XEvent *event);
-  void cmdPrint(GString *args[], int nArgs, XEvent *event);
-  void cmdQuit(GString *args[], int nArgs, XEvent *event);
-  void cmdRaise(GString *args[], int nArgs, XEvent *event);
-  void cmdRedraw(GString *args[], int nArgs, XEvent *event);
-  void cmdReload(GString *args[], int nArgs, XEvent *event);
-  void cmdRun(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollDown(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollDownNextPage(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollLeft(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollOutlineDown(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollOutlineUp(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollRight(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollToBottomEdge(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollToBottomRight(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollToLeftEdge(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollToRightEdge(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollToTopEdge(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollToTopLeft(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollUp(GString *args[], int nArgs, XEvent *event);
-  void cmdScrollUpPrevPage(GString *args[], int nArgs, XEvent *event);
-  void cmdSinglePageMode(GString *args[], int nArgs, XEvent *event);
-  void cmdStartPan(GString *args[], int nArgs, XEvent *event);
-  void cmdStartSelection(GString *args[], int nArgs, XEvent *event);
-  void cmdToggleContinuousMode(GString *args[], int nArgs, XEvent *event);
-  void cmdToggleFullScreenMode(GString *args[], int nArgs, XEvent *event);
-  void cmdToggleOutline(GString *args[], int nArgs, XEvent *event);
-  void cmdWindowMode(GString *args[], int nArgs, XEvent *event);
-  void cmdZoomFitPage(GString *args[], int nArgs, XEvent *event);
-  void cmdZoomFitWidth(GString *args[], int nArgs, XEvent *event);
-  void cmdZoomIn(GString *args[], int nArgs, XEvent *event);
-  void cmdZoomOut(GString *args[], int nArgs, XEvent *event);
-  void cmdZoomPercent(GString *args[], int nArgs, XEvent *event);
-  void cmdZoomToSelection(GString *args[], int nArgs, XEvent *event);
+  void cmdAbout(GooString *args[], int nArgs, XEvent *event);
+  void cmdCloseOutline(GooString *args[], int nArgs, XEvent *event);
+  void cmdCloseWindow(GooString *args[], int nArgs, XEvent *event);
+  void cmdContinuousMode(GooString *args[], int nArgs, XEvent *event);
+  void cmdEndPan(GooString *args[], int nArgs, XEvent *event);
+  void cmdEndSelection(GooString *args[], int nArgs, XEvent *event);
+  void cmdFind(GooString *args[], int nArgs, XEvent *event);
+  void cmdFindNext(GooString *args[], int nArgs, XEvent *event);
+  void cmdFocusToDocWin(GooString *args[], int nArgs, XEvent *event);
+  void cmdFocusToPageNum(GooString *args[], int nArgs, XEvent *event);
+  void cmdFollowLink(GooString *args[], int nArgs, XEvent *event);
+  void cmdFollowLinkInNewWin(GooString *args[], int nArgs, XEvent *event);
+  void cmdFollowLinkInNewWinNoSel(GooString *args[], int nArgs, XEvent *event);
+  void cmdFollowLinkNoSel(GooString *args[], int nArgs, XEvent *event);
+  void cmdFullScreenMode(GooString *args[], int nArgs, XEvent *event);
+  void cmdGoBackward(GooString *args[], int nArgs, XEvent *event);
+  void cmdGoForward(GooString *args[], int nArgs, XEvent *event);
+  void cmdGotoDest(GooString *args[], int nArgs, XEvent *event);
+  void cmdGotoLastPage(GooString *args[], int nArgs, XEvent *event);
+  void cmdGotoLastPageNoScroll(GooString *args[], int nArgs, XEvent *event);
+  void cmdGotoPage(GooString *args[], int nArgs, XEvent *event);
+  void cmdGotoPageNoScroll(GooString *args[], int nArgs, XEvent *event);
+  void cmdNextPage(GooString *args[], int nArgs, XEvent *event);
+  void cmdNextPageNoScroll(GooString *args[], int nArgs, XEvent *event);
+  void cmdOpen(GooString *args[], int nArgs, XEvent *event);
+  void cmdOpenFile(GooString *args[], int nArgs, XEvent *event);
+  void cmdOpenFileAtDest(GooString *args[], int nArgs, XEvent *event);
+  void cmdOpenFileAtDestInNewWin(GooString *args[], int nArgs, XEvent *event);
+  void cmdOpenFileAtPage(GooString *args[], int nArgs, XEvent *event);
+  void cmdOpenFileAtPageInNewWin(GooString *args[], int nArgs, XEvent *event);
+  void cmdOpenFileInNewWin(GooString *args[], int nArgs, XEvent *event);
+  void cmdOpenInNewWin(GooString *args[], int nArgs, XEvent *event);
+  void cmdOpenOutline(GooString *args[], int nArgs, XEvent *event);
+  void cmdPageDown(GooString *args[], int nArgs, XEvent *event);
+  void cmdPageUp(GooString *args[], int nArgs, XEvent *event);
+  void cmdPostPopupMenu(GooString *args[], int nArgs, XEvent *event);
+  void cmdPrevPage(GooString *args[], int nArgs, XEvent *event);
+  void cmdPrevPageNoScroll(GooString *args[], int nArgs, XEvent *event);
+  void cmdPrint(GooString *args[], int nArgs, XEvent *event);
+  void cmdQuit(GooString *args[], int nArgs, XEvent *event);
+  void cmdRaise(GooString *args[], int nArgs, XEvent *event);
+  void cmdRedraw(GooString *args[], int nArgs, XEvent *event);
+  void cmdReload(GooString *args[], int nArgs, XEvent *event);
+  void cmdRun(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollDown(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollDownNextPage(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollLeft(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollOutlineDown(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollOutlineUp(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollRight(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollToBottomEdge(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollToBottomRight(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollToLeftEdge(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollToRightEdge(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollToTopEdge(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollToTopLeft(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollUp(GooString *args[], int nArgs, XEvent *event);
+  void cmdScrollUpPrevPage(GooString *args[], int nArgs, XEvent *event);
+  void cmdSinglePageMode(GooString *args[], int nArgs, XEvent *event);
+  void cmdStartPan(GooString *args[], int nArgs, XEvent *event);
+  void cmdStartSelection(GooString *args[], int nArgs, XEvent *event);
+  void cmdToggleContinuousMode(GooString *args[], int nArgs, XEvent *event);
+  void cmdToggleFullScreenMode(GooString *args[], int nArgs, XEvent *event);
+  void cmdToggleOutline(GooString *args[], int nArgs, XEvent *event);
+  void cmdWindowMode(GooString *args[], int nArgs, XEvent *event);
+  void cmdZoomFitPage(GooString *args[], int nArgs, XEvent *event);
+  void cmdZoomFitWidth(GooString *args[], int nArgs, XEvent *event);
+  void cmdZoomIn(GooString *args[], int nArgs, XEvent *event);
+  void cmdZoomOut(GooString *args[], int nArgs, XEvent *event);
+  void cmdZoomPercent(GooString *args[], int nArgs, XEvent *event);
+  void cmdZoomToSelection(GooString *args[], int nArgs, XEvent *event);
 
   //----- GUI code: main window
   void initWindow(GBool fullScreen);
@@ -237,13 +237,13 @@ private:
 			  XtPointer callData);
   static void pageNumCbk(Widget widget, XtPointer ptr,
 			 XtPointer callData);
-  static void updateCbk(void *data, GString *fileName,
+  static void updateCbk(void *data, GooString *fileName,
 			int pageNum, int numPages, char *linkString);
 
   //----- GUI code: outline
 #ifndef DISABLE_OUTLINE
   void setupOutline();
-  void setupOutlineItems(GList *items, Widget parent, UnicodeMap *uMap);
+  void setupOutlineItems(GooList *items, Widget parent, UnicodeMap *uMap);
   static void outlineSelectCbk(Widget widget, XtPointer ptr,
 			       XtPointer callData);
 #endif

@@ -52,7 +52,7 @@ static inline Guchar div255(int x) {
 
 //------------------------------------------------------------------------
 
-GString *XPDFCore::currentSelection = NULL;
+GooString *XPDFCore::currentSelection = NULL;
 XPDFCore *XPDFCore::currentSelectionOwner = NULL;
 Atom XPDFCore::targetsAtom;
 
@@ -91,7 +91,7 @@ XPDFCore::XPDFCore(Widget shellA, Widget parentWidgetA,
 		   GBool installCmap, int rgbCubeSizeA):
   PDFCore(splashModeRGB8, 4, reverseVideoA, paperColorA, !fullScreenA)
 {
-  GString *initialZoom;
+  GooString *initialZoom;
 
   shell = shellA;
   parentWidget = parentWidgetA;
@@ -174,8 +174,8 @@ XPDFCore::~XPDFCore() {
 // loadFile / displayPage / displayDest
 //------------------------------------------------------------------------
 
-int XPDFCore::loadFile(GString *fileName, GString *ownerPassword,
-		       GString *userPassword) {
+int XPDFCore::loadFile(GooString *fileName, GooString *ownerPassword,
+		       GooString *userPassword) {
   int err;
 
   err = PDFCore::loadFile(fileName, ownerPassword, userPassword);
@@ -192,8 +192,8 @@ int XPDFCore::loadFile(GString *fileName, GString *ownerPassword,
   return err;
 }
 
-int XPDFCore::loadFile(BaseStream *stream, GString *ownerPassword,
-		       GString *userPassword) {
+int XPDFCore::loadFile(BaseStream *stream, GooString *ownerPassword,
+		       GooString *userPassword) {
   int err;
 
   err = PDFCore::loadFile(stream, ownerPassword, userPassword);
@@ -468,13 +468,13 @@ Boolean XPDFCore::convertSelectionCbk(Widget widget, Atom *selection,
 void XPDFCore::doAction(LinkAction *action) {
   LinkActionKind kind;
   LinkDest *dest;
-  GString *namedDest;
+  GooString *namedDest;
   char *s;
-  GString *fileName, *fileName2;
-  GString *cmd;
-  GString *actionName;
+  GooString *fileName, *fileName2;
+  GooString *cmd;
+  GooString *actionName;
   Object movieAnnot, obj1, obj2;
-  GString *msg;
+  GooString *msg;
   int i;
 
   switch (kind = action->getKind()) {
@@ -501,7 +501,7 @@ void XPDFCore::doAction(LinkAction *action) {
       s = ((LinkGoToR *)action)->getFileName()->getCString();
       //~ translate path name for VMS (deal with '/')
       if (isAbsolutePath(s)) {
-	fileName = new GString(s);
+	fileName = new GooString(s);
       } else {
 	fileName = appendToPath(grabPath(doc->getFileName()->getCString()), s);
       }
@@ -562,7 +562,7 @@ void XPDFCore::doAction(LinkAction *action) {
 #else
       fileName->append(" &");
 #endif
-      msg = new GString("About to execute the command:\n");
+      msg = new GooString("About to execute the command:\n");
       msg->append(fileName);
       if (doQuestionDialog("Launching external application", msg)) {
 	system(fileName->getCString());
@@ -668,8 +668,8 @@ void XPDFCore::doAction(LinkAction *action) {
 
 // Run a command, given a <cmdFmt> string with one '%s' in it, and an
 // <arg> string to insert in place of the '%s'.
-void XPDFCore::runCommand(GString *cmdFmt, GString *arg) {
-  GString *cmd;
+void XPDFCore::runCommand(GooString *cmdFmt, GooString *arg) {
+  GooString *cmd;
   char *s;
 
   if ((s = strstr(cmdFmt->getCString(), "%s"))) {
@@ -693,17 +693,17 @@ void XPDFCore::runCommand(GString *cmdFmt, GString *arg) {
 
 // Escape any characters in a URL which might cause problems when
 // calling system().
-GString *XPDFCore::mungeURL(GString *url) {
+GooString *XPDFCore::mungeURL(GooString *url) {
   static char *allowed = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                          "abcdefghijklmnopqrstuvwxyz"
                          "0123456789"
                          "-_.~/?:@&=+,#%";
-  GString *newURL;
+  GooString *newURL;
   char c;
   char buf[4];
   int i;
 
-  newURL = new GString();
+  newURL = new GooString();
   for (i = 0; i < url->getLength(); ++i) {
     c = url->getChar(i);
     if (strchr(allowed, c)) {
@@ -1418,20 +1418,20 @@ void XPDFCore::setCursor(Cursor cursor) {
   currentCursor = cursor;
 }
 
-GBool XPDFCore::doQuestionDialog(char *title, GString *msg) {
+GBool XPDFCore::doQuestionDialog(char *title, GooString *msg) {
   return doDialog(XmDIALOG_QUESTION, gTrue, title, msg);
 }
 
-void XPDFCore::doInfoDialog(char *title, GString *msg) {
+void XPDFCore::doInfoDialog(char *title, GooString *msg) {
   doDialog(XmDIALOG_INFORMATION, gFalse, title, msg);
 }
 
-void XPDFCore::doErrorDialog(char *title, GString *msg) {
+void XPDFCore::doErrorDialog(char *title, GooString *msg) {
   doDialog(XmDIALOG_ERROR, gFalse, title, msg);
 }
 
 GBool XPDFCore::doDialog(int type, GBool hasCancel,
-			 char *title, GString *msg) {
+			 char *title, GooString *msg) {
   Widget dialog, scroll, text;
   XtAppContext appContext;
   Arg args[20];
@@ -1636,14 +1636,14 @@ void XPDFCore::passwordCancelCbk(Widget widget, XtPointer ptr,
   core->dialogDone = -1;
 }
 
-GString *XPDFCore::getPassword() {
+GooString *XPDFCore::getPassword() {
   XtAppContext appContext;
   XEvent event;
 
   // NB: set <password> before calling XmTextFieldSetString, because
   // SetString will trigger a call to passwordTextVerifyCbk, which
   // expects <password> to be valid
-  password = new GString();
+  password = new GooString();
   XmTextFieldSetString(passwordText, "");
   XtManageChild(passwordDialog);
 

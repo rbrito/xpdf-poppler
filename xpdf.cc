@@ -131,10 +131,10 @@ static ArgDesc argDesc[] = {
 
 int main(int argc, char *argv[]) {
   XPDFApp *app;
-  GString *fileName;
+  GooString *fileName;
   int pg;
-  GString *destName;
-  GString *userPasswordStr, *ownerPasswordStr;
+  GooString *destName;
+  GooString *userPasswordStr, *ownerPasswordStr;
   GBool ok;
   int exitCode;
 
@@ -246,7 +246,7 @@ int main(int argc, char *argv[]) {
     goto done1;
   }
   if (argc >= 2) {
-    fileName = new GString(argv[1]);
+    fileName = new GooString(argv[1]);
   } else {
     fileName = NULL;
   }
@@ -254,7 +254,7 @@ int main(int argc, char *argv[]) {
   destName = NULL;
   if (argc == 3) {
     if (argv[2][0] == '+') {
-      destName = new GString(&argv[2][1]);
+      destName = new GooString(&argv[2][1]);
     } else {
       pg = atoi(argv[2]);
       if (pg < 0) {
@@ -295,10 +295,10 @@ int main(int argc, char *argv[]) {
   app->setFullScreen(fullScreen);
 
   // check for password string(s)
-  ownerPasswordStr = ownerPassword[0] != '\001' ? new GString(ownerPassword)
-                                                : (GString *)NULL;
-  userPasswordStr = userPassword[0] != '\001' ? new GString(userPassword)
-                                              : (GString *)NULL;
+  ownerPasswordStr = ownerPassword[0] != '\001' ? new GooString(ownerPassword)
+                                                : (GooString *)NULL;
+  userPasswordStr = userPassword[0] != '\001' ? new GooString(userPassword)
+                                              : (GooString *)NULL;
 
   // open the file and run the main loop
   if (destName) {
