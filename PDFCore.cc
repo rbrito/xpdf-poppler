@@ -445,7 +445,7 @@ void PDFCore::update(int topPageA, int scrollXA, int scrollYA,
   // object
   if (force || pages->getLength() == 0 ||
       (!continuousMode && topPageA != topPage) ||
-      zoomA != zoom || dpiA != dpi || rotateA != rotate) {
+      zoomA != zoom || fabs( dpiA - dpi ) > EPSILON || rotateA != rotate) {
     needUpdate = gTrue;
     setSelection(0, 0, 0, 0, 0);
     while (pages->getLength() > 0) {

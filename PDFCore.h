@@ -40,6 +40,7 @@ class PDFCore;
 #define zoomPage  -1
 #define zoomWidth -2
 #define defZoom   125
+#define EPSILON   1.0e-7	// 32-bit floating point machine precision
 
 //------------------------------------------------------------------------
 
