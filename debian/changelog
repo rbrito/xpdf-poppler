@@ -1,8 +1,22 @@
 xpdf (3.02-4) experimental; urgency=low
 
+  [ Michael Gilbert ]
   * Version the dependency on libpoppler-dev.
 
- -- Michael Gilbert <michael.s.gilbert@gmail.com>  Fri, 04 Jun 2010 00:32:40 -0400
+  [ Rogério Brito ]
+  * debian/compat:
+    + set to 7, to keep in sync with the build-dependency
+  * debian/control:
+    + remove many produced packages
+    + remove comments that the xpdf package is dummy
+    + remove some relashionships with xpdf-i, which is ancient
+  * debian/patches:
+    + remove all patches; already applied in xpdf-poppler
+  * debian/rules:
+    + set extra linker flags in an attempt to make things smaller
+    + simplify the rules file slightly
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Sat, 05 Jun 2010 05:40:46 -0300
 
 xpdf (3.02-3) experimental; urgency=low
 
@@ -254,7 +268,7 @@ xpdf (3.01-8) unstable; urgency=low
 
 xpdf (3.01-7) unstable; urgency=high
 
-  * SECURITY UPDATE: incorporated upstream patch revision 3.01pl2 
+  * SECURITY UPDATE: incorporated upstream patch revision 3.01pl2
     (obseletes several patches collected from Red Hat, Ubuntu etc).
   * References: CAN-2005-3191/3192/3193/3624/3625/2626/2627/3628,
     CAN-2006-0301 (all included, some improved by this patch)
@@ -292,7 +306,7 @@ xpdf (3.01-3) unstable; urgency=high
 
   * SECURITY UPDATE: fix several potential buffer overflows:
     DCTStream Baseline Heap Overflow, DCTStream Progressive Heap Overflow,
-    StreamPredictor Heap Overflow, JPX Stream Reader Heap Overflow 
+    StreamPredictor Heap Overflow, JPX Stream Reader Heap Overflow
     (closes: #322462) (21_security.dpatch)
   * References: CAN-2005-3193, CAN-2005-3191
 
@@ -347,7 +361,7 @@ xpdf (3.00-15) unstable; urgency=low
 xpdf (3.00-14) unstable; urgency=low
 
   * Use dpatch for patch management; added build-dep on dpatch
-  * Fix FTBFS with gcc-4.0 (closes: #316836); 
+  * Fix FTBFS with gcc-4.0 (closes: #316836);
     thanks to Daniel Schepler for the patch
   * xpdf-utils now suggests: pdftk (closes: #306624)
   * Fix page parameter handling in zxpdf (closes: #315458)
@@ -375,8 +389,8 @@ xpdf (3.00-13) unstable; urgency=low
 
 xpdf (3.00-12) unstable; urgency=high
 
-  * SECURITY UPDATE: Fixed buffer overflow that could overwrite the stack 
-    and hence cause the execution of arbitrary code as reported by 
+  * SECURITY UPDATE: Fixed buffer overflow that could overwrite the stack
+    and hence cause the execution of arbitrary code as reported by
     iDEFENSE (xpdf/Decrypt.cc)
   * References: CAN-2005-0064
 
@@ -410,8 +424,8 @@ xpdf (3.00-10) unstable; urgency=high
 
 xpdf (3.00-9) unstable; urgency=high
 
-  * Applied patch to fix vulnerability CAN-2004:0889: integer overflow 
-    issues that could allow denial of service or possibly arbitrary 
+  * Applied patch to fix vulnerability CAN-2004:0889: integer overflow
+    issues that could allow denial of service or possibly arbitrary
     code execution
 
  -- Hamish Moffatt <hamish@debian.org>  Thu, 21 Oct 2004 23:49:32 +1000
@@ -658,7 +672,7 @@ xpdf (1.00-4) unstable; urgency=low
 
   * xpdf-reader: added zxpdf script contributed by Yann Dirson to allow
     viewing of compressed PDF files (closes: #87316, #14227)
-  * xpdf-reader, xpdf-utils: corrected location of the configuration 
+  * xpdf-reader, xpdf-utils: corrected location of the configuration
     files in the manual pages (closes: #139982)
   * xpdf-common: added note to /etc/xpdf/xpdfrc describing configuration
     file scheme (closes: #143372)
@@ -906,7 +920,7 @@ xpdf (0.7a-1) non-free; urgency=low
 xpdf (0.7-3) non-free; urgency=low
 
   * Moved to non-free as the copyright violated #3 of the DFSG (fixes #14360)
-  
+
  -- Dirk Eddelbuettel <edd@debian.org>  Tue,  4 Nov 1997 20:44:26 -0500
 
 xpdf (0.7-2) unstable; urgency=low
@@ -916,7 +930,7 @@ xpdf (0.7-2) unstable; urgency=low
   * Uses pristine upstream sources as xpdf_0.7.orig.tar.gz
   * Upgraded to Debian Policy 2.3.0.0
   * Added menu file for xpdf
-  
+
  -- Dirk Eddelbuettel <edd@debian.org>  Tue, 30 Sep 1997 20:34:09 -0400
 
 xpdf (0.7-1) unstable; urgency=low
@@ -929,11 +943,11 @@ xpdf (0.6-1) unstable frozen; urgency=low
 
   * New upstream release xpdf-0.6 (fixes bug #4476)
 
-  * Changed Priority: to optional as per override file on master 
-    
-  * Converted package management files to Debian Standard 2.1.1.0 
+  * Changed Priority: to optional as per override file on master
+
+  * Converted package management files to Debian Standard 2.1.1.0
   * Changed maintainer email address to <edd@debian.org>
-  
+
  -- Dirk Eddelbuettel <edd@debian.org>  Sun, 24 Nov 1996 16:50:23 -0500
 
 Sat Aug 10 16:22:28 1996  Dirk Eddelbuettel  <edd@miles.econ.queensu.ca>
@@ -942,15 +956,15 @@ Sat Aug 10 16:22:28 1996  Dirk Eddelbuettel  <edd@miles.econ.queensu.ca>
 
 	* debian.control: now Depends on mime-support, suitable postinst
  	  and postrm scripts added (with thanks to Brian White);
-	  also updated virtual package dependencies, now Provides: a 
-	  pdf-viewer as well as postscript-preview and Depends changed 
-	  to X11R6 from elf-x11r6lib 
+	  also updated virtual package dependencies, now Provides: a
+	  pdf-viewer as well as postscript-preview and Depends changed
+	  to X11R6 from elf-x11r6lib
 
-	* debian.rules: install xpdf.1x, not xpdf.1 
+	* debian.rules: install xpdf.1x, not xpdf.1
 
 Mon May 27 20:58:19 1996  Dirk Eddelbuettel  <edd@miles.econ.queensu.ca>
 
-	* xpdf-0.5-0 release: upgraded to upstream version 0.5 
+	* xpdf-0.5-0 release: upgraded to upstream version 0.5
 
 Sun Apr 28 09:51:02 1996  Dirk Eddelbuettel  <edd@miles.econ.queensu.ca>
 

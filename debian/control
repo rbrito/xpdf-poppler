@@ -9,8 +9,7 @@ Homepage: http://www.foolabs.com/xpdf/
 Package: xpdf
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Conflicts: xpdf-i (<= 0.90-8)
-Replaces: xpdf-i (<= 0.90-8), xpdf-reader (<< 3.02-3), xpdf-common (<< 3.02-3)
+Replaces: xpdf-reader (<< 3.02-3), xpdf-common (<< 3.02-3)
 Recommends: poppler-utils
 Provides: pdf-viewer, postscript-preview, xpdf-reader, xpdf-common
 Description: Portable Document Format (PDF) suite
