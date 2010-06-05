@@ -1,0 +1,8 @@
+?package(xpdf):\
+	needs="x11" \
+	section="Applications/Viewers" \
+	command="/usr/bin/xpdf" \
+	title="Xpdf" \
+	hints="Documents" \
+	icon="/usr/share/pixmaps/xpdf.xpm" \
+	longtitle="Xpdf: Portable Document Format (PDF) file viewer for X"
