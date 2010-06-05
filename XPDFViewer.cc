@@ -402,18 +402,21 @@ void XPDFViewer::clear() {
   title = app->getTitle() ? app->getTitle()->getCString()
                           : (char *)xpdfAppName;
   XtVaSetValues(win, XmNtitle, title, XmNiconName, title, NULL);
-  s = XmStringCreateLocalized("");
-  XtVaSetValues(pageNumText, XmNlabelString, s, NULL);
-  XmStringFree(s);
-  s = XmStringCreateLocalized(" of 0");
-  XtVaSetValues(pageCountLabel, XmNlabelString, s, NULL);
-  XmStringFree(s);
 
-  // disable buttons
-  XtVaSetValues(prevTenPageBtn, XmNsensitive, False, NULL);
-  XtVaSetValues(prevPageBtn, XmNsensitive, False, NULL);
-  XtVaSetValues(nextTenPageBtn, XmNsensitive, False, NULL);
-  XtVaSetValues(nextPageBtn, XmNsensitive, False, NULL);
+  if (toolBar != None) {
+      s = XmStringCreateLocalized("");
+      XtVaSetValues(pageNumText, XmNlabelString, s, NULL);
+      XmStringFree(s);
+      s = XmStringCreateLocalized(" of 0");
+      XtVaSetValues(pageCountLabel, XmNlabelString, s, NULL);
+      XmStringFree(s);
+
+      // disable buttons
+      XtVaSetValues(prevTenPageBtn, XmNsensitive, False, NULL);
+      XtVaSetValues(prevPageBtn, XmNsensitive, False, NULL);
+      XtVaSetValues(nextTenPageBtn, XmNsensitive, False, NULL);
+      XtVaSetValues(nextPageBtn, XmNsensitive, False, NULL);
+  }
 
   // remove the old outline
 #ifndef DISABLE_OUTLINE
