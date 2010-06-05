@@ -1,4 +1,4 @@
-xpdf/xpdf /usr/bin
+xpdf /usr/bin
 debian/zxpdf /usr/bin
 debian/xpdf.xpm /usr/share/pixmaps
 debian/update-xpdfrc /usr/sbin
