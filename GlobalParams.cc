@@ -2535,11 +2535,11 @@ UnicodeMap *GlobalParams::getUnicodeMap2(GooString *encodingName) {
   return map;
 }
 
-CMap *GlobalParams::getCMap(GooString *collection, GooString *cMapName) {
+CMap *GlobalParams::getCMap(GooString *collection, GooString *cMapName, Stream *stream) {
   CMap *cMap;
 
   lockCMapCache;
-  cMap = cMapCache->getCMap(collection, cMapName);
+  cMap = cMapCache->getCMap(collection, cMapName, stream);
   unlockCMapCache;
   return cMap;
 }
