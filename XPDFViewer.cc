@@ -3169,7 +3169,7 @@ void XPDFViewer::saveAsOkCbk(Widget widget, XtPointer ptr,
 //------------------------------------------------------------------------
 
 void XPDFViewer::initPrintDialog() {
-  Widget sep1, sep2, row, label1, label2, okBtn, cancelBtn;
+  Widget sep1, sep2, sep3, sep4, row, label1, label2, okBtn, cancelBtn;
   Arg args[20];
   int n;
   XmString s;
@@ -3295,10 +3295,104 @@ void XPDFViewer::initPrintDialog() {
   sep2 = XmCreateSeparator(printDialog, "sep2", args, n);
   XtManageChild(sep2);
 
-  //----- "print" and "cancel" buttons
+  //----- Print All Pages
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNtopWidget, sep2); ++n;
+  XtSetArg(args[n], XmNtopOffset, 8); ++n;
+  XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); ++n;
+  XtSetArg(args[n], XmNleftOffset, 8); ++n;
+  XtSetArg(args[n], XmNindicatorType, XmONE_OF_MANY); ++n;
+  XtSetArg(args[n], XmNset, XmSET); ++n;
+  s = XmStringCreateLocalized("Print all pages");
+  XtSetArg(args[n], XmNlabelString, s); ++n;
+  printAllPages = XmCreateToggleButton(printDialog, "printAllPages", args, n);
+  XmStringFree(s);
+  XtManageChild(printAllPages);
+  XtAddCallback(printAllPages, XmNvalueChangedCallback,
+    &printAllPagesBtnCbk, (XtPointer)this);
+
+  //----- Print Odd Pages
+  n = 0;
+  XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); ++n;
+  XtSetArg(args[n], XmNtopWidget, printAllPages); ++n;
+//   XtSetArg(args[n], XmNtopOffset, 4); ++n;
+  XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); ++n;
+  XtSetArg(args[n], XmNleftOffset, 8); ++n;
+  XtSetArg(args[n], XmNindicatorType, XmONE_OF_MANY); ++n;
+  XtSetArg(args[n], XmNset, XmUNSET); ++n;
+  s = XmStringCreateLocalized("Print odd pages");
+  XtSetArg(args[n], XmNlabelString, s); ++n;
+  printOddPages = XmCreateToggleButton(printDialog, "printOddPages", args, n);
+  XmStringFree(s);
+  XtManageChild(printOddPages);
+  XtAddCallback(printOddPages, XmNvalueChangedCallback,
+    &printOddPagesBtnCbk, (XtPointer)this);
+
+  //----- Print Even Pages
+  n = 0;
+  XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); ++n;
+  XtSetArg(args[n], XmNtopWidget, printOddPages); ++n;
+//   XtSetArg(args[n], XmNtopOffset, 4); ++n;
+  XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); ++n;
+  XtSetArg(args[n], XmNleftOffset, 8); ++n;
+  XtSetArg(args[n], XmNindicatorType, XmONE_OF_MANY); ++n;
+  XtSetArg(args[n], XmNset, XmUNSET); ++n;
+  s = XmStringCreateLocalized("Print even pages");
+  XtSetArg(args[n], XmNlabelString, s); ++n;
+  printEvenPages = XmCreateToggleButton(printDialog, "printEvenPages", args, n);
+  XmStringFree(s);
+  XtManageChild(printEvenPages);
+  XtAddCallback(printEvenPages, XmNvalueChangedCallback,
+    &printEvenPagesBtnCbk, (XtPointer)this);
+
+  //----- separator
+  n = 0;
+  XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); ++n;
+  XtSetArg(args[n], XmNtopWidget, printEvenPages); ++n;
+  XtSetArg(args[n], XmNtopOffset, 8); ++n;
+  XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); ++n;
+  XtSetArg(args[n], XmNleftOffset, 8); ++n;
+  XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); ++n;
+  XtSetArg(args[n], XmNrightOffset, 8); ++n;
+  XtSetArg(args[n], XmNorientation, XmHORIZONTAL); ++n;
+  sep3 = XmCreateSeparator(printDialog, "sep3", args, n);
+  XtManageChild(sep3);
+
+  //----- Print Back Order
+  n = 0;
+  XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); ++n;
+  XtSetArg(args[n], XmNtopWidget, sep3); ++n;
+  XtSetArg(args[n], XmNtopOffset, 8); ++n;
+  XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); ++n;
+  XtSetArg(args[n], XmNleftOffset, 8); ++n;
+  XtSetArg(args[n], XmNindicatorType, XmONE_OF_MANY); ++n;
+  XtSetArg(args[n], XmNset, XmUNSET); ++n;
+  s = XmStringCreateLocalized("Print back order");
+  XtSetArg(args[n], XmNlabelString, s); ++n;
+  printBackOrder = XmCreateToggleButton(printDialog, "printBackOrder", args, n);
+  XmStringFree(s);
+  XtManageChild(printBackOrder);
+  XtAddCallback(printBackOrder, XmNvalueChangedCallback,
+    &printBackOrderBtnCbk, (XtPointer)this);
+
+  //----- separator
+  n = 0;
+  XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); ++n;
+  XtSetArg(args[n], XmNtopWidget, printBackOrder); ++n;
+  XtSetArg(args[n], XmNtopOffset, 8); ++n;
+  XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); ++n;
+  XtSetArg(args[n], XmNleftOffset, 8); ++n;
+  XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); ++n;
+  XtSetArg(args[n], XmNrightOffset, 8); ++n;
+  XtSetArg(args[n], XmNorientation, XmHORIZONTAL); ++n;
+  sep3 = XmCreateSeparator(printDialog, "sep3", args, n);
+  XtManageChild(sep3);
+
+  //----- "print" and "cancel" buttons
+  n = 0;
+  XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); ++n;
+  XtSetArg(args[n], XmNtopWidget, sep3); ++n;
   XtSetArg(args[n], XmNtopOffset, 8); ++n;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); ++n;
   XtSetArg(args[n], XmNleftOffset, 4); ++n;
@@ -3310,7 +3404,7 @@ void XPDFViewer::initPrintDialog() {
 		&printPrintCbk, (XtPointer)this);
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); ++n;
-  XtSetArg(args[n], XmNtopWidget, sep2); ++n;
+  XtSetArg(args[n], XmNtopWidget, sep3); ++n;
   XtSetArg(args[n], XmNtopOffset, 8); ++n;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); ++n;
   XtSetArg(args[n], XmNrightOffset, 4); ++n;
@@ -3333,6 +3427,60 @@ void XPDFViewer::initPrintDialog() {
     }
     delete psFileName;
   }
+}
+
+void XPDFViewer::printAllPagesBtnCbk(Widget widget,
+  XtPointer ptr, XtPointer callData)
+{
+  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XmToggleButtonCallbackStruct *data =
+      (XmToggleButtonCallbackStruct *)callData;
+
+  if (data->set != XmSET) {
+    XmToggleButtonSetState(viewer->printAllPages, True, False);
+  }
+  XmToggleButtonSetState(viewer->printEvenPages, False, False);
+  XmToggleButtonSetState(viewer->printOddPages, False, False);
+}
+
+void XPDFViewer::printEvenPagesBtnCbk(Widget widget,
+  XtPointer ptr, XtPointer callData)
+{
+  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XmToggleButtonCallbackStruct *data =
+      (XmToggleButtonCallbackStruct *)callData;
+
+  if (data->set != XmSET) {
+    XmToggleButtonSetState(viewer->printEvenPages, True, False);
+  }
+  XmToggleButtonSetState(viewer->printAllPages, False, False);
+  XmToggleButtonSetState(viewer->printOddPages, False, False);
+  XmToggleButtonSetState(viewer->printWithCmdBtn, True, False);
+  XmToggleButtonSetState(viewer->printToFileBtn, False, False);
+}
+
+void XPDFViewer::printOddPagesBtnCbk(Widget widget,
+  XtPointer ptr, XtPointer callData)
+{
+  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XmToggleButtonCallbackStruct *data =
+      (XmToggleButtonCallbackStruct *)callData;
+
+  if (data->set != XmSET) {
+    XmToggleButtonSetState(viewer->printOddPages, True, False);
+  }
+  XmToggleButtonSetState(viewer->printAllPages, False, False);
+  XmToggleButtonSetState(viewer->printEvenPages, False, False);
+  XmToggleButtonSetState(viewer->printWithCmdBtn, True, False);
+  XmToggleButtonSetState(viewer->printToFileBtn, False, False);
+}
+
+void XPDFViewer::printBackOrderBtnCbk(Widget widget, XtPointer ptr,
+  XtPointer callData)
+{
+  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XmToggleButtonSetState(viewer->printWithCmdBtn, True, False);
+  XmToggleButtonSetState(viewer->printToFileBtn, False, False);
 }
 
 void XPDFViewer::setupPrintDialog() {
@@ -3402,12 +3550,17 @@ void XPDFViewer::printToFileBtnCbk(Widget widget, XtPointer ptr,
   XmToggleButtonSetState(viewer->printWithCmdBtn, False, False);
   XtVaSetValues(viewer->printFileText, XmNsensitive, True, NULL);
   XtVaSetValues(viewer->printCmdText, XmNsensitive, False, NULL);
+
+  XmToggleButtonSetState(viewer->printAllPages, True, False);
+  XmToggleButtonSetState(viewer->printOddPages, False, False);
+  XmToggleButtonSetState(viewer->printEvenPages, False, False);
+  XmToggleButtonSetState(viewer->printBackOrder, False, False);
 }
 
 void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
 			       XtPointer callData) {
   XPDFViewer *viewer = (XPDFViewer *)ptr;
-  unsigned char withCmd;
+  unsigned char withCmd, printAll, printOdd, printEven, printBack;
   GString *psFileName;
   int firstPage, lastPage;
   PDFDoc *doc;
@@ -3424,6 +3577,11 @@ void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
   viewer->core->setBusyCursor(gTrue);
 
   XtVaGetValues(viewer->printWithCmdBtn, XmNset, &withCmd, NULL);
+  XtVaGetValues(viewer->printAllPages, XmNset, &printAll, NULL);
+  XtVaGetValues(viewer->printOddPages, XmNset, &printOdd, NULL);
+  XtVaGetValues(viewer->printEvenPages, XmNset, &printEven, NULL);
+  XtVaGetValues(viewer->printBackOrder, XmNset, &printBack, NULL);
+
   if (withCmd) {
     psFileName = new GString(XmTextFieldGetString(viewer->printCmdText));
     psFileName->insert(0, '|');
@@ -3444,14 +3602,71 @@ void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
     lastPage = doc->getNumPages();
   }
 
-  psOut = new PSOutputDev(psFileName->getCString(), doc->getXRef(),
-			  doc->getCatalog(), firstPage, lastPage,
-			  psModePS);
-  if (psOut->isOk()) {
-    doc->displayPages(psOut, firstPage, lastPage, 72, 72,
-		      0, gTrue, globalParams->getPSCrop(), gTrue);
+  // Normal print mode
+  if (printAll && !printBack)
+  {
+    psOut = new PSOutputDev(psFileName->getCString(), doc->getXRef(),
+          doc->getCatalog(), firstPage, lastPage,
+          psModePS);
+    if (psOut->isOk()) {
+      doc->displayPages(psOut, firstPage, lastPage, 72, 72,
+            0, gTrue, globalParams->getPSCrop(), gFalse);
+    }
+    delete psOut;
   }
-  delete psOut;
+  // Additional prints mode's
+  else
+  {
+    int step=1, i;
+    int beginPage, endPage;
+
+    if (!printAll)
+    {
+      step=2;
+      if (printEven)
+      {
+        firstPage+=firstPage&0x01?1:0;
+        lastPage-=lastPage&0x01?1:0;
+      }
+      else
+      {
+        firstPage+=firstPage&0x01?0:1;
+        lastPage-=lastPage&0x01?0:1;
+      }
+    }
+
+    if (printBack)
+    {
+      step=-step;
+      beginPage=lastPage;
+      endPage=firstPage;
+    }
+    else
+    {
+      beginPage=firstPage;
+      endPage=lastPage;
+    }
+
+    if (firstPage<=lastPage)
+    {
+      for (i=beginPage;; i+=step)
+      {
+        psOut = new PSOutputDev(psFileName->getCString(), doc->getXRef(),
+              doc->getCatalog(), i, i, psModePS);
+        if (psOut->isOk()) {
+          doc->displayPages(psOut, i, i, 72, 72,
+                0, gTrue, globalParams->getPSCrop(), gFalse);
+        }
+        else
+        {
+          delete psOut;
+          break;
+        }
+        delete psOut;
+        if (i==endPage) break;
+      }
+    }
+  }
   delete psFileName;
 
   viewer->core->setBusyCursor(gFalse);

@@ -279,6 +279,16 @@ private:
 				 XtPointer callData);
   static void printToFileBtnCbk(Widget widget, XtPointer ptr,
 				XtPointer callData);
+
+  static void printAllPagesBtnCbk(Widget widget, XtPointer ptr,
+				 XtPointer callData);
+  static void printEvenPagesBtnCbk(Widget widget, XtPointer ptr,
+				 XtPointer callData);
+  static void printOddPagesBtnCbk(Widget widget, XtPointer ptr,
+				 XtPointer callData);
+  static void printBackOrderBtnCbk(Widget widget, XtPointer ptr,
+				 XtPointer callData);
+
   static void printPrintCbk(Widget widget, XtPointer ptr,
 			    XtPointer callData);
 
@@ -347,6 +357,8 @@ private:
   Widget printFileText;
   Widget printFirstPage;
   Widget printLastPage;
+
+  Widget printAllPages, printEvenPages, printOddPages, printBackOrder;
 };
 
 #endif
