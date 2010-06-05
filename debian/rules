@@ -2,6 +2,7 @@
 
 LIBS = -lXm $(shell pkg-config --libs poppler)
 INCLUDES = $(strip $(shell pkg-config --cflags poppler))
+LDFLAGS = -Wl,--as-needed -Wl,-z,defs -Wl,-O1
 CFLAGS += $(INCLUDES) -Wno-write-strings -Os -g -DHAVE_DIRENT_H
 CPPFLAGS += $(CFLAGS)
 
@@ -10,7 +11,7 @@ override_dh_clean:
 	rm -f xpdf *.o
 
 override_dh_auto_build: CoreOutputDev.o GlobalParams.o PDFCore.o XPDFApp.o XPDFCore.o XPDFTree.o XPDFViewer.o parseargs.o xpdf.o
-	$(CXX) -o xpdf *.o $(LIBS)
+	$(CXX) -o xpdf *.o $(LIBS) $(LDFLAGS)
 
 %:
 	dh ${@}
