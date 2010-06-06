@@ -89,3 +89,18 @@
 # clicked.
 
 #urlCommand	"netscape -remote 'openURL(%s)'"
+
+# For CJK documents, it may be necessary to use some of Adobe's CMaps.
+#
+# Note: these CMaps were non-free, but are now released by Adobe as Free
+# Software and distributed, for instance, in the poppler-data project.
+#
+# Below we enable some Japanese documents to be viewed.
+cidToUnicode	Adobe-Japan1	/usr/share/poppler/cidToUnicode/Adobe-Japan1
+toUnicodeDir			/usr/share/poppler/cMap/Adobe-Japan1/
+toUnicodeDir			/usr/share/poppler/cMap/Adobe-Japan2/
+cMapDir		Adobe-Japan1	/usr/share/poppler/cMap/Adobe-Japan1/
+cMapDir		Adobe-Japan2	/usr/share/poppler/cMap/Adobe-Japan2/
+
+# Similar configuration settings may be necessary for
+# Adobe-CNS1, Adobe-GB1, Adobe-Korea1, Identity-H, Identity-V
