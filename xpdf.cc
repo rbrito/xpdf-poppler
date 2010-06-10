@@ -62,6 +62,8 @@ static ArgDesc argDesc[] = {
    "reverse video"},
   {"-papercolor", argStringDummy, NULL,           0,
    "color of paper background"},
+  {"-mattecolor", argStringDummy, NULL		  0,
+   "color of background outside actual page"},
   {"-z",          argStringDummy, NULL,           0,
    "initial zoom level (percent, 'page', 'width')"},
   {"-cont",       argFlag,        &contView,      0,
