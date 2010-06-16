@@ -11,7 +11,7 @@ override_dh_clean:
 	rm -f xpdf *.o
 
 override_dh_auto_build: CoreOutputDev.o GlobalParams.o PDFCore.o XPDFApp.o XPDFCore.o XPDFTree.o XPDFViewer.o parseargs.o xpdf.o
-	$(CXX) -o xpdf *.o $(LIBS) $(LDFLAGS)
+	$(CXX) -o xpdf $^ $(LIBS) $(LDFLAGS)
 
 %:
 	dh ${@}
