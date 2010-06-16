@@ -1,7 +1,12 @@
 #!/bin/sh
 set -e
 
-TARGET=/etc/xpdf/includes
+DIR=/etc/xpdf
+TARGET=${DIR}/includes
+
+if [ \! -d /etc/xpdf ]; then
+    mkdir /etc/xpdf
+fi
 
 # Generate /etc/xpdf/includes from /etc/xpdf/*
 # This allows the xpdf-* language add-on packages
@@ -19,4 +24,3 @@ find /etc/xpdf \
   -and -not -name \*~ \
   -and -not -name \*,v \
   -printf "include %p\n" >> $TARGET
-
