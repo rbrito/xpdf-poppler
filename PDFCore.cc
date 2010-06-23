@@ -1079,8 +1079,8 @@ void PDFCore::zoomToRect(int pg, double ulx, double uly,
   if (y0 > y1) {
     u = y0; y0 = y1; y1 = u;
   }
-  rx = (double)drawAreaWidth / (double)(x1 - x0);
-  ry = (double)drawAreaHeight / (double)(y1 - y0);
+  rx = drawAreaWidth / (double)(x1 - x0);
+  ry = drawAreaHeight / (double)(y1 - y0);
   if (rx < ry) {
     newZoom = rx * (dpi / (0.01 * 72));
     sx = (int)(rx * x0);
@@ -1120,9 +1120,8 @@ void PDFCore::zoomCentered(double zoomA) {
 	                                      : maxUnscaledPageW;
       pageH = (rotate == 90 || rotate == 270) ? maxUnscaledPageW
 	                                      : maxUnscaledPageH;
-      dpi1 = 72.0 * (double)drawAreaWidth / pageW;
-      dpi2 = 72.0 * (double)(drawAreaHeight - continuousModePageSpacing) /
-	     pageH;
+      dpi1 = (72.0 * drawAreaWidth) / pageW;
+      dpi2 = (72.0 * (drawAreaHeight - continuousModePageSpacing)) / pageH;
       if (dpi2 < dpi1) {
 	dpi1 = dpi2;
       }
@@ -1146,7 +1145,7 @@ void PDFCore::zoomCentered(double zoomA) {
       pageW = (rot == 90 || rot == 270) ? doc->getPageCropHeight(topPage)
 	                                : doc->getPageCropWidth(topPage);
     }
-    dpi1 = 72.0 * (double)drawAreaWidth / pageW;
+    dpi1 = (72.0 * drawAreaWidth) / pageW;
     sx = 0;
 
   } else if (zoomA <= 0) {
@@ -1236,7 +1235,7 @@ void PDFCore::zoomToCurrentWidth() {
   }
 
   // compute the resolution
-  dpi1 = (drawAreaWidth / maxW) * 72;
+  dpi1 = (72 * drawAreaWidth) / maxW;
 
   // compute the horizontal scroll position
   if (continuousMode) {
@@ -1496,10 +1495,10 @@ void PDFCore::xorRectangle(int pg, int x0, int y0, int x1, int y1,
       if (!oneTile || tile == oneTile) {
 	splash = new Splash(tile->bitmap, gFalse);
 	splash->setFillPattern(pattern->copy());
-	xx0 = (SplashCoord)(x0 - tile->xMin);
-	yy0 = (SplashCoord)(y0 - tile->yMin);
-	xx1 = (SplashCoord)(x1 - tile->xMin);
-	yy1 = (SplashCoord)(y1 - tile->yMin);
+	xx0 = x0 - tile->xMin;
+	yy0 = y0 - tile->yMin;
+	xx1 = x1 - tile->xMin;
+	yy1 = y1 - tile->yMin;
 	path = new SplashPath();
 	path->moveTo(xx0, yy0);
 	path->lineTo(xx1, yy0);
@@ -1869,7 +1868,7 @@ LinkAction *PDFCore::findLink(int pg, double x, double y) {
   PDFCorePage *page;
 
   if ((page = findPage(pg))) {
-    return page->links ? page->links->find(x, y) : (LinkAction *)NULL;
+    return page->links ? page->links->find(x, y) : NULL;
   }
   return NULL;
 }

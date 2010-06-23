@@ -159,12 +159,12 @@ void XPDFApp::getResources() {
   XPDFAppResources resources;
   XColor xcol, xcol2;
   Colormap colormap;
-  
+
   XtGetApplicationResources(appShell, &resources, xResources, nXResources,
 			    NULL, 0);
   geometry = resources.geometry ? new GooString(resources.geometry)
-                                : (GooString *)NULL;
-  title = resources.title ? new GooString(resources.title) : (GooString *)NULL;
+                                : NULL;
+  title = resources.title ? new GooString(resources.title) : NULL;
   installCmap = (GBool)resources.installCmap;
   rgbCubeSize = resources.rgbCubeSize;
   reverseVideo = (GBool)resources.reverseVideo;
@@ -200,7 +200,7 @@ void XPDFApp::getResources() {
     fullScreenMattePixel = paperPixel;
   }
   initialZoom = resources.initialZoom ? new GooString(resources.initialZoom)
-                                      : (GooString *)NULL;
+                                      : NULL;
 }
 
 XPDFApp::~XPDFApp() {
