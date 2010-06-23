@@ -146,19 +146,6 @@ int PDFCore::loadFile(GooString *fileName, GooString *ownerPassword,
   return err;
 }
 
-#ifdef WIN32
-int PDFCore::loadFile(wchar_t *fileName, int fileNameLen,
-		      GooString *ownerPassword, GooString *userPassword) {
-  int err;
-
-  setBusyCursor(gTrue);
-  err = loadFile2(new PDFDoc(fileName, fileNameLen,
-			     ownerPassword, userPassword, this));
-  setBusyCursor(gFalse);
-  return err;
-}
-#endif
-
 int PDFCore::loadFile(BaseStream *stream, GooString *ownerPassword,
 		      GooString *userPassword) {
   int err;
