@@ -53,11 +53,7 @@
 //------------------------------------------------------------------------
 
 // user config file name, relative to the user's home directory
-#if defined(VMS) || (defined(WIN32) && !defined(__CYGWIN32__))
-#define xpdfUserConfigFile "xpdfrc"
-#else
 #define xpdfUserConfigFile ".xpdfrc"
-#endif
 
 // system config file name (set via the configure script)
 #ifdef SYSTEM_XPDFRC
@@ -85,29 +81,6 @@
 // popen
 //------------------------------------------------------------------------
 
-#if defined(_MSC_VER) || defined(__BORLANDC__)
-#define popen _popen
-#define pclose _pclose
-#endif
-
-#if defined(VMS) || defined(VMCMS) || defined(DOS) || defined(OS2) || defined(__EMX__) || defined(WIN32) || defined(__DJGPP__) || defined(MACOS)
-#define POPEN_READ_MODE "rb"
-#else
 #define POPEN_READ_MODE "r"
-#endif
-
-//------------------------------------------------------------------------
-// Win32 stuff
-//------------------------------------------------------------------------
-
-#ifdef CDECL
-#undef CDECL
-#endif
-
-#if defined(_MSC_VER) || defined(__BORLANDC__)
-#define CDECL __cdecl
-#else
-#define CDECL
-#endif
 
 #endif

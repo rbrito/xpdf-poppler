@@ -553,7 +553,7 @@ void PDFCore::update(int topPageA, int scrollXA, int scrollYA,
 	rot += 360;
       }
       addPage(i, rot);
-    }      
+    }
     j = ((PDFCorePage *)pages->get(pages->getLength() - 1))->page;
     for (i = j + 1; i <= pg1; ++i) {
       rot = rotate + doc->getPageRotate(i);

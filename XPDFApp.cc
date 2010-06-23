@@ -129,11 +129,8 @@ XPDFApp::XPDFApp(int *argc, char *argv[]) {
 			     argc, argv, fallbackResources, NULL, 0);
   display = XtDisplay(appShell);
   screenNum = XScreenNumberOfScreen(XtScreen(appShell));
-#if XmVERSION > 1
   XtVaSetValues(XmGetXmDisplay(XtDisplay(appShell)),
 		XmNenableButtonTab, True, NULL);
-#endif
-#if XmVERSION > 1
   // Drag-and-drop appears to be buggy -- I'm seeing weird crashes
   // deep in the Motif code when I destroy widgets in the XpdfForms
   // code.  Xpdf doesn't use it, so just turn it off.
@@ -141,7 +138,6 @@ XPDFApp::XPDFApp(int *argc, char *argv[]) {
 		XmNdragInitiatorProtocolStyle, XmDRAG_NONE,
 		XmNdragReceiverProtocolStyle, XmDRAG_NONE,
 		NULL);
-#endif
 
 #if 0 //~ for debugging
   XSynchronize(display, True);
@@ -325,6 +321,7 @@ void XPDFApp::quit() {
   while (viewers->getLength() > 0) {
     delete (XPDFViewer *)viewers->del(0);
   }
+  /* check the need of this conditional compilation */
 #if HAVE_XTAPPSETEXITFLAG
   XtAppSetExitFlag(appContext);
 #else

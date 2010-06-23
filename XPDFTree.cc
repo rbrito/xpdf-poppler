@@ -94,19 +94,11 @@ static XtResource resources[] = {
 static XmSyntheticResource synResources[] = {
   { XmNmarginWidth, sizeof(Dimension),
     XtOffsetOf(XPDFTreeRec, tree.marginWidth),
-#if XmVERSION > 1
     XmeFromHorizontalPixels, XmeToHorizontalPixels
-#else
-    _XmFromHorizontalPixels, _XmToHorizontalPixels
-#endif
   },
   { XmNmarginHeight, sizeof(Dimension),
     XtOffsetOf(XPDFTreeRec, tree.marginHeight),
-#if XmVERSION > 1
     XmeFromVerticalPixels, XmeToVerticalPixels
-#else
-    _XmFromVerticalPixels, _XmToVerticalPixels
-#endif
   }
 };
 
@@ -182,13 +174,8 @@ externaldef(xpdftreeclassrec) XPDFTreeClassRec xpdfTreeClassRec = {
   },
   { // XmManager
     XtInheritTranslations,			// translations
-#if XmVERSION > 1
     synResources,				// syn_resources
     XtNumber(synResources),			// num_syn_resources
-#else
-    NULL,					// syn_resources
-    0,						// num_syn_resources
-#endif
     NULL,					// syn_constraint_resources
     0,						// num_syn_constraint_res's
     XmInheritParentProcess,			// parent_process
@@ -424,22 +411,7 @@ static XtGeometryResult queryGeometry(Widget widget,
   } else {
     calcSize(widget, NULL, &reply->width, &reply->height);
   }
-#if XmVERSION > 1
   return XmeReplyToQueryGeometry(widget, request, reply);
-#else
-  if ((request->request_mode & CWWidth) &&
-      (request->request_mode & CWHeight) &&
-      request->width == reply->width &&
-      request->height == reply->height) {
-    return XtGeometryYes;
-  }
-  if (reply->width == XtWidth(widget) &&
-      reply->height == XtHeight(widget)) {
-    return XtGeometryNo;
-  }
-  reply->request_mode = CWWidth | CWHeight;
-  return XtGeometryAlmost;
-#endif
 }
 
 static XtGeometryResult geometryManager(Widget widget,
@@ -538,12 +510,8 @@ static void changeManaged(Widget widget) {
     layout(widget, NULL);
   }
 
-#if XmVERSION > 1
   // update keyboard traversal
   XmeNavigChangeManaged(widget);
-#else
-  _XmNavigChangeManaged(widget);
-#endif
 }
 
 static void initConstraint(Widget requestWidget, Widget newWidget,
@@ -735,13 +703,8 @@ static int layoutSubtree(XPDFTreeWidget w, Widget instigator,
 	ew->core.x = x;
 	ew->core.y = y;
       } else {
-#if XmVERSION > 1
 	XmeConfigureObject(ew, x, y, ew->core.width, ew->core.height,
 			   ew->core.border_width);
-#else
-	_XmConfigureObject(ew, x, y, ew->core.width, ew->core.height,
-			   ew->core.border_width);
-#endif
       }
       y += ew->core.height + 2 * ew->core.border_width;
     }
@@ -793,7 +756,7 @@ static void calcSubtreeSize(XPDFTreeWidget w, Widget instigator,
   XPDFTreeConstraint c;
   XtWidgetGeometry geom;
   Dimension w1, h1, w2, h2;
-  
+
   ew = e->widget;
   if (!XtIsManaged(ew)) {
     *width = *height = 0;

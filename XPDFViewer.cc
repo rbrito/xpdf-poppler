@@ -22,11 +22,6 @@
 #ifdef HAVE_X11_XPM_H
 #include <X11/xpm.h>
 #endif
-#if defined(__sgi) && (XmVERSION <= 1)
-#define Object XtObject
-#include <Sgm/HPanedW.h>
-#undef Object
-#endif
 #include "poppler/goo/gmem.h"
 #include "poppler/goo/gfile.h"
 #include "poppler/goo/GooString.h"
@@ -55,11 +50,6 @@
 #undef XtWindow
 #undef XtParent
 #undef XtIsRealized
-#endif
-
-#if XmVERSION <= 1
-#define XmSET   True
-#define XmUNSET False
 #endif
 
 // hack around old X includes which are missing these symbols
@@ -697,7 +687,7 @@ void XPDFViewer::execCmd(GooString *cmd, XEvent *event) {
   if (*p1) {
     goto err1;
   }
-  
+
   //----- find the command
   a = -1;
   b = nCmds;
@@ -1154,13 +1144,7 @@ void XPDFViewer::cmdRun(GooString *args[], int nArgs,
       ++i;
     }
   }
-#ifdef VMS
-  cmd->insert(0, "spawn/nowait ");
-#elif defined(__EMX__)
-  cmd->insert(0, "start /min /n ");
-#else
   cmd->append(" &");
-#endif
   system(cmd->getCString());
   delete cmd;
 }
@@ -1851,11 +1835,7 @@ void XPDFViewer::initPanedWin(Widget parent) {
   // paned window
   n = 0;
   XtSetArg(args[n], XmNorientation, XmHORIZONTAL); ++n;
-#if defined(__sgi) && (XmVERSION <= 1)
-  panedWin = SgCreateHorzPanedWindow(parent, "panedWin", args, n);
-#else
   panedWin = XmCreatePanedWindow(parent, "panedWin", args, n);
-#endif
   XtManageChild(panedWin);
 
   // scrolled window for outline container
@@ -1864,9 +1844,6 @@ void XPDFViewer::initPanedWin(Widget parent) {
   XtSetArg(args[n], XmNallowResize, True); ++n;
   XtSetArg(args[n], XmNpaneMinimum, 1); ++n;
   XtSetArg(args[n], XmNpaneMaximum, 10000); ++n;
-#if !(defined(__sgi) && (XmVERSION <= 1))
-  XtSetArg(args[n], XmNwidth, 1); ++n;
-#endif
   XtSetArg(args[n], XmNscrollingPolicy, XmAUTOMATIC); ++n;
   outlineScroll = XmCreateScrolledWindow(panedWin, "outlineScroll", args, n);
   XtManageChild(outlineScroll);
@@ -1902,12 +1879,6 @@ void XPDFViewer::initPopupMenu() {
   XmString s, s2;
 
   n = 0;
-#if XmVersion < 1002
-  // older versions of Motif need this, newer ones choke on it,
-  // sometimes not displaying the menu at all, maybe depending on the
-  // state of the NumLock key (taken from DDD)
-  XtSetArg(args[n], XmNmenuPost, "<Btn3Down>"); ++n;
-#endif
   popupMenu = XmCreatePopupMenu(core->getDrawAreaWidget(), "popupMenu",
 				args, n);
   n = 0;
@@ -2993,11 +2964,7 @@ void XPDFViewer::initFindDialog() {
   XtSetArg(args[n], XmNbottomAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNbottomWidget, okBtn); ++n;
   XtSetArg(args[n], XmNindicatorType, XmN_OF_MANY); ++n;
-#if XmVERSION <= 1
-  XtSetArg(args[n], XmNindicatorOn, True); ++n;
-#else
   XtSetArg(args[n], XmNindicatorOn, XmINDICATOR_FILL); ++n;
-#endif
   XtSetArg(args[n], XmNset, XmUNSET); ++n;
   s = XmStringCreateLocalized("Search backward");
   XtSetArg(args[n], XmNlabelString, s); ++n;
@@ -3013,11 +2980,7 @@ void XPDFViewer::initFindDialog() {
   XtSetArg(args[n], XmNbottomAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNbottomWidget, okBtn); ++n;
   XtSetArg(args[n], XmNindicatorType, XmN_OF_MANY); ++n;
-#if XmVERSION <= 1
-  XtSetArg(args[n], XmNindicatorOn, True); ++n;
-#else
   XtSetArg(args[n], XmNindicatorOn, XmINDICATOR_FILL); ++n;
-#endif
   XtSetArg(args[n], XmNset, XmUNSET); ++n;
   s = XmStringCreateLocalized("Match case");
   XtSetArg(args[n], XmNlabelString, s); ++n;
@@ -3064,9 +3027,7 @@ void XPDFViewer::initFindDialog() {
   n = 0;
   XtSetArg(args[n], XmNdefaultButton, okBtn); ++n;
   XtSetArg(args[n], XmNcancelButton, closeBtn); ++n;
-#if XmVersion > 1001
   XtSetArg(args[n], XmNinitialFocus, findText); ++n;
-#endif
   XtSetValues(findDialog, args, n);
 }
 
@@ -3689,35 +3650,12 @@ void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
 XmFontList XPDFViewer::createFontList(char *xlfd) {
   XmFontList fontList;
 
-#if XmVersion <= 1001
-
-  XFontStruct *font;
-  String params;
-  Cardinal nParams;
-
-  font = XLoadQueryFont(display, xlfd);
-  if (font) {
-    fontList = XmFontListCreate(font, XmSTRING_DEFAULT_CHARSET);
-  } else {
-    params = (String)xlfd;
-    nParams = 1;
-    XtAppWarningMsg(app->getAppContext(),
-		    "noSuchFont", "CvtStringToXmFontList",
-		    "XtToolkitError", "No such font: %s",
-		    &params, &nParams);
-    fontList = NULL;
-  }
-
-#else
-
   XmFontListEntry entry;
 
   entry = XmFontListEntryLoad(display, xlfd,
 			      XmFONT_IS_FONT, XmFONTLIST_DEFAULT_TAG);
   fontList = XmFontListAppendEntry(NULL, entry);
   XmFontListEntryFree(&entry);
-
-#endif
 
   return fontList;
 }

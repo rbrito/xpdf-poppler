@@ -556,13 +556,7 @@ void XPDFCore::doAction(LinkAction *action) {
 	fileName->append(' ');
 	fileName->append(((LinkLaunch *)action)->getParams());
       }
-#ifdef VMS
-      fileName->insert(0, "spawn/nowait ");
-#elif defined(__EMX__)
-      fileName->insert(0, "start /min /n ");
-#else
       fileName->append(" &");
-#endif
       msg = new GooString("About to execute the command:\n");
       msg->append(fileName);
       if (doQuestionDialog("Launching external application", msg)) {
@@ -683,13 +677,7 @@ void XPDFCore::runCommand(GooString *cmdFmt, GooString *arg) {
   } else {
     cmd = cmdFmt->copy();
   }
-#ifdef VMS
-  cmd->insert(0, "spawn/nowait ");
-#elif defined(__EMX__)
-  cmd->insert(0, "start /min /n ");
-#else
   cmd->append(" &");
-#endif
   system(cmd->getCString());
   delete cmd;
 }
@@ -1595,9 +1583,7 @@ void XPDFCore::initPasswordDialog() {
   n = 0;
   XtSetArg(args[n], XmNdefaultButton, okBtn); ++n;
   XtSetArg(args[n], XmNcancelButton, cancelBtn); ++n;
-#if XmVersion > 1001
   XtSetArg(args[n], XmNinitialFocus, passwordText); ++n;
-#endif
   XtSetValues(passwordDialog, args, n);
 }
 
