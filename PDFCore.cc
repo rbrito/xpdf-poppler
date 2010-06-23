@@ -1595,14 +1595,14 @@ GBool PDFCore::find(char *s, GBool caseSensitive, GBool next, GBool backward,
 
   // convert to Unicode
   len = strlen(s);
-  u = (Unicode *)gmallocn(len, sizeof(Unicode));
+  u = new Unicode[len];
   for (i = 0; i < len; ++i) {
     u[i] = (Unicode)(s[i] & 0xff);
   }
 
   ret = findU(u, len, caseSensitive, next, backward, onePageOnly);
 
-  gfree(u);
+  delete []u;
   return ret;
 }
 
