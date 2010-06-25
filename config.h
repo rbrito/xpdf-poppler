@@ -31,9 +31,6 @@
 #undef xpdfCopyright
 #define xpdfCopyright "Copyright 1996-2007 Glyph & Cog, LLC"
 
-// Windows resource file stuff
-#define xpdfCopyrightAmp "Copyright 1996-2007 Glyph && Cog, LLC"
-
 //------------------------------------------------------------------------
 // paper size
 //------------------------------------------------------------------------
