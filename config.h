@@ -32,7 +32,6 @@
 #define xpdfCopyright "Copyright 1996-2007 Glyph & Cog, LLC"
 
 // Windows resource file stuff
-#define winxpdfVersion "WinXpdf 3.02"
 #define xpdfCopyrightAmp "Copyright 1996-2007 Glyph && Cog, LLC"
 
 //------------------------------------------------------------------------
@@ -59,8 +58,6 @@
 #ifdef SYSTEM_XPDFRC
 #define xpdfSysConfigFile SYSTEM_XPDFRC
 #else
-// under Windows, we get the directory with the executable and then
-// append this file name
 #define xpdfSysConfigFile "xpdfrc"
 #endif
 
@@ -82,5 +79,4 @@
 //------------------------------------------------------------------------
 
 #define POPEN_READ_MODE "r"
-
 #endif
