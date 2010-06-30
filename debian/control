@@ -10,7 +10,7 @@ Package: xpdf
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Replaces: xpdf-reader (<< 3.02-3), xpdf-common (<< 3.02-3)
-Recommends: poppler-utils
+Recommends: poppler-utils, poppler-data
 Provides: pdf-viewer, postscript-preview, xpdf-reader, xpdf-common
 Description: Portable Document Format (PDF) suite
  xpdf is a suite of tools for Portable Document Format (PDF) files. (These are
