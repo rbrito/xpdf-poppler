@@ -35,7 +35,7 @@ changes][4] to include in Debian.
 As a result, I restarted almost all the work (with some twists) on top
 of the pristine xpdf 3.02 sources, and started to strip things down, by
 removing everything that wasn't of use anymore. Those sources are
-present in the beginning of the [xpdf-3.02 branch][5].
+present at [original-plus-xpdf-3.02][5].
 
 It should be noted that the latter 4 patchlevels released by the
 original author of xpdf are not relevant to the present program, since
@@ -66,4 +66,4 @@ Rogério Brito
 [2]: http://github.com/rbrito/xpdf-poppler/tree/original
 [3]: http://poppler.freedesktop.org/
 [4]: http://git.debian.org/?p=collab-maint/xpdf.git
-[5]: http://github.com/rbrito/xpdf-poppler/tree/xpdf-3.02
+[5]: http://github.com/rbrito/xpdf-poppler/tree/original-plus-xpdf-3.02
