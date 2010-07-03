@@ -3,7 +3,11 @@ Section: text
 Priority: optional
 Maintainer: Michael Gilbert <michael.s.gilbert@gmail.com>
 Standards-Version: 3.8.4
-Build-Depends: debhelper (>= 7.0.50~), pkg-config, libx11-dev, lesstif2-dev, libpoppler-dev (>= 0.12.4)
+Build-Depends: debhelper (>= 7.0.50~),
+	       pkg-config,
+	       libx11-dev,
+	       lesstif2-dev,
+	       libpoppler-dev (>= 0.12.4)
 Homepage: http://www.foolabs.com/xpdf/
 
 Package: xpdf
