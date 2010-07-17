@@ -204,10 +204,10 @@ public:
 
   //----- accessors
 
-  CharCode getMacRomanCharCode(char *charName);
+  CharCode getMacRomanCharCode(char *charName) const;
 
   GooString *getBaseDir();
-  Unicode mapNameToUnicode(char *charName);
+  Unicode mapNameToUnicode(char *charName) const;
   UnicodeMap *getResidentUnicodeMap(GooString *encodingName);
   FILE *getUnicodeMapFile(GooString *encodingName);
   FILE *findCMapFile(GooString *collection, GooString *cMapName);
@@ -251,13 +251,13 @@ public:
   double getScreenGamma();
   double getScreenBlackThreshold();
   double getScreenWhiteThreshold();
-  GooString *getURLCommand() { return urlCommand; }
-  GooString *getMovieCommand() { return movieCommand; }
+  GooString *getURLCommand() const { return urlCommand; }
+  GooString *getMovieCommand() const { return movieCommand; }
   GBool getMapNumericCharNames();
   GBool getMapUnknownCharNames();
   GooList *getKeyBinding(int code, int mods, int context);
   GBool getPrintCommands();
-  GBool getErrQuiet();
+  GBool getErrQuiet() const;
 
   CharCodeToUnicode *getCIDToUnicode(GooString *collection);
   CharCodeToUnicode *getUnicodeToUnicode(GooString *fontName);

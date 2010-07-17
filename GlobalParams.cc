@@ -1496,7 +1496,7 @@ void GlobalParams::setupBaseFonts(char *dir) {
 // accessors
 //------------------------------------------------------------------------
 
-CharCode GlobalParams::getMacRomanCharCode(char *charName) {
+CharCode GlobalParams::getMacRomanCharCode(char *charName) const {
   // no need to lock - macRomanReverseMap is constant
   return macRomanReverseMap->lookup(charName);
 }
@@ -1510,7 +1510,7 @@ GooString *GlobalParams::getBaseDir() {
   return s;
 }
 
-Unicode GlobalParams::mapNameToUnicode(char *charName) {
+Unicode GlobalParams::mapNameToUnicode(char *charName) const {
   // no need to lock - nameToUnicode is constant
   return nameToUnicode->lookup(charName);
 }
@@ -2033,7 +2033,7 @@ GBool GlobalParams::getPrintCommands() {
   return p;
 }
 
-GBool GlobalParams::getErrQuiet() {
+GBool GlobalParams::getErrQuiet() const {
   // no locking -- this function may get called from inside a locked
   // section
   return errQuiet;
