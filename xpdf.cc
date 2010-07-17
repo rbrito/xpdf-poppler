@@ -321,18 +321,10 @@ int main(int argc, char *argv[]) {
 
   // clean up
  done2:
-  if (userPasswordStr) {
-    delete userPasswordStr;
-  }
-  if (ownerPasswordStr) {
-    delete ownerPasswordStr;
-  }
-  if (destName) {
-    delete destName;
-  }
-  if (fileName) {
-    delete fileName;
-  }
+  delete userPasswordStr;
+  delete ownerPasswordStr;
+  delete destName;
+  delete fileName;
  done1:
   delete app;
   delete globalParams;

@@ -205,15 +205,9 @@ void XPDFApp::getResources() {
 
 XPDFApp::~XPDFApp() {
   deleteGooList(viewers, XPDFViewer);
-  if (geometry) {
-    delete geometry;
-  }
-  if (title) {
-    delete title;
-  }
-  if (initialZoom) {
-    delete initialZoom;
-  }
+  delete geometry;
+  delete title;
+  delete initialZoom;
 }
 
 XPDFViewer *XPDFApp::open(GooString *fileName, int page,

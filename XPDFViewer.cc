@@ -722,22 +722,16 @@ void XPDFViewer::execCmd(GooString *cmd, XEvent *event) {
   //----- clean up
   delete name;
   for (i = 0; i < nArgs; ++i) {
-    if (args[i]) {
-      delete args[i];
-    }
+    delete args[i];
   }
   return;
 
  err1:
   error(-1, "Invalid command syntax: '%s'", cmd->getCString());
  err2:
-  if (name) {
-    delete name;
-  }
+  delete name;
   for (i = 0; i < nArgs; ++i) {
-    if (args[i]) {
-      delete args[i];
-    }
+    delete args[i];
   }
 }
 
@@ -3486,9 +3480,7 @@ void XPDFViewer::setupPrintDialog() {
     XtVaSetValues(printCmdText, XmNsensitive, False, NULL);
     XtVaSetValues(printFileText, XmNsensitive, True, NULL);
   }
-  if (psFileName) {
-    delete psFileName;
-  }
+  delete psFileName;
 
   sprintf(buf, "%d", doc->getNumPages());
   XmTextFieldSetString(printFirstPage, "1");

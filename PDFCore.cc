@@ -47,9 +47,7 @@ PDFCorePage::PDFCorePage(int pageA, int wA, int hA, int tileWA, int tileHA) {
 
 PDFCorePage::~PDFCorePage() {
   deleteGooList(tiles, PDFCoreTile);
-  if (links) {
-    delete links;
-  }
+  delete links;
   if (text) {
     text->decRefCnt(); // this will delete text itself
   }
@@ -70,9 +68,7 @@ PDFCoreTile::PDFCoreTile(int xDestA, int yDestA) {
 }
 
 PDFCoreTile::~PDFCoreTile() {
-  if (bitmap) {
-    delete bitmap;
-  }
+  delete bitmap;
 }
 
 
@@ -122,13 +118,9 @@ PDFCore::PDFCore(SplashColorMode colorModeA, int bitmapRowPadA,
 PDFCore::~PDFCore() {
   int i;
 
-  if (doc) {
-    delete doc;
-  }
+  delete doc;
   for (i = 0; i < pdfHistorySize; ++i) {
-    if (history[i].fileName) {
-      delete history[i].fileName;
-    }
+    delete history[i].fileName;
   }
   gfree(pageY);
   deleteGooList(pages, PDFCorePage);
@@ -175,9 +167,7 @@ int PDFCore::loadFile2(PDFDoc *newDoc) {
   }
 
   // replace old document
-  if (doc) {
-    delete doc;
-  }
+  delete doc;
   doc = newDoc;
   if (out) {
     out->startDoc(doc->getXRef());
@@ -695,9 +685,7 @@ void PDFCore::update(int topPageA, int scrollXA, int scrollYA,
       historyCur = 0;
     }
     hist = &history[historyCur];
-    if (hist->fileName) {
-      delete hist->fileName;
-    }
+    delete hist->fileName;
     if (doc->getFileName()) {
       hist->fileName = doc->getFileName()->copy();
     } else {

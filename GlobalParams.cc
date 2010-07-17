@@ -119,14 +119,10 @@ DisplayFontParam::~DisplayFontParam() {
   delete name;
   switch (kind) {
   case displayFontT1:
-    if (t1.fileName) {
-      delete t1.fileName;
-    }
+    delete t1.fileName;
     break;
   case displayFontTT:
-    if (tt.fileName) {
-      delete tt.fileName;
-    }
+    delete tt.fileName;
     break;
   }
 }
@@ -146,9 +142,7 @@ PSFontParam::PSFontParam(GooString *pdfFontNameA, int wModeA,
 PSFontParam::~PSFontParam() {
   delete pdfFontName;
   delete psFontName;
-  if (encoding) {
-    delete encoding;
-  }
+  delete encoding;
 }
 
 //------------------------------------------------------------------------
@@ -374,8 +368,7 @@ GlobalParams::GlobalParams(char *cfgFileName) {
   errQuiet = gFalse;
 
   cidToUnicodeCache = new CharCodeToUnicodeCache(cidToUnicodeCacheSize);
-  unicodeToUnicodeCache =
-      new CharCodeToUnicodeCache(unicodeToUnicodeCacheSize);
+  unicodeToUnicodeCache = new CharCodeToUnicodeCache(unicodeToUnicodeCacheSize);
   unicodeMapCache = new UnicodeMapCache();
   cMapCache = new CMapCache();
 
@@ -984,9 +977,7 @@ void GlobalParams::parsePSFile(GooList *tokens, GooString *fileName, int line) {
 	  fileName->getCString(), line);
     return;
   }
-  if (psFile) {
-    delete psFile;
-  }
+  delete psFile;
   psFile = ((GooString *)tokens->get(1))->copy();
 }
 
@@ -1298,9 +1289,7 @@ void GlobalParams::parseCommand(char *cmdName, GooString **val,
 	  cmdName, fileName->getCString(), line);
     return;
   }
-  if (*val) {
-    delete *val;
-  }
+  delete *val;
   *val = ((GooString *)tokens->get(1))->copy();
 }
 
@@ -1413,21 +1402,15 @@ GlobalParams::~GlobalParams() {
   deleteGooHash(displayFonts, DisplayFontParam);
   deleteGooHash(displayCIDFonts, DisplayFontParam);
   deleteGooHash(displayNamedCIDFonts, DisplayFontParam);
-  if (psFile) {
-    delete psFile;
-  }
+  delete psFile;
   deleteGooHash(psFonts, PSFontParam);
   deleteGooList(psNamedFonts16, PSFontParam);
   deleteGooList(psFonts16, PSFontParam);
   delete textEncoding;
   deleteGooList(fontDirs, GooString);
   delete initialZoom;
-  if (urlCommand) {
-    delete urlCommand;
-  }
-  if (movieCommand) {
-    delete movieCommand;
-  }
+  delete urlCommand;
+  delete movieCommand;
   deleteGooList(keyBindings, KeyBinding);
 
   cMapDirs->startIter(&iter);
@@ -2144,9 +2127,7 @@ void GlobalParams::addDisplayFont(DisplayFontParam *param) {
 
 void GlobalParams::setPSFile(char *file) {
   lockGlobalParams;
-  if (psFile) {
-    delete psFile;
-  }
+  delete psFile;
   psFile = new GooString(file);
   unlockGlobalParams;
 }

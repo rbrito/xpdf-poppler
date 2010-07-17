@@ -421,9 +421,7 @@ void XPDFCore::copySelection() {
 #endif
   if (getSelection(&pg, &ulx, &uly, &lrx, &lry)) {
     //~ for multithreading: need a mutex here
-    if (currentSelection) {
-      delete currentSelection;
-    }
+    delete currentSelection;
     currentSelection = extractText(pg, ulx, uly, lrx, lry);
     currentSelectionOwner = this;
     XtOwnSelection(drawArea, XA_PRIMARY, XtLastTimestampProcessed(display),
@@ -507,12 +505,8 @@ void XPDFCore::doAction(LinkAction *action) {
 	fileName = appendToPath(grabPath(doc->getFileName()->getCString()), s);
       }
       if (loadFile(fileName) != errNone) {
-	if (dest) {
-	  delete dest;
-	}
-	if (namedDest) {
-	  delete namedDest;
-	}
+        delete dest;
+	delete namedDest;
 	delete fileName;
 	return;
       }
