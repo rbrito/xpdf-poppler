@@ -126,13 +126,6 @@ public:
   virtual int loadFile(GooString *fileName, GooString *ownerPassword = NULL,
 		       GooString *userPassword = NULL);
 
-#ifdef WIN32
-  // Load a new file.  Returns pdfOk or error code.
-  virtual int loadFile(wchar_t *fileName, int fileNameLen,
-		       GooString *ownerPassword = NULL,
-		       GooString *userPassword = NULL);
-#endif
-
   // Load a new file, via a Stream instead of a file name.  Returns
   // pdfOk or error code.
   virtual int loadFile(BaseStream *stream, GooString *ownerPassword = NULL,
