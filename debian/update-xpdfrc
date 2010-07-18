@@ -18,7 +18,9 @@ echo \# Instead, add or remove files in /etc/xpdf/ then run >> $TARGET
 echo \# /usr/sbin/update-xpdfrc to regenerate this file. >> $TARGET
 echo >> $TARGET
 
-find /etc/xpdf \
+# et shell intrpret * to drop .svn etc.
+
+find /etc/xpdf/* \
   -name xpdfrc-\* \
   -and -not -name \*.dpkg\* \
   -and -not -name \*~ \
