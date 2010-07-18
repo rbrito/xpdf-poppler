@@ -18,9 +18,19 @@ do
 	flags="$flags $1 $2"; shift ;;
     -title) title="$2"; shift ;;
     -*) flags="$flags $1" ;;
-    *.pdf|*.PDF) file="$1"; shift; pages="$@"; cat=; break ;;
+    *.[pP][Dd][Ff])
+        file="$1"; shift; pages="$@"
+        if   [ -f $file ]      ; then cat=""
+        elif [ -f $file.Z   ]  ; then file=$file.Z   ; cat=zcat
+        elif [ -f $file.gz  ]  ; then file=$file.gz  ; cat=zcat
+        elif [ -f $file.bz2 ]  ; then file=$file.bz2 ; cat=bzcat
+        elif [ -f $file.xz  ]  ; then file=$file.xz  ; cat=xzcat
+        else echo >&2 "ERROR: file missing \`$file'"; exit 1
+	fi
+        break ;;
     *.gz|*.Z) file="$1"; shift; pages="$@"; cat=zcat; break ;;
     *.bz2) file="$1"; shift; pages="$@"; cat=bzcat; break ;;
+    *.xz) file="$1"; shift; pages="$@"; cat=xzcat; break ;;
     *) echo >&2 "ERROR: unknown suffix in file \`$1'"; exit 1 ;;
     esac
     shift
