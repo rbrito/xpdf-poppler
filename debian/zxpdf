@@ -59,6 +59,5 @@ if [ "$tmp" == "" ]; then
     exec xpdf -title $title $flags
 else
     trap "rm -f \"$tmp\"" 0 1 2 15
-    xpdf -title $title $flags "$tmp" $pages
-
+    exec xpdf -title $title $flags "$tmp" $pages
 fi
