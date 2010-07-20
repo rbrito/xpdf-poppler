@@ -1,14 +1,27 @@
-LIBS = $(shell pkg-config --libs poppler) -lXm
-INCLUDES = $(strip $(shell pkg-config --cflags poppler))
+all: xpdf
 
-CPPFLAGS += $(INCLUDES) -DHAVE_DIRENT_H
-CXXFLAGS += -Os -Wno-write-strings
-CFLAGS += -Os -Wno-write-strings
+OBJS=CoreOutputDev.o GlobalParams.o PDFCore.o XPDFApp.o XPDFCore.o XPDFTree.o XPDFViewer.o parseargs.o xpdf.o
 
-xpdf: CoreOutputDev.o GlobalParams.o PDFCore.o XPDFApp.o XPDFCore.o XPDFTree.o XPDFViewer.o parseargs.o xpdf.o
-	$(CXX) -o xpdf $(LIBS) $^
+CC=$(CXX)
+
+CPPFLAGS += $(strip $(shell pkg-config --cflags poppler))
+CPPFLAGS += -DHAVE_DIRENT_H
+
+CPPFLAGS += -Wall -Wno-sign-compare
+
+CXXFLAGS += -Os
+CXXFLAGS += -Wno-write-strings
+
+CFLAGS += $(CXXFLAGS)
+
+LOADLIBES += $(shell pkg-config --libs poppler)
+LOADLIBES += -lXm
+
+LDFLAGS += -Os
+
+xpdf: $(OBJS)
 
 clean:
-	rm -f *.o xpdf
+	rm -f $(OBJS) xpdf
 
-.PHONY: clean
+.PHONY: clean all
