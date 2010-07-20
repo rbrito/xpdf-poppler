@@ -3134,7 +3134,7 @@ void XPDFViewer::saveAsOkCbk(Widget widget, XtPointer ptr,
 //------------------------------------------------------------------------
 
 void XPDFViewer::initPrintDialog() {
-  Widget sep1, sep2, sep3, sep4, row, label1, label2, okBtn, cancelBtn;
+  Widget sep1, sep2, sep3, row, label1, label2, okBtn, cancelBtn;
   Arg args[20];
   int n;
   XmString s;
