@@ -21,7 +21,7 @@
 // command line options
 //------------------------------------------------------------------------
 
-static GBool contView = gFalse;
+static bool contView = gFalse;
 static char enableT1libStr[16] = "";
 static char enableFreeTypeStr[16] = "";
 static char antialiasStr[16] = "";
@@ -30,22 +30,22 @@ static char psFileArg[256];
 static char paperSize[15] = "";
 static int paperWidth = 0;
 static int paperHeight = 0;
-static GBool level1 = gFalse;
+static bool level1 = gFalse;
 static char textEncName[128] = "";
 static char textEOL[16] = "";
 static char ownerPassword[33] = "\001";
 static char userPassword[33] = "\001";
-static GBool fullScreen = gFalse;
+static bool fullScreen = gFalse;
 static char remoteName[100] = "xpdf_";
 static char remoteCmd[512] = "";
-static GBool doRemoteReload = gFalse;
-static GBool doRemoteRaise = gFalse;
-static GBool doRemoteQuit = gFalse;
-static GBool printCommands = gFalse;
-static GBool quiet = gFalse;
+static bool doRemoteReload = gFalse;
+static bool doRemoteRaise = gFalse;
+static bool doRemoteQuit = gFalse;
+static bool printCommands = gFalse;
+static bool quiet = gFalse;
 static char cfgFileName[256] = "";
-static GBool printVersion = gFalse;
-static GBool printHelp = gFalse;
+static bool printVersion = gFalse;
+static bool printHelp = gFalse;
 
 static ArgDesc argDesc[] = {
   {"-g",          argStringDummy, NULL,           0,
@@ -137,7 +137,7 @@ int main(int argc, char *argv[]) {
   int pg;
   GooString *destName;
   GooString *userPasswordStr, *ownerPasswordStr;
-  GBool ok;
+  bool ok;
   int exitCode;
 
   exitCode = 0;

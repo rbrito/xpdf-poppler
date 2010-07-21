@@ -21,8 +21,8 @@
 //------------------------------------------------------------------------
 
 CoreOutputDev::CoreOutputDev(SplashColorMode colorModeA, int bitmapRowPadA,
-			     GBool reverseVideoA, SplashColorPtr paperColorA,
-			     GBool incrementalUpdateA,
+			     bool reverseVideoA, SplashColorPtr paperColorA,
+			     bool incrementalUpdateA,
 			     CoreOutRedrawCbk redrawCbkA,
 			     void *redrawCbkDataA):
   SplashOutputDev(colorModeA, bitmapRowPadA, reverseVideoA, paperColorA)
@@ -39,7 +39,7 @@ void CoreOutputDev::endPage() {
   SplashOutputDev::endPage();
   if (!incrementalUpdate) {
     (*redrawCbk)(redrawCbkData, 0, 0, getBitmapWidth(), getBitmapHeight(),
-		 gTrue);
+		 true);
   }
 }
 

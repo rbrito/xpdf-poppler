@@ -116,8 +116,8 @@ class PDFCore {
 public:
 
   PDFCore(SplashColorMode colorModeA, int bitmapRowPadA,
-	  GBool reverseVideoA, SplashColorPtr paperColorA,
-	  GBool incrementalUpdate);
+	  bool reverseVideoA, SplashColorPtr paperColorA,
+	  bool incrementalUpdate);
   virtual ~PDFCore();
 
   //----- loadFile / displayPage / displayDest
@@ -139,30 +139,30 @@ public:
 
   // Same as clear(), but returns the PDFDoc object instead of
   // deleting it.
-  virtual PDFDoc *takeDoc(GBool redraw);
+  virtual PDFDoc *takeDoc(bool redraw);
 
   // Display (or redisplay) the specified page.  If <scrollToTop> is
   // set, the window is vertically scrolled to the top; otherwise, no
   // scrolling is done.  If <addToHist> is set, this page change is
   // added to the history list.
   virtual void displayPage(int topPageA, double zoomA, int rotateA,
-			   GBool scrollToTop, GBool addToHist);
+			   bool scrollToTop, bool addToHist);
 
   // Display a link destination.
   virtual void displayDest(LinkDest *dest, double zoomA, int rotateA,
-			   GBool addToHist);
+			   bool addToHist);
 
   // Update the display, given the specified parameters.
   virtual void update(int topPageA, int scrollXA, int scrollYA,
-		      double zoomA, int rotateA, GBool force, GBool addToHist);
+		      double zoomA, int rotateA, bool force, bool addToHist);
 
   //----- page/position changes
 
-  virtual GBool gotoNextPage(int inc, GBool top);
-  virtual GBool gotoPrevPage(int dec, GBool top, GBool bottom);
-  virtual GBool gotoNamedDestination(GooString *dest);
-  virtual GBool goForward();
-  virtual GBool goBackward();
+  virtual bool gotoNextPage(int inc, bool top);
+  virtual bool gotoPrevPage(int dec, bool top, bool bottom);
+  virtual bool gotoNamedDestination(GooString *dest);
+  virtual bool goForward();
+  virtual bool goBackward();
   virtual void scrollLeft(int nCols = 16);
   virtual void scrollRight(int nCols = 16);
   virtual void scrollUp(int nLines = 16);
@@ -182,7 +182,7 @@ public:
 			  double lrx, double lry);
   virtual void zoomCentered(double zoomA);
   virtual void zoomToCurrentWidth();
-  virtual void setContinuousMode(GBool cm);
+  virtual void setContinuousMode(bool cm);
 
   //----- selection
 
@@ -191,7 +191,7 @@ public:
 		    int newSelectULX, int newSelectULY,
 		    int newSelectLRX, int newSelectLRY);
   void moveSelection(int pg, int x, int y);
-  GBool getSelection(int *pg, double *ulx, double *uly,
+  bool getSelection(int *pg, double *ulx, double *uly,
 		     double *lrx, double *lry);
 
   // Text extraction.
@@ -200,10 +200,10 @@ public:
 
   //----- find
 
-  virtual GBool find(char *s, GBool caseSensitive, GBool next, GBool backward,
-		     GBool onePageOnly);
-  virtual GBool findU(Unicode *u, int len, GBool caseSensitive,
-		      GBool next, GBool backward, GBool onePageOnly);
+  virtual bool find(char *s, bool caseSensitive, bool next, bool backward,
+		     bool onePageOnly);
+  virtual bool findU(Unicode *u, int len, bool caseSensitive,
+		      bool next, bool backward, bool onePageOnly);
 
 
   //----- coordinate conversion
@@ -212,8 +212,8 @@ public:
   // device space: (0,0) is upper-left corner of a page; unit = pixel
   // window space: (0,0) is upper-left corner of drawing area; unit = pixel
 
-  GBool cvtWindowToUser(int xw, int yw, int *pg, double *xu, double *yu);
-  GBool cvtWindowToDev(int xw, int yw, int *pg, int *xd, int *yd);
+  bool cvtWindowToUser(int xw, int yw, int *pg, double *xu, double *yu);
+  bool cvtWindowToDev(int xw, int yw, int *pg, int *xd, int *yd);
   void cvtUserToWindow(int pg, double xy, double yu, int *xw, int *yw);
   void cvtUserToDev(int pg, double xu, double yu, int *xd, int *yd);
   void cvtDevToWindow(int pg, int xd, int yd, int *xw, int *yw);
@@ -226,15 +226,15 @@ public:
   double getZoom() { return zoom; }
   double getZoomDPI() { return dpi; }
   int getRotate() { return rotate; }
-  GBool getContinuousMode() { return continuousMode; }
-  virtual void setReverseVideo(GBool reverseVideoA);
-  GBool canGoBack() { return historyBLen > 1; }
-  GBool canGoForward() { return historyFLen > 0; }
+  bool getContinuousMode() { return continuousMode; }
+  virtual void setReverseVideo(bool reverseVideoA);
+  bool canGoBack() { return historyBLen > 1; }
+  bool canGoForward() { return historyFLen > 0; }
   int getScrollX() { return scrollX; }
   int getScrollY() { return scrollY; }
   int getDrawAreaWidth() { return drawAreaWidth; }
   int getDrawAreaHeight() { return drawAreaHeight; }
-  virtual void setBusyCursor(GBool busy) = 0;
+  virtual void setBusyCursor(bool busy) = 0;
   LinkAction *findLink(int pg, double x, double y);
 
 protected:
@@ -245,27 +245,27 @@ protected:
   void xorRectangle(int pg, int x0, int y0, int x1, int y1,
 		    SplashPattern *pattern, PDFCoreTile *oneTile = NULL);
   int loadHighlightFile(HighlightFile *hf, SplashColorPtr color,
-			SplashColorPtr selectColor, GBool selectable);
+			SplashColorPtr selectColor, bool selectable);
   PDFCorePage *findPage(int pg);
   static void redrawCbk(void *data, int x0, int y0, int x1, int y1,
-			GBool composited);
+			bool composited);
   void redrawWindow(int x, int y, int width, int height,
-		    GBool needUpdate);
+		    bool needUpdate);
   virtual PDFCoreTile *newTile(int xDestA, int yDestA);
   virtual void updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
-			      int width, int height, GBool composited);
+			      int width, int height, bool composited);
   virtual void redrawRect(PDFCoreTile *tileA, int xSrc, int ySrc,
 			  int xDest, int yDest, int width, int height,
-			  GBool composited) = 0;
+			  bool composited) = 0;
   void clippedRedrawRect(PDFCoreTile *tile, int xSrc, int ySrc,
 			 int xDest, int yDest, int width, int height,
 			 int xClip, int yClip, int wClip, int hClip,
-			 GBool needUpdate, GBool composited = gTrue);
+			 bool needUpdate, bool composited = true);
   virtual void updateScrollbars() = 0;
-  virtual GBool checkForNewFile() { return gFalse; }
+  virtual bool checkForNewFile() { return gFalse; }
 
   PDFDoc *doc;			// current PDF file
-  GBool continuousMode;		// false for single-page mode, true for
+  bool continuousMode;		// false for single-page mode, true for
 				//   continuous mode
   int drawAreaWidth,		// size of the PDF display area
       drawAreaHeight;
@@ -289,9 +289,9 @@ protected:
       selectULY,		//   in device space -- (ULX==LRX || ULY==LRY)
       selectLRX,		//   means there is no selection
       selectLRY;
-  GBool dragging;		// set while selection is being dragged
-  GBool lastDragLeft;		// last dragged selection edge was left/right
-  GBool lastDragTop;		// last dragged selection edge was top/bottom
+  bool dragging;		// set while selection is being dragged
+  bool lastDragLeft;		// last dragged selection edge was left/right
+  bool lastDragTop;		// last dragged selection edge was top/bottom
 
   PDFHistory			// page history queue
     history[pdfHistorySize];

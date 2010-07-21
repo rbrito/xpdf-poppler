@@ -294,11 +294,11 @@ GlobalParams::GlobalParams(char *cfgFileName) {
 
   baseDir = appendToPath(getHomeDir(), ".xpdf");
   nameToUnicode = new NameToCharCode();
-  cidToUnicodes = new GooHash(gTrue);
-  unicodeToUnicodes = new GooHash(gTrue);
+  cidToUnicodes = new GooHash(true);
+  unicodeToUnicodes = new GooHash(true);
   residentUnicodeMaps = new GooHash();
-  unicodeMaps = new GooHash(gTrue);
-  cMapDirs = new GooHash(gTrue);
+  unicodeMaps = new GooHash(true);
+  cMapDirs = new GooHash(true);
   toUnicodeDirs = new GooList();
   displayFonts = new GooHash();
   displayCIDFonts = new GooHash();
@@ -324,35 +324,35 @@ GlobalParams::GlobalParams(char *cfgFileName) {
   psImageableLLX = psImageableLLY = 0;
   psImageableURX = psPaperWidth;
   psImageableURY = psPaperHeight;
-  psCrop = gTrue;
+  psCrop = true;
   psExpandSmaller = gFalse;
-  psShrinkLarger = gTrue;
-  psCenter = gTrue;
+  psShrinkLarger = true;
+  psCenter = true;
   psDuplex = gFalse;
   psLevel = psLevel2;
   psFile = NULL;
   psFonts = new GooHash();
   psNamedFonts16 = new GooList();
   psFonts16 = new GooList();
-  psEmbedType1 = gTrue;
-  psEmbedTrueType = gTrue;
-  psEmbedCIDPostScript = gTrue;
-  psEmbedCIDTrueType = gTrue;
+  psEmbedType1 = true;
+  psEmbedTrueType = true;
+  psEmbedCIDPostScript = true;
+  psEmbedCIDTrueType = true;
   psPreload = gFalse;
   psOPI = gFalse;
   psASCIIHex = gFalse;
   textEncoding = new GooString("Latin1");
   textEOL = eolUnix;
-  textPageBreaks = gTrue;
+  textPageBreaks = true;
   textKeepTinyChars = gFalse;
   fontDirs = new GooList();
   initialZoom = new GooString("125");
   continuousView = gFalse;
-  enableT1lib = gTrue;
-  enableFreeType = gTrue;
-  antialias = gTrue;
-  vectorAntialias = gTrue;
-  strokeAdjust = gTrue;
+  enableT1lib = true;
+  enableFreeType = true;
+  antialias = true;
+  vectorAntialias = true;
+  strokeAdjust = true;
   screenType = screenUnset;
   screenSize = -1;
   screenDotRadius = -1;
@@ -361,7 +361,7 @@ GlobalParams::GlobalParams(char *cfgFileName) {
   screenWhiteThreshold = 1.0;
   urlCommand = NULL;
   movieCommand = NULL;
-  mapNumericCharNames = gTrue;
+  mapNumericCharNames = true;
   mapUnknownCharNames = gFalse;
   createDefaultKeyBindings();
   printCommands = gFalse;
@@ -395,9 +395,9 @@ GlobalParams::GlobalParams(char *cfgFileName) {
   map = new UnicodeMap("ZapfDingbats", gFalse, zapfDingbatsUnicodeMapRanges,
 		       zapfDingbatsUnicodeMapLen);
   residentUnicodeMaps->add(map->getEncodingName(), map);
-  map = new UnicodeMap("UTF-8", gTrue, &mapUTF8);
+  map = new UnicodeMap("UTF-8", true, &mapUTF8);
   residentUnicodeMaps->add(map->getEncodingName(), map);
-  map = new UnicodeMap("UCS-2", gTrue, &mapUCS2);
+  map = new UnicodeMap("UCS-2", true, &mapUCS2);
   residentUnicodeMaps->add(map->getEncodingName(), map);
 
   // look for a user config file, then a system-wide config file
@@ -1152,7 +1152,7 @@ void GlobalParams::parseUnbind(GooList *tokens, GooString *fileName, int line) {
   }
 }
 
-GBool GlobalParams::parseKey(GooString *modKeyStr, GooString *contextStr,
+bool GlobalParams::parseKey(GooString *modKeyStr, GooString *contextStr,
 			     int *code, int *mods, int *context,
 			     char *cmdName,
 			     GooList *tokens, GooString *fileName, int line) {
@@ -1279,7 +1279,7 @@ GBool GlobalParams::parseKey(GooString *modKeyStr, GooString *contextStr,
     }
   }
 
-  return gTrue;
+  return true;
 }
 
 void GlobalParams::parseCommand(char *cmdName, GooString **val,
@@ -1293,7 +1293,7 @@ void GlobalParams::parseCommand(char *cmdName, GooString **val,
   *val = ((GooString *)tokens->get(1))->copy();
 }
 
-void GlobalParams::parseYesNo(char *cmdName, GBool *flag,
+void GlobalParams::parseYesNo(char *cmdName, bool *flag,
 			      GooList *tokens, GooString *fileName, int line) {
   GooString *tok;
 
@@ -1309,15 +1309,15 @@ void GlobalParams::parseYesNo(char *cmdName, GBool *flag,
   }
 }
 
-GBool GlobalParams::parseYesNo2(char *token, GBool *flag) {
+bool GlobalParams::parseYesNo2(char *token, bool *flag) {
   if (!strcmp(token, "yes")) {
-    *flag = gTrue;
+    *flag = true;
   } else if (!strcmp(token, "no")) {
     *flag = gFalse;
   } else {
     return gFalse;
   }
-  return gTrue;
+  return true;
 }
 
 void GlobalParams::parseInteger(char *cmdName, int *val,
@@ -1645,8 +1645,8 @@ void GlobalParams::getPSImageableArea(int *llx, int *lly, int *urx, int *ury) {
   unlockGlobalParams;
 }
 
-GBool GlobalParams::getPSCrop() {
-  GBool f;
+bool GlobalParams::getPSCrop() {
+  bool f;
 
   lockGlobalParams;
   f = psCrop;
@@ -1654,8 +1654,8 @@ GBool GlobalParams::getPSCrop() {
   return f;
 }
 
-GBool GlobalParams::getPSExpandSmaller() {
-  GBool f;
+bool GlobalParams::getPSExpandSmaller() {
+  bool f;
 
   lockGlobalParams;
   f = psExpandSmaller;
@@ -1663,8 +1663,8 @@ GBool GlobalParams::getPSExpandSmaller() {
   return f;
 }
 
-GBool GlobalParams::getPSShrinkLarger() {
-  GBool f;
+bool GlobalParams::getPSShrinkLarger() {
+  bool f;
 
   lockGlobalParams;
   f = psShrinkLarger;
@@ -1672,8 +1672,8 @@ GBool GlobalParams::getPSShrinkLarger() {
   return f;
 }
 
-GBool GlobalParams::getPSCenter() {
-  GBool f;
+bool GlobalParams::getPSCenter() {
+  bool f;
 
   lockGlobalParams;
   f = psCenter;
@@ -1681,8 +1681,8 @@ GBool GlobalParams::getPSCenter() {
   return f;
 }
 
-GBool GlobalParams::getPSDuplex() {
-  GBool d;
+bool GlobalParams::getPSDuplex() {
+  bool d;
 
   lockGlobalParams;
   d = psDuplex;
@@ -1739,8 +1739,8 @@ PSFontParam *GlobalParams::getPSFont16(GooString *fontName,
   return p;
 }
 
-GBool GlobalParams::getPSEmbedType1() {
-  GBool e;
+bool GlobalParams::getPSEmbedType1() {
+  bool e;
 
   lockGlobalParams;
   e = psEmbedType1;
@@ -1748,8 +1748,8 @@ GBool GlobalParams::getPSEmbedType1() {
   return e;
 }
 
-GBool GlobalParams::getPSEmbedTrueType() {
-  GBool e;
+bool GlobalParams::getPSEmbedTrueType() {
+  bool e;
 
   lockGlobalParams;
   e = psEmbedTrueType;
@@ -1757,8 +1757,8 @@ GBool GlobalParams::getPSEmbedTrueType() {
   return e;
 }
 
-GBool GlobalParams::getPSEmbedCIDPostScript() {
-  GBool e;
+bool GlobalParams::getPSEmbedCIDPostScript() {
+  bool e;
 
   lockGlobalParams;
   e = psEmbedCIDPostScript;
@@ -1766,8 +1766,8 @@ GBool GlobalParams::getPSEmbedCIDPostScript() {
   return e;
 }
 
-GBool GlobalParams::getPSEmbedCIDTrueType() {
-  GBool e;
+bool GlobalParams::getPSEmbedCIDTrueType() {
+  bool e;
 
   lockGlobalParams;
   e = psEmbedCIDTrueType;
@@ -1775,8 +1775,8 @@ GBool GlobalParams::getPSEmbedCIDTrueType() {
   return e;
 }
 
-GBool GlobalParams::getPSPreload() {
-  GBool preload;
+bool GlobalParams::getPSPreload() {
+  bool preload;
 
   lockGlobalParams;
   preload = psPreload;
@@ -1784,8 +1784,8 @@ GBool GlobalParams::getPSPreload() {
   return preload;
 }
 
-GBool GlobalParams::getPSOPI() {
-  GBool opi;
+bool GlobalParams::getPSOPI() {
+  bool opi;
 
   lockGlobalParams;
   opi = psOPI;
@@ -1793,8 +1793,8 @@ GBool GlobalParams::getPSOPI() {
   return opi;
 }
 
-GBool GlobalParams::getPSASCIIHex() {
-  GBool ah;
+bool GlobalParams::getPSASCIIHex() {
+  bool ah;
 
   lockGlobalParams;
   ah = psASCIIHex;
@@ -1820,8 +1820,8 @@ EndOfLineKind GlobalParams::getTextEOL() {
   return eol;
 }
 
-GBool GlobalParams::getTextPageBreaks() {
-  GBool pageBreaks;
+bool GlobalParams::getTextPageBreaks() {
+  bool pageBreaks;
 
   lockGlobalParams;
   pageBreaks = textPageBreaks;
@@ -1829,8 +1829,8 @@ GBool GlobalParams::getTextPageBreaks() {
   return pageBreaks;
 }
 
-GBool GlobalParams::getTextKeepTinyChars() {
-  GBool tiny;
+bool GlobalParams::getTextKeepTinyChars() {
+  bool tiny;
 
   lockGlobalParams;
   tiny = textKeepTinyChars;
@@ -1871,8 +1871,8 @@ GooString *GlobalParams::getInitialZoom() {
   return s;
 }
 
-GBool GlobalParams::getContinuousView() {
-  GBool f;
+bool GlobalParams::getContinuousView() {
+  bool f;
 
   lockGlobalParams;
   f = continuousView;
@@ -1880,8 +1880,8 @@ GBool GlobalParams::getContinuousView() {
   return f;
 }
 
-GBool GlobalParams::getEnableT1lib() {
-  GBool f;
+bool GlobalParams::getEnableT1lib() {
+  bool f;
 
   lockGlobalParams;
   f = enableT1lib;
@@ -1889,8 +1889,8 @@ GBool GlobalParams::getEnableT1lib() {
   return f;
 }
 
-GBool GlobalParams::getEnableFreeType() {
-  GBool f;
+bool GlobalParams::getEnableFreeType() {
+  bool f;
 
   lockGlobalParams;
   f = enableFreeType;
@@ -1899,8 +1899,8 @@ GBool GlobalParams::getEnableFreeType() {
 }
 
 
-GBool GlobalParams::getAntialias() {
-  GBool f;
+bool GlobalParams::getAntialias() {
+  bool f;
 
   lockGlobalParams;
   f = antialias;
@@ -1908,8 +1908,8 @@ GBool GlobalParams::getAntialias() {
   return f;
 }
 
-GBool GlobalParams::getVectorAntialias() {
-  GBool f;
+bool GlobalParams::getVectorAntialias() {
+  bool f;
 
   lockGlobalParams;
   f = vectorAntialias;
@@ -1917,8 +1917,8 @@ GBool GlobalParams::getVectorAntialias() {
   return f;
 }
 
-GBool GlobalParams::getStrokeAdjust() {
-  GBool f;
+bool GlobalParams::getStrokeAdjust() {
+  bool f;
 
   lockGlobalParams;
   f = strokeAdjust;
@@ -1980,8 +1980,8 @@ double GlobalParams::getScreenWhiteThreshold() {
   return thresh;
 }
 
-GBool GlobalParams::getMapNumericCharNames() {
-  GBool map;
+bool GlobalParams::getMapNumericCharNames() {
+  bool map;
 
   lockGlobalParams;
   map = mapNumericCharNames;
@@ -1989,8 +1989,8 @@ GBool GlobalParams::getMapNumericCharNames() {
   return map;
 }
 
-GBool GlobalParams::getMapUnknownCharNames() {
-  GBool map;
+bool GlobalParams::getMapUnknownCharNames() {
+  bool map;
 
   lockGlobalParams;
   map = mapUnknownCharNames;
@@ -2024,8 +2024,8 @@ GooList *GlobalParams::getKeyBinding(int code, int mods, int context) {
   return cmds;
 }
 
-GBool GlobalParams::getPrintCommands() {
-  GBool p;
+bool GlobalParams::getPrintCommands() {
+  bool p;
 
   lockGlobalParams;
   p = printCommands;
@@ -2033,7 +2033,7 @@ GBool GlobalParams::getPrintCommands() {
   return p;
 }
 
-GBool GlobalParams::getErrQuiet() const {
+bool GlobalParams::getErrQuiet() const {
   // no locking -- this function may get called from inside a locked
   // section
   return errQuiet;
@@ -2132,7 +2132,7 @@ void GlobalParams::setPSFile(char *file) {
   unlockGlobalParams;
 }
 
-GBool GlobalParams::setPSPaperSize(char *size) {
+bool GlobalParams::setPSPaperSize(char *size) {
   lockGlobalParams;
   if (!strcmp(size, "match")) {
     psPaperWidth = psPaperHeight = -1;
@@ -2156,7 +2156,7 @@ GBool GlobalParams::setPSPaperSize(char *size) {
   psImageableURX = psPaperWidth;
   psImageableURY = psPaperHeight;
   unlockGlobalParams;
-  return gTrue;
+  return true;
 }
 
 void GlobalParams::setPSPaperWidth(int width) {
@@ -2184,31 +2184,31 @@ void GlobalParams::setPSImageableArea(int llx, int lly, int urx, int ury) {
   unlockGlobalParams;
 }
 
-void GlobalParams::setPSCrop(GBool crop) {
+void GlobalParams::setPSCrop(bool crop) {
   lockGlobalParams;
   psCrop = crop;
   unlockGlobalParams;
 }
 
-void GlobalParams::setPSExpandSmaller(GBool expand) {
+void GlobalParams::setPSExpandSmaller(bool expand) {
   lockGlobalParams;
   psExpandSmaller = expand;
   unlockGlobalParams;
 }
 
-void GlobalParams::setPSShrinkLarger(GBool shrink) {
+void GlobalParams::setPSShrinkLarger(bool shrink) {
   lockGlobalParams;
   psShrinkLarger = shrink;
   unlockGlobalParams;
 }
 
-void GlobalParams::setPSCenter(GBool center) {
+void GlobalParams::setPSCenter(bool center) {
   lockGlobalParams;
   psCenter = center;
   unlockGlobalParams;
 }
 
-void GlobalParams::setPSDuplex(GBool duplex) {
+void GlobalParams::setPSDuplex(bool duplex) {
   lockGlobalParams;
   psDuplex = duplex;
   unlockGlobalParams;
@@ -2220,43 +2220,43 @@ void GlobalParams::setPSLevel(PSLevel level) {
   unlockGlobalParams;
 }
 
-void GlobalParams::setPSEmbedType1(GBool embed) {
+void GlobalParams::setPSEmbedType1(bool embed) {
   lockGlobalParams;
   psEmbedType1 = embed;
   unlockGlobalParams;
 }
 
-void GlobalParams::setPSEmbedTrueType(GBool embed) {
+void GlobalParams::setPSEmbedTrueType(bool embed) {
   lockGlobalParams;
   psEmbedTrueType = embed;
   unlockGlobalParams;
 }
 
-void GlobalParams::setPSEmbedCIDPostScript(GBool embed) {
+void GlobalParams::setPSEmbedCIDPostScript(bool embed) {
   lockGlobalParams;
   psEmbedCIDPostScript = embed;
   unlockGlobalParams;
 }
 
-void GlobalParams::setPSEmbedCIDTrueType(GBool embed) {
+void GlobalParams::setPSEmbedCIDTrueType(bool embed) {
   lockGlobalParams;
   psEmbedCIDTrueType = embed;
   unlockGlobalParams;
 }
 
-void GlobalParams::setPSPreload(GBool preload) {
+void GlobalParams::setPSPreload(bool preload) {
   lockGlobalParams;
   psPreload = preload;
   unlockGlobalParams;
 }
 
-void GlobalParams::setPSOPI(GBool opi) {
+void GlobalParams::setPSOPI(bool opi) {
   lockGlobalParams;
   psOPI = opi;
   unlockGlobalParams;
 }
 
-void GlobalParams::setPSASCIIHex(GBool hex) {
+void GlobalParams::setPSASCIIHex(bool hex) {
   lockGlobalParams;
   psASCIIHex = hex;
   unlockGlobalParams;
@@ -2269,7 +2269,7 @@ void GlobalParams::setTextEncoding(char *encodingName) {
   unlockGlobalParams;
 }
 
-GBool GlobalParams::setTextEOL(char *s) {
+bool GlobalParams::setTextEOL(char *s) {
   lockGlobalParams;
   if (!strcmp(s, "unix")) {
     textEOL = eolUnix;
@@ -2282,16 +2282,16 @@ GBool GlobalParams::setTextEOL(char *s) {
     return gFalse;
   }
   unlockGlobalParams;
-  return gTrue;
+  return true;
 }
 
-void GlobalParams::setTextPageBreaks(GBool pageBreaks) {
+void GlobalParams::setTextPageBreaks(bool pageBreaks) {
   lockGlobalParams;
   textPageBreaks = pageBreaks;
   unlockGlobalParams;
 }
 
-void GlobalParams::setTextKeepTinyChars(GBool keep) {
+void GlobalParams::setTextKeepTinyChars(bool keep) {
   lockGlobalParams;
   textKeepTinyChars = keep;
   unlockGlobalParams;
@@ -2304,14 +2304,14 @@ void GlobalParams::setInitialZoom(char *s) {
   unlockGlobalParams;
 }
 
-void GlobalParams::setContinuousView(GBool cont) {
+void GlobalParams::setContinuousView(bool cont) {
   lockGlobalParams;
   continuousView = cont;
   unlockGlobalParams;
 }
 
-GBool GlobalParams::setEnableT1lib(char *s) {
-  GBool ok;
+bool GlobalParams::setEnableT1lib(char *s) {
+  bool ok;
 
   lockGlobalParams;
   ok = parseYesNo2(s, &enableT1lib);
@@ -2319,8 +2319,8 @@ GBool GlobalParams::setEnableT1lib(char *s) {
   return ok;
 }
 
-GBool GlobalParams::setEnableFreeType(char *s) {
-  GBool ok;
+bool GlobalParams::setEnableFreeType(char *s) {
+  bool ok;
 
   lockGlobalParams;
   ok = parseYesNo2(s, &enableFreeType);
@@ -2329,8 +2329,8 @@ GBool GlobalParams::setEnableFreeType(char *s) {
 }
 
 
-GBool GlobalParams::setAntialias(char *s) {
-  GBool ok;
+bool GlobalParams::setAntialias(char *s) {
+  bool ok;
 
   lockGlobalParams;
   ok = parseYesNo2(s, &antialias);
@@ -2338,8 +2338,8 @@ GBool GlobalParams::setAntialias(char *s) {
   return ok;
 }
 
-GBool GlobalParams::setVectorAntialias(char *s) {
-  GBool ok;
+bool GlobalParams::setVectorAntialias(char *s) {
+  bool ok;
 
   lockGlobalParams;
   ok = parseYesNo2(s, &vectorAntialias);
@@ -2383,25 +2383,25 @@ void GlobalParams::setScreenWhiteThreshold(double thresh) {
   unlockGlobalParams;
 }
 
-void GlobalParams::setMapNumericCharNames(GBool map) {
+void GlobalParams::setMapNumericCharNames(bool map) {
   lockGlobalParams;
   mapNumericCharNames = map;
   unlockGlobalParams;
 }
 
-void GlobalParams::setMapUnknownCharNames(GBool map) {
+void GlobalParams::setMapUnknownCharNames(bool map) {
   lockGlobalParams;
   mapUnknownCharNames = map;
   unlockGlobalParams;
 }
 
-void GlobalParams::setPrintCommands(GBool printCommandsA) {
+void GlobalParams::setPrintCommands(bool printCommandsA) {
   lockGlobalParams;
   printCommands = printCommandsA;
   unlockGlobalParams;
 }
 
-void GlobalParams::setErrQuiet(GBool errQuietA) {
+void GlobalParams::setErrQuiet(bool errQuietA) {
   lockGlobalParams;
   errQuiet = errQuietA;
   unlockGlobalParams;
@@ -2453,7 +2453,7 @@ XpdfSecurityHandler *GlobalParams::getSecurityHandler(char *name) {
 // plugins
 //------------------------------------------------------------------------
 
-GBool GlobalParams::loadPlugin(char *type, char *name) {
+bool GlobalParams::loadPlugin(char *type, char *name) {
   Plugin *plugin;
 
   if (!(plugin = Plugin::load(type, name))) {
@@ -2462,7 +2462,7 @@ GBool GlobalParams::loadPlugin(char *type, char *name) {
   lockGlobalParams;
   plugins->append(plugin);
   unlockGlobalParams;
-  return gTrue;
+  return true;
 }
 
 #endif // ENABLE_PLUGINS

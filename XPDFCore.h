@@ -56,8 +56,8 @@ public:
   // Create viewer core inside <parentWidgetA>.
   XPDFCore(Widget shellA, Widget parentWidgetA,
 	   SplashColorPtr paperColorA, Gulong paperPixelA,
-	   Gulong mattePixelA, GBool fullScreenA, GBool reverseVideoA,
-	   GBool installCmap, int rgbCubeSizeA);
+	   Gulong mattePixelA, bool fullScreenA, bool reverseVideoA,
+	   bool installCmap, int rgbCubeSizeA);
 
   ~XPDFCore();
 
@@ -81,14 +81,14 @@ public:
   // Update the display, given the specified parameters.
   virtual void update(int topPageA, int scrollXA, int scrollYA,
 		      double zoomA, int rotateA,
-		      GBool force, GBool addToHist);
+		      bool force, bool addToHist);
 
   //----- page/position changes
 
-  virtual GBool gotoNextPage(int inc, GBool top);
-  virtual GBool gotoPrevPage(int dec, GBool top, GBool bottom);
-  virtual GBool goForward();
-  virtual GBool goBackward();
+  virtual bool gotoNextPage(int inc, bool top);
+  virtual bool gotoPrevPage(int dec, bool top, bool bottom);
+  virtual bool goForward();
+  virtual bool goBackward();
 
   //----- selection
 
@@ -106,14 +106,14 @@ public:
 
   //----- find
 
-  virtual GBool find(char *s, GBool caseSensitive,
-		     GBool next, GBool backward, GBool onePageOnly);
-  virtual GBool findU(Unicode *u, int len, GBool caseSensitive,
-		      GBool next, GBool backward, GBool onePageOnly);
+  virtual bool find(char *s, bool caseSensitive,
+		     bool next, bool backward, bool onePageOnly);
+  virtual bool findU(Unicode *u, int len, bool caseSensitive,
+		      bool next, bool backward, bool onePageOnly);
 
   //----- simple modal dialogs
 
-  GBool doQuestionDialog(char *title, GooString *msg);
+  bool doQuestionDialog(char *title, GooString *msg);
   void doInfoDialog(char *title, GooString *msg);
   void doErrorDialog(char *title, GooString *msg);
 
@@ -125,12 +125,12 @@ public:
 
   Widget getWidget() { return scrolledWin; }
   Widget getDrawAreaWidget() { return drawArea; }
-  virtual void setBusyCursor(GBool busy);
+  virtual void setBusyCursor(bool busy);
   Cursor getBusyCursor() { return busyCursor; }
   void takeFocus();
-  void enableHyperlinks(GBool on) { hyperlinksEnabled = on; }
-  GBool getHyperlinksEnabled() { return hyperlinksEnabled; }
-  void enableSelect(GBool on) { selectEnabled = on; }
+  void enableHyperlinks(bool on) { hyperlinksEnabled = on; }
+  bool getHyperlinksEnabled() { return hyperlinksEnabled; }
+  void enableSelect(bool on) { selectEnabled = on; }
   void setUpdateCbk(XPDFUpdateCbk cbk, void *data)
     { updateCbk = cbk; updateCbkData = data; }
   void setActionCbk(XPDFActionCbk cbk, void *data)
@@ -139,11 +139,11 @@ public:
     { keyPressCbk = cbk; keyPressCbkData = data; }
   void setMouseCbk(XPDFMouseCbk cbk, void *data)
     { mouseCbk = cbk; mouseCbkData = data; }
-  GBool getFullScreen() { return fullScreen; }
+  bool getFullScreen() { return fullScreen; }
 
 private:
 
-  virtual GBool checkForNewFile();
+  virtual bool checkForNewFile();
 
   //----- hyperlinks
   void runCommand(GooString *cmdFmt, GooString *arg);
@@ -155,7 +155,7 @@ private:
 				     int *format);
 
   //----- GUI code
-  void setupX(GBool installCmap, int rgbCubeSizeA);
+  void setupX(bool installCmap, int rgbCubeSizeA);
   void initWindow();
   static void hScrollChangeCbk(Widget widget, XtPointer ptr,
 			       XtPointer callData);
@@ -170,13 +170,13 @@ private:
   static void inputCbk(Widget widget, XtPointer ptr, XtPointer callData);
   virtual PDFCoreTile *newTile(int xDestA, int yDestA);
   virtual void updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
-			      int width, int height, GBool composited);
+			      int width, int height, bool composited);
   virtual void redrawRect(PDFCoreTile *tileA, int xSrc, int ySrc,
 			  int xDest, int yDest, int width, int height,
-			  GBool composited);
+			  bool composited);
   virtual void updateScrollbars();
   void setCursor(Cursor cursor);
-  GBool doDialog(int type, GBool hasCancel,
+  bool doDialog(int type, bool hasCancel,
 		 char *title, GooString *msg);
   static void dialogOkCbk(Widget widget, XtPointer ptr,
 			  XtPointer callData);
@@ -193,14 +193,14 @@ private:
   Gulong paperPixel;
   Gulong mattePixel;
   //~unimp: move fullScreen into PDFCore?
-  GBool fullScreen;
+  bool fullScreen;
 
   Display *display;
   int screenNum;
   Visual *visual;
   Colormap colormap;
   Guint depth;                  // visual depth
-  GBool trueColor;              // set if using a TrueColor visual
+  bool trueColor;              // set if using a TrueColor visual
   int rDiv, gDiv, bDiv;         // RGB right shifts (for TrueColor)
   int rShift, gShift, bShift;   // RGB left shifts (for TrueColor)
   int rgbCubeSize;              // size of color cube (for non-TrueColor)
@@ -222,7 +222,7 @@ private:
   static XPDFCore *currentSelectionOwner;
   static Atom targetsAtom;
 
-  GBool panning;
+  bool panning;
   int panMX, panMY;
 
   time_t modTime;		// last modification time of PDF file
@@ -238,8 +238,8 @@ private:
   XPDFMouseCbk mouseCbk;
   void *mouseCbkData;
 
-  GBool hyperlinksEnabled;
-  GBool selectEnabled;
+  bool hyperlinksEnabled;
+  bool selectEnabled;
 
   int dialogDone;
 

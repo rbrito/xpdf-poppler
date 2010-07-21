@@ -165,9 +165,9 @@ void XPDFApp::getResources() {
   geometry = resources.geometry ? new GooString(resources.geometry)
                                 : NULL;
   title = resources.title ? new GooString(resources.title) : NULL;
-  installCmap = (GBool)resources.installCmap;
+  installCmap = (bool)resources.installCmap;
   rgbCubeSize = resources.rgbCubeSize;
-  reverseVideo = (GBool)resources.reverseVideo;
+  reverseVideo = (bool)resources.reverseVideo;
   if (reverseVideo) {
     paperRGB[0] = paperRGB[1] = paperRGB[2] = 0;
     paperPixel = BlackPixel(display, screenNum);
@@ -254,7 +254,7 @@ XPDFViewer *XPDFApp::openAtDest(GooString *fileName, GooString *dest,
 }
 
 XPDFViewer *XPDFApp::reopen(XPDFViewer *viewer, PDFDoc *doc, int page,
-			    GBool fullScreenA) {
+			    bool fullScreenA) {
   int i;
 
   for (i = 0; i < viewers->getLength(); ++i) {
@@ -279,7 +279,7 @@ XPDFViewer *XPDFApp::reopen(XPDFViewer *viewer, PDFDoc *doc, int page,
   return viewer;
 }
 
-void XPDFApp::close(XPDFViewer *viewer, GBool closeLast) {
+void XPDFApp::close(XPDFViewer *viewer, bool closeLast) {
   int i;
 
   if (viewers->getLength() == 1) {
@@ -332,7 +332,7 @@ void XPDFApp::setRemoteName(char *remoteName) {
   remoteXWin = XGetSelectionOwner(display, remoteAtom);
 }
 
-GBool XPDFApp::remoteServerRunning() {
+bool XPDFApp::remoteServerRunning() {
   return remoteXWin != None;
 }
 
@@ -352,7 +352,7 @@ void XPDFApp::remoteExec(char *cmd) {
   XFlush(display);
 }
 
-void XPDFApp::remoteOpen(GooString *fileName, int page, GBool raise) {
+void XPDFApp::remoteOpen(GooString *fileName, int page, bool raise) {
   char cmd[remoteCmdSize];
 
   sprintf(cmd, "openFileAtPage(%.200s,%d)\n",
@@ -365,7 +365,7 @@ void XPDFApp::remoteOpen(GooString *fileName, int page, GBool raise) {
   XFlush(display);
 }
 
-void XPDFApp::remoteOpenAtDest(GooString *fileName, GooString *dest, GBool raise) {
+void XPDFApp::remoteOpenAtDest(GooString *fileName, GooString *dest, bool raise) {
   char cmd[remoteCmdSize];
 
   sprintf(cmd, "openFileAtDest(%.200s,%.256s)\n",
@@ -378,7 +378,7 @@ void XPDFApp::remoteOpenAtDest(GooString *fileName, GooString *dest, GBool raise
   XFlush(display);
 }
 
-void XPDFApp::remoteReload(GBool raise) {
+void XPDFApp::remoteReload(bool raise) {
   char cmd[remoteCmdSize];
 
   strcpy(cmd, "reload\n");
