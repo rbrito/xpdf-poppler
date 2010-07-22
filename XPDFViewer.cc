@@ -692,7 +692,7 @@ void XPDFViewer::execCmd(GooString *cmd, XEvent *event) {
   a = -1;
   b = nCmds;
   // invariant: cmdTab[a].name < name < cmdTab[b].name
-  while (b - a > 1) {
+  do {
     m = (a + b) / 2;
     cmp = strcmp(cmdTab[m].name, name->getCString());
     if (cmp < 0) {
@@ -702,7 +702,7 @@ void XPDFViewer::execCmd(GooString *cmd, XEvent *event) {
     } else {
       a = b = m;
     }
-  }
+  } while (b - a > 1);
   if (cmp != 0) {
     goto err1;
   }
