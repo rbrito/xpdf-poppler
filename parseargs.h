@@ -9,14 +9,6 @@
 #ifndef PARSEARGS_H
 #define PARSEARGS_H
 
-#ifdef __cplusplus
-extern "C" {
-#else
-#define bool char
-#define true 1
-#define false 0
-#endif
-
 #include "poppler/goo/gtypes.h"
 
 /*
@@ -67,9 +59,5 @@ extern void printUsage(char *program, char *otherArgs, ArgDesc *args);
  */
 extern bool isInt(char *s);
 extern bool isFP(char *s);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
