@@ -1539,11 +1539,6 @@ GooString *PDFCore::extractText(int pg, double xMin, double yMin,
   int x0, y0, x1, y1, t;
   GooString *s;
 
-#ifdef ENFORCE_PERMISSIONS
-  if (!doc->okToCopy()) {
-    return NULL;
-  }
-#endif
   if ((page = findPage(pg))) {
     cvtUserToDev(pg, xMin, yMin, &x0, &y0);
     cvtUserToDev(pg, xMax, yMax, &x1, &y1);

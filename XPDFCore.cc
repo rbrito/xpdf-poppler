@@ -384,20 +384,10 @@ void XPDFCore::endSelection(int wx, int wy) {
       if (ok) {
 	moveSelection(pg, x, y);
       }
-#ifndef NO_TEXT_SELECT
       if (selectULX != selectLRX &&
 	  selectULY != selectLRY) {
-#ifdef ENFORCE_PERMISSIONS
-	if (doc->okToCopy()) {
-	  copySelection();
-	} else {
-	  error(-1, "Copying of text from this document is not allowed.");
-	}
-#else
         copySelection();
-#endif
       }
-#endif
     }
   }
 }
@@ -414,11 +404,6 @@ void XPDFCore::copySelection() {
   int pg;
   double ulx, uly, lrx, lry;
 
-#ifdef ENFORCE_PERMISSIONS
-  if (!doc->okToCopy()) {
-    return;
-  }
-#endif
   if (getSelection(&pg, &ulx, &uly, &lrx, &lry)) {
     //~ for multithreading: need a mutex here
     delete currentSelection;
