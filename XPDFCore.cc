@@ -132,7 +132,7 @@ XPDFCore::XPDFCore(Widget shellA, Widget parentWidgetA,
 
   linkAction = NULL;
 
-  panning = gFalse;
+  panning = false;
 
   updateCbk = NULL;
   actionCbk = NULL;
@@ -304,7 +304,7 @@ bool XPDFCore::checkForNewFile() {
       return true;
     }
   }
-  return gFalse;
+  return false;
 }
 
 //------------------------------------------------------------------------
@@ -314,7 +314,7 @@ bool XPDFCore::checkForNewFile() {
 bool XPDFCore::gotoNextPage(int inc, bool top) {
   if (!PDFCore::gotoNextPage(inc, top)) {
     XBell(display, 0);
-    return gFalse;
+    return false;
   }
   return true;
 }
@@ -322,7 +322,7 @@ bool XPDFCore::gotoNextPage(int inc, bool top) {
 bool XPDFCore::gotoPrevPage(int dec, bool top, bool bottom) {
   if (!PDFCore::gotoPrevPage(dec, top, bottom)) {
     XBell(display, 0);
-    return gFalse;
+    return false;
   }
   return true;
 }
@@ -330,7 +330,7 @@ bool XPDFCore::gotoPrevPage(int dec, bool top, bool bottom) {
 bool XPDFCore::goForward() {
   if (!PDFCore::goForward()) {
     XBell(display, 0);
-    return gFalse;
+    return false;
   }
   return true;
 }
@@ -338,7 +338,7 @@ bool XPDFCore::goForward() {
 bool XPDFCore::goBackward() {
   if (!PDFCore::goBackward()) {
     XBell(display, 0);
-    return gFalse;
+    return false;
   }
   return true;
 }
@@ -350,7 +350,7 @@ void XPDFCore::startPan(int wx, int wy) {
 }
 
 void XPDFCore::endPan(int wx, int wy) {
-  panning = gFalse;
+  panning = false;
 }
 
 //------------------------------------------------------------------------
@@ -379,7 +379,7 @@ void XPDFCore::endSelection(int wx, int wy) {
   if (doc && doc->getNumPages() > 0) {
     ok = cvtWindowToDev(wx, wy, &pg, &x, &y);
     if (dragging) {
-      dragging = gFalse;
+      dragging = false;
       setCursor(None);
       if (ok) {
 	moveSelection(pg, x, y);
@@ -521,7 +521,7 @@ void XPDFCore::doAction(LinkAction *action) {
       delete dest;
     } else {
       if (kind == actionGoToR) {
-	displayPage(1, zoom, 0, gFalse, true);
+	displayPage(1, zoom, 0, false, true);
       }
     }
     break;
@@ -543,7 +543,7 @@ void XPDFCore::doAction(LinkAction *action) {
 	return;
       }
       delete fileName;
-      displayPage(1, zoom, rotate, gFalse, true);
+      displayPage(1, zoom, rotate, false, true);
     } else {
       fileName = fileName->copy();
       if (((LinkLaunch *)action)->getParams()) {
@@ -576,7 +576,7 @@ void XPDFCore::doAction(LinkAction *action) {
     if (!actionName->cmp("NextPage")) {
       gotoNextPage(1, true);
     } else if (!actionName->cmp("PrevPage")) {
-      gotoPrevPage(1, true, gFalse);
+      gotoPrevPage(1, true, false);
     } else if (!actionName->cmp("FirstPage")) {
       if (topPage != 1) {
 	displayPage(1, zoom, rotate, true, true);
@@ -709,7 +709,7 @@ bool XPDFCore::find(char *s, bool caseSensitive,
 		     bool next, bool backward, bool onePageOnly) {
   if (!PDFCore::find(s, caseSensitive, next, backward, onePageOnly)) {
     XBell(display, 0);
-    return gFalse;
+    return false;
   }
 #ifndef NO_TEXT_SELECT
   copySelection();
@@ -721,7 +721,7 @@ bool XPDFCore::findU(Unicode *u, int len, bool caseSensitive,
 		      bool next, bool backward, bool onePageOnly) {
   if (!PDFCore::findU(u, len, caseSensitive, next, backward, onePageOnly)) {
     XBell(display, 0);
-    return gFalse;
+    return false;
   }
 #ifndef NO_TEXT_SELECT
   copySelection();
@@ -787,7 +787,7 @@ void XPDFCore::setupX(bool installCmap, int rgbCubeSizeA) {
          mask >>= 1, ++bShift) ;
     for (bDiv = 8; mask; mask >>= 1, --bDiv) ;
   } else {
-    trueColor = gFalse;
+    trueColor = false;
   }
   XFree((XPointer)visualList);
 
@@ -831,7 +831,7 @@ void XPDFCore::setupX(bool installCmap, int rgbCubeSizeA) {
       if (rgbCubeSize > xMaxRGBCube) {
         rgbCubeSize = xMaxRGBCube;
       }
-      ok = gFalse;
+      ok = false;
       for (rgbCubeSize = rgbCubeSizeA; rgbCubeSize >= 2; --rgbCubeSize) {
         ok = true;
         n = 0;
@@ -848,7 +848,7 @@ void XPDFCore::setupX(bool installCmap, int rgbCubeSizeA) {
                 if (XAllocColor(display, colormap, &xcolor)) {
                   colors[n++] = xcolor.pixel;
                 } else {
-                  ok = gFalse;
+                  ok = false;
                 }
               }
             }
@@ -1027,7 +1027,7 @@ void XPDFCore::resizeCbk(Widget widget, XtPointer ptr, XtPointer callData) {
     sx = core->scrollX;
     sy = core->scrollY;
   }
-  core->update(core->topPage, sx, sy, core->zoom, core->rotate, true, gFalse);
+  core->update(core->topPage, sx, sy, core->zoom, core->rotate, true, false);
 }
 
 void XPDFCore::redrawCbk(Widget widget, XtPointer ptr, XtPointer callData) {
@@ -1046,7 +1046,7 @@ void XPDFCore::redrawCbk(Widget widget, XtPointer ptr, XtPointer callData) {
     w = core->drawAreaWidth;
     h = core->drawAreaHeight;
   }
-  core->redrawWindow(x, y, w, h, gFalse);
+  core->redrawWindow(x, y, w, h, false);
 }
 
 void XPDFCore::inputCbk(Widget widget, XtPointer ptr, XtPointer callData) {
@@ -1408,11 +1408,11 @@ bool XPDFCore::doQuestionDialog(char *title, GooString *msg) {
 }
 
 void XPDFCore::doInfoDialog(char *title, GooString *msg) {
-  doDialog(XmDIALOG_INFORMATION, gFalse, title, msg);
+  doDialog(XmDIALOG_INFORMATION, false, title, msg);
 }
 
 void XPDFCore::doErrorDialog(char *title, GooString *msg) {
-  doDialog(XmDIALOG_ERROR, gFalse, title, msg);
+  doDialog(XmDIALOG_ERROR, false, title, msg);
 }
 
 bool XPDFCore::doDialog(int type, bool hasCancel,

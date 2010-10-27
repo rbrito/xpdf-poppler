@@ -31,7 +31,7 @@ bool parseArgs(ArgDesc *args, int *argc, char *argv[]) {
       break;
     } else if ((arg = findArg(args, argv[i]))) {
       if (!grabArg(arg, i, argc, argv))
-	ok = gFalse;
+	ok = false;
     } else {
       ++i;
     }
@@ -111,7 +111,7 @@ static bool grabArg(ArgDesc *arg, int i, int *argc, char *argv[]) {
       *(int *)arg->val = atoi(argv[i+1]);
       n = 2;
     } else {
-      ok = gFalse;
+      ok = false;
       n = 1;
     }
     break;
@@ -120,7 +120,7 @@ static bool grabArg(ArgDesc *arg, int i, int *argc, char *argv[]) {
       *(double *)arg->val = atof(argv[i+1]);
       n = 2;
     } else {
-      ok = gFalse;
+      ok = false;
       n = 1;
     }
     break;
@@ -130,7 +130,7 @@ static bool grabArg(ArgDesc *arg, int i, int *argc, char *argv[]) {
       ((char *)arg->val)[arg->size - 1] = '\0';
       n = 2;
     } else {
-      ok = gFalse;
+      ok = false;
       n = 1;
     }
     break;
@@ -153,7 +153,7 @@ bool isInt(char *s) {
   while (isdigit(*s & 0xff))
     ++s;
   if (*s)
-    return gFalse;
+    return false;
   return true;
 }
 
@@ -179,12 +179,12 @@ bool isFP(char *s) {
       ++s;
     n = 0;
     if (!isdigit(*s & 0xff))
-      return gFalse;
+      return false;
     do {
       ++s;
     } while (isdigit(*s & 0xff));
   }
   if (*s)
-    return gFalse;
+    return false;
   return true;
 }

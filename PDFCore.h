@@ -262,7 +262,7 @@ protected:
 			 int xClip, int yClip, int wClip, int hClip,
 			 bool needUpdate, bool composited = true);
   virtual void updateScrollbars() = 0;
-  virtual bool checkForNewFile() { return gFalse; }
+  virtual bool checkForNewFile() { return false; }
 
   PDFDoc *doc;			// current PDF file
   bool continuousMode;		// false for single-page mode, true for

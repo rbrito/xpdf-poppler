@@ -45,7 +45,7 @@ typedef struct {
 /*
  * Parse command line.  Removes all args which are found in the arg
  * descriptor list <args>.  Stops parsing if "--" is found (and removes
- * it).  Returns gFalse if there was an error.
+ * it).  Returns false if there was an error.
  */
 extern bool parseArgs(ArgDesc *args, int *argc, char *argv[]);
 

@@ -21,7 +21,7 @@
 // command line options
 //------------------------------------------------------------------------
 
-static bool contView = gFalse;
+static bool contView = false;
 static char enableT1libStr[16] = "";
 static char enableFreeTypeStr[16] = "";
 static char antialiasStr[16] = "";
@@ -30,22 +30,22 @@ static char psFileArg[256];
 static char paperSize[15] = "";
 static int paperWidth = 0;
 static int paperHeight = 0;
-static bool level1 = gFalse;
+static bool level1 = false;
 static char textEncName[128] = "";
 static char textEOL[16] = "";
 static char ownerPassword[33] = "\001";
 static char userPassword[33] = "\001";
-static bool fullScreen = gFalse;
+static bool fullScreen = false;
 static char remoteName[100] = "xpdf_";
 static char remoteCmd[512] = "";
-static bool doRemoteReload = gFalse;
-static bool doRemoteRaise = gFalse;
-static bool doRemoteQuit = gFalse;
-static bool printCommands = gFalse;
-static bool quiet = gFalse;
+static bool doRemoteReload = false;
+static bool doRemoteRaise = false;
+static bool doRemoteQuit = false;
+static bool printCommands = false;
+static bool quiet = false;
 static char cfgFileName[256] = "";
-static bool printVersion = gFalse;
-static bool printHelp = gFalse;
+static bool printVersion = false;
+static bool printHelp = false;
 
 static ArgDesc argDesc[] = {
   {"-g",          argStringDummy, NULL,           0,

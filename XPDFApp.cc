@@ -144,7 +144,7 @@ XPDFApp::XPDFApp(int *argc, char *argv[]) {
   XSetErrorHandler(&xErrorHandler);
 #endif
 
-  fullScreen = gFalse;
+  fullScreen = false;
   remoteAtom = None;
   remoteViewer = NULL;
   remoteWin = None;

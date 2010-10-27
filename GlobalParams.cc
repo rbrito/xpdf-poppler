@@ -325,10 +325,10 @@ GlobalParams::GlobalParams(char *cfgFileName) {
   psImageableURX = psPaperWidth;
   psImageableURY = psPaperHeight;
   psCrop = true;
-  psExpandSmaller = gFalse;
+  psExpandSmaller = false;
   psShrinkLarger = true;
   psCenter = true;
-  psDuplex = gFalse;
+  psDuplex = false;
   psLevel = psLevel2;
   psFile = NULL;
   psFonts = new GooHash();
@@ -338,16 +338,16 @@ GlobalParams::GlobalParams(char *cfgFileName) {
   psEmbedTrueType = true;
   psEmbedCIDPostScript = true;
   psEmbedCIDTrueType = true;
-  psPreload = gFalse;
-  psOPI = gFalse;
-  psASCIIHex = gFalse;
+  psPreload = false;
+  psOPI = false;
+  psASCIIHex = false;
   textEncoding = new GooString("Latin1");
   textEOL = eolUnix;
   textPageBreaks = true;
-  textKeepTinyChars = gFalse;
+  textKeepTinyChars = false;
   fontDirs = new GooList();
   initialZoom = new GooString("125");
-  continuousView = gFalse;
+  continuousView = false;
   enableT1lib = true;
   enableFreeType = true;
   antialias = true;
@@ -362,10 +362,10 @@ GlobalParams::GlobalParams(char *cfgFileName) {
   urlCommand = NULL;
   movieCommand = NULL;
   mapNumericCharNames = true;
-  mapUnknownCharNames = gFalse;
+  mapUnknownCharNames = false;
   createDefaultKeyBindings();
-  printCommands = gFalse;
-  errQuiet = gFalse;
+  printCommands = false;
+  errQuiet = false;
 
   cidToUnicodeCache = new CharCodeToUnicodeCache(cidToUnicodeCacheSize);
   unicodeToUnicodeCache = new CharCodeToUnicodeCache(unicodeToUnicodeCacheSize);
@@ -383,16 +383,16 @@ GlobalParams::GlobalParams(char *cfgFileName) {
   }
 
   // set up the residentUnicodeMaps table
-  map = new UnicodeMap("Latin1", gFalse,
+  map = new UnicodeMap("Latin1", false,
 		       latin1UnicodeMapRanges, latin1UnicodeMapLen);
   residentUnicodeMaps->add(map->getEncodingName(), map);
-  map = new UnicodeMap("ASCII7", gFalse,
+  map = new UnicodeMap("ASCII7", false,
 		       ascii7UnicodeMapRanges, ascii7UnicodeMapLen);
   residentUnicodeMaps->add(map->getEncodingName(), map);
-  map = new UnicodeMap("Symbol", gFalse,
+  map = new UnicodeMap("Symbol", false,
 		       symbolUnicodeMapRanges, symbolUnicodeMapLen);
   residentUnicodeMaps->add(map->getEncodingName(), map);
-  map = new UnicodeMap("ZapfDingbats", gFalse, zapfDingbatsUnicodeMapRanges,
+  map = new UnicodeMap("ZapfDingbats", false, zapfDingbatsUnicodeMapRanges,
 		       zapfDingbatsUnicodeMapLen);
   residentUnicodeMaps->add(map->getEncodingName(), map);
   map = new UnicodeMap("UTF-8", true, &mapUTF8);
@@ -1223,7 +1223,7 @@ bool GlobalParams::parseKey(GooString *modKeyStr, GooString *contextStr,
   } else {
     error(-1, "Bad key/modifier in '%s' config file command (%s:%d)",
 	  cmdName, fileName->getCString(), line);
-    return gFalse;
+    return false;
   }
 
   p0 = contextStr->getCString();
@@ -1265,7 +1265,7 @@ bool GlobalParams::parseKey(GooString *modKeyStr, GooString *contextStr,
       } else {
 	error(-1, "Bad context in '%s' config file command (%s:%d)",
 	      cmdName, fileName->getCString(), line);
-	return gFalse;
+	return false;
       }
       if (!*p0) {
 	break;
@@ -1273,7 +1273,7 @@ bool GlobalParams::parseKey(GooString *modKeyStr, GooString *contextStr,
       if (*p0 != ',') {
 	error(-1, "Bad context in '%s' config file command (%s:%d)",
 	      cmdName, fileName->getCString(), line);
-	return gFalse;
+	return false;
       }
       ++p0;
     }
@@ -1313,9 +1313,9 @@ bool GlobalParams::parseYesNo2(char *token, bool *flag) {
   if (!strcmp(token, "yes")) {
     *flag = true;
   } else if (!strcmp(token, "no")) {
-    *flag = gFalse;
+    *flag = false;
   } else {
-    return gFalse;
+    return false;
   }
   return true;
 }
@@ -2150,7 +2150,7 @@ bool GlobalParams::setPSPaperSize(char *size) {
     psPaperHeight = 1190;
   } else {
     unlockGlobalParams;
-    return gFalse;
+    return false;
   }
   psImageableLLX = psImageableLLY = 0;
   psImageableURX = psPaperWidth;
@@ -2279,7 +2279,7 @@ bool GlobalParams::setTextEOL(char *s) {
     textEOL = eolMac;
   } else {
     unlockGlobalParams;
-    return gFalse;
+    return false;
   }
   unlockGlobalParams;
   return true;
@@ -2457,7 +2457,7 @@ bool GlobalParams::loadPlugin(char *type, char *name) {
   Plugin *plugin;
 
   if (!(plugin = Plugin::load(type, name))) {
-    return gFalse;
+    return false;
   }
   lockGlobalParams;
   plugins->append(plugin);
