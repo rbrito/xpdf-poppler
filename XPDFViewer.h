@@ -18,7 +18,6 @@
 #define Object XtObject
 #include <Xm/XmAll.h>
 #undef Object
-#include "poppler/goo/gtypes.h"
 #include "XPDFCore.h"
 
 #if (XmVERSION <= 1) && !defined(__sgi)
@@ -90,11 +89,11 @@ private:
   static void actionCbk(void *data, char *action);
 
   //----- keyboard/mouse input
-  static void keyPressCbk(void *data, KeySym key, Guint modifiers,
+  static void keyPressCbk(void *data, KeySym key, unsigned modifiers,
 			  XEvent *event);
   static void mouseCbk(void *data, XEvent *event);
-  int getModifiers(Guint modifiers);
-  int getContext(Guint modifiers);
+  int getModifiers(unsigned modifiers);
+  int getContext(unsigned modifiers);
 
   //----- command functions
   void cmdAbout(GooString *args[], int nArgs, XEvent *event);

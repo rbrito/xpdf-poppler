@@ -523,7 +523,7 @@ void XPDFViewer::actionCbk(void *data, char *action) {
 // keyboard/mouse input
 //------------------------------------------------------------------------
 
-void XPDFViewer::keyPressCbk(void *data, KeySym key, Guint modifiers,
+void XPDFViewer::keyPressCbk(void *data, KeySym key, unsigned modifiers,
 			     XEvent *event) {
   XPDFViewer *viewer = (XPDFViewer *)data;
   int keyCode;
@@ -621,7 +621,7 @@ void XPDFViewer::mouseCbk(void *data, XEvent *event) {
   }
 }
 
-int XPDFViewer::getModifiers(Guint modifiers) {
+int XPDFViewer::getModifiers(unsigned modifiers) {
   int mods;
 
   mods = 0;
@@ -637,7 +637,7 @@ int XPDFViewer::getModifiers(Guint modifiers) {
   return mods;
 }
 
-int XPDFViewer::getContext(Guint modifiers) {
+int XPDFViewer::getContext(unsigned modifiers) {
   int context;
 
   context = (core->getFullScreen() ? xpdfKeyContextFullScreen
@@ -1547,7 +1547,7 @@ void XPDFViewer::initWindow(bool fullScreen) {
     state = XInternAtom(display, "_NET_WM_STATE", False);
     val = XInternAtom(display, "_NET_WM_STATE_FULLSCREEN", False);
     XChangeProperty(display, XtWindow(win), state, XA_ATOM, 32,
-		    PropModeReplace, (Guchar *)&val, 1);
+		    PropModeReplace, (unsigned char *)&val, 1);
   }
 }
 

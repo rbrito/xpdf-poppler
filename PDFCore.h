@@ -82,7 +82,7 @@ public:
 
   int xMin, yMin, xMax, yMax;
   int xDest, yDest;
-  Guint edges;
+  unsigned edges;
   SplashBitmap *bitmap;
   double ctm[6];		// coordinate transform matrix:
 				//   default user space -> device space

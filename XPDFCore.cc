@@ -47,8 +47,8 @@
 //------------------------------------------------------------------------
 
 // Divide a 16-bit value (in [0, 255*255]) by 255, returning an 8-bit result.
-static inline Guchar div255(int x) {
-  return (Guchar)((x + (x >> 8) + 0x80) >> 8);
+static inline unsigned char div255(int x) {
+  return (unsigned char)((x + (x >> 8) + 0x80) >> 8);
 }
 
 //------------------------------------------------------------------------
@@ -87,8 +87,8 @@ XPDFCoreTile::~XPDFCoreTile() {
 //------------------------------------------------------------------------
 
 XPDFCore::XPDFCore(Widget shellA, Widget parentWidgetA,
-		   SplashColorPtr paperColorA, Gulong paperPixelA,
-		   Gulong mattePixelA, bool fullScreenA, bool reverseVideoA,
+		   SplashColorPtr paperColorA, unsigned long paperPixelA,
+		   unsigned long mattePixelA, bool fullScreenA, bool reverseVideoA,
 		   bool installCmap, int rgbCubeSizeA):
   PDFCore(splashModeRGB8, 4, reverseVideoA, paperColorA, !fullScreenA)
 {
@@ -733,7 +733,7 @@ void XPDFCore::takeFocus() {
 void XPDFCore::setupX(bool installCmap, int rgbCubeSizeA) {
   XVisualInfo visualTempl;
   XVisualInfo *visualList;
-  Gulong mask;
+  unsigned long mask;
   int nVisuals;
   XColor xcolor;
   XColor *xcolors;
@@ -976,7 +976,7 @@ void XPDFCore::resizeCbk(Widget widget, XtPointer ptr, XtPointer callData) {
   Widget top;
   Window rootWin;
   int x1, y1;
-  Guint w1, h1, bw1, depth1;
+  unsigned w1, h1, bw1, depth1;
   Arg args[2];
   int n;
   Dimension w, h;
@@ -994,8 +994,8 @@ void XPDFCore::resizeCbk(Widget widget, XtPointer ptr, XtPointer callData) {
     XPutBackEvent(core->display, &event);
     XGetGeometry(core->display, event.xconfigure.window,
 		 &rootWin, &x1, &y1, &w1, &h1, &bw1, &depth1);
-    if ((Guint)event.xconfigure.width != w1 ||
-	(Guint)event.xconfigure.height != h1) {
+    if ((unsigned)event.xconfigure.width != w1 ||
+	(unsigned)event.xconfigure.height != h1) {
       return;
     }
   }
@@ -1135,9 +1135,9 @@ void XPDFCore::updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
   XPDFCoreTile *tile = (XPDFCoreTile *)tileA;
   XImage *image;
   SplashColorPtr dataPtr, p;
-  Gulong pixel;
-  Guchar *ap;
-  Guchar alpha, alpha1;
+  unsigned long pixel;
+  unsigned char *ap;
+  unsigned char alpha, alpha1;
   int w, h, bw, x, y, r, g, b, gray;
   int *errDownR, *errDownG, *errDownB;
   int errRightR, errRightG, errRightB;
@@ -1181,9 +1181,9 @@ void XPDFCore::updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
 	r >>= rDiv;
 	g >>= gDiv;
 	b >>= bDiv;
-	pixel = ((Gulong)r << rShift) +
-	        ((Gulong)g << gShift) +
-	        ((Gulong)b << bShift);
+	pixel = ((unsigned long)r << rShift) +
+	        ((unsigned long)g << gShift) +
+	        ((unsigned long)b << bShift);
 	XPutPixel(image, xSrc + x, ySrc + y, pixel);
 	p += 3;
       }

@@ -17,7 +17,6 @@
 
 #include <stdio.h>
 #include "config.h"
-#include "poppler/goo/gtypes.h"
 #include "poppler/CharTypes.h"
 
 #if MULTITHREADED

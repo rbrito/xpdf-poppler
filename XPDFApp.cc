@@ -348,7 +348,7 @@ void XPDFApp::remoteExec(char *cmd) {
   cmd2[n] = '\n';
   cmd2[n+1] = '\0';
   XChangeProperty(display, remoteXWin, remoteAtom, remoteAtom, 8,
-		  PropModeReplace, (Guchar *)cmd2, n + 2);
+		  PropModeReplace, (unsigned char *)cmd2, n + 2);
   XFlush(display);
 }
 
@@ -361,7 +361,7 @@ void XPDFApp::remoteOpen(GooString *fileName, int page, bool raise) {
     strcat(cmd, "raise\n");
   }
   XChangeProperty(display, remoteXWin, remoteAtom, remoteAtom, 8,
-		  PropModeReplace, (Guchar *)cmd, strlen(cmd) + 1);
+		  PropModeReplace, (unsigned char *)cmd, strlen(cmd) + 1);
   XFlush(display);
 }
 
@@ -374,7 +374,7 @@ void XPDFApp::remoteOpenAtDest(GooString *fileName, GooString *dest, bool raise)
     strcat(cmd, "raise\n");
   }
   XChangeProperty(display, remoteXWin, remoteAtom, remoteAtom, 8,
-		  PropModeReplace, (Guchar *)cmd, strlen(cmd) + 1);
+		  PropModeReplace, (unsigned char *)cmd, strlen(cmd) + 1);
   XFlush(display);
 }
 
@@ -386,19 +386,19 @@ void XPDFApp::remoteReload(bool raise) {
     strcat(cmd, "raise\n");
   }
   XChangeProperty(display, remoteXWin, remoteAtom, remoteAtom, 8,
-		  PropModeReplace, (Guchar *)cmd, strlen(cmd) + 1);
+		  PropModeReplace, (unsigned char *)cmd, strlen(cmd) + 1);
   XFlush(display);
 }
 
 void XPDFApp::remoteRaise() {
   XChangeProperty(display, remoteXWin, remoteAtom, remoteAtom, 8,
-		  PropModeReplace, (Guchar *)"raise\n", 7);
+		  PropModeReplace, (unsigned char *)"raise\n", 7);
   XFlush(display);
 }
 
 void XPDFApp::remoteQuit() {
   XChangeProperty(display, remoteXWin, remoteAtom, remoteAtom, 8,
-		  PropModeReplace, (Guchar *)"quit\n", 6);
+		  PropModeReplace, (unsigned char *)"quit\n", 6);
   XFlush(display);
 }
 
@@ -408,7 +408,7 @@ void XPDFApp::remoteMsgCbk(Widget widget, XtPointer ptr,
   char *cmd, *p0, *p1;
   Atom type;
   int format;
-  Gulong size, remain;
+  unsigned long size, remain;
   GooString *cmdStr;
 
   if (event->xproperty.atom != app->remoteAtom) {
@@ -421,7 +421,7 @@ void XPDFApp::remoteMsgCbk(Widget widget, XtPointer ptr,
 			 app->remoteAtom, 0, remoteCmdSize/4,
 			 True, app->remoteAtom,
 			 &type, &format, &size, &remain,
-			 (Guchar **)&cmd) != Success) {
+			 (unsigned char **)&cmd) != Success) {
     return;
   }
   if (!cmd) {

@@ -9,8 +9,6 @@
 #ifndef PARSEARGS_H
 #define PARSEARGS_H
 
-#include "poppler/goo/gtypes.h"
-
 /*
  * Argument kinds.
  */

@@ -18,7 +18,6 @@
 #define Object XtObject
 #include <Xm/XmAll.h>
 #undef Object
-#include "poppler/goo/gtypes.h"
 #include "poppler/goo/gfile.h" // for time_t
 #include "poppler/splash/SplashTypes.h"
 #include "PDFCore.h"
@@ -41,7 +40,7 @@ typedef void (*XPDFUpdateCbk)(void *data, GooString *fileName,
 
 typedef void (*XPDFActionCbk)(void *data, char *action);
 
-typedef void (*XPDFKeyPressCbk)(void *data, KeySym key, Guint modifiers,
+typedef void (*XPDFKeyPressCbk)(void *data, KeySym key, unsigned modifiers,
 				XEvent *event);
 
 typedef void (*XPDFMouseCbk)(void *data, XEvent *event);
@@ -55,8 +54,8 @@ public:
 
   // Create viewer core inside <parentWidgetA>.
   XPDFCore(Widget shellA, Widget parentWidgetA,
-	   SplashColorPtr paperColorA, Gulong paperPixelA,
-	   Gulong mattePixelA, bool fullScreenA, bool reverseVideoA,
+	   SplashColorPtr paperColorA, unsigned long paperPixelA,
+	   unsigned long mattePixelA, bool fullScreenA, bool reverseVideoA,
 	   bool installCmap, int rgbCubeSizeA);
 
   ~XPDFCore();
@@ -190,8 +189,8 @@ private:
   static void passwordCancelCbk(Widget widget, XtPointer ptr,
 				XtPointer callData);
 
-  Gulong paperPixel;
-  Gulong mattePixel;
+  unsigned long paperPixel;
+  unsigned long mattePixel;
   //~unimp: move fullScreen into PDFCore?
   bool fullScreen;
 
@@ -199,12 +198,12 @@ private:
   int screenNum;
   Visual *visual;
   Colormap colormap;
-  Guint depth;                  // visual depth
+  unsigned depth;                  // visual depth
   bool trueColor;              // set if using a TrueColor visual
   int rDiv, gDiv, bDiv;         // RGB right shifts (for TrueColor)
   int rShift, gShift, bShift;   // RGB left shifts (for TrueColor)
   int rgbCubeSize;              // size of color cube (for non-TrueColor)
-  Gulong                        // color cube (for non-TrueColor)
+  unsigned long                        // color cube (for non-TrueColor)
     colors[xMaxRGBCube * xMaxRGBCube * xMaxRGBCube];
 
   Widget shell;			// top-level shell containing the widget

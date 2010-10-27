@@ -18,7 +18,6 @@
 #define Object XtObject
 #include <Xm/XmAll.h>
 #undef Object
-#include "poppler/goo/gtypes.h"
 #include "poppler/splash/SplashTypes.h"
 
 class GooString;
@@ -70,8 +69,8 @@ public:
   int getRGBCubeSize() { return rgbCubeSize; }
   bool getReverseVideo() { return reverseVideo; }
   SplashColorPtr getPaperRGB() { return paperRGB; }
-  Gulong getPaperPixel() { return paperPixel; }
-  Gulong getMattePixel(bool fullScreenA)
+  unsigned long getPaperPixel() { return paperPixel; }
+  unsigned long getMattePixel(bool fullScreenA)
     { return fullScreenA ? fullScreenMattePixel : mattePixel; }
   GooString *getInitialZoom() { return initialZoom; }
   void setFullScreen(bool fullScreenA) { fullScreen = fullScreenA; }
@@ -104,9 +103,9 @@ private:
   int rgbCubeSize;
   bool reverseVideo;
   SplashColor paperRGB;
-  Gulong paperPixel;
-  Gulong mattePixel;
-  Gulong fullScreenMattePixel;
+  unsigned long paperPixel;
+  unsigned long mattePixel;
+  unsigned long fullScreenMattePixel;
   GooString *initialZoom;
   bool fullScreen;
 };
