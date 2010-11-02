@@ -792,52 +792,46 @@ void GlobalParams::parseNameToUnicode(GooList *tokens, GooString *fileName,
 
 void GlobalParams::parseCIDToUnicode(GooList *tokens, GooString *fileName,
 				     int line) {
-  GooString *collection, *name, *old;
+  GooString *collection, *name;
 
   if (tokens->getLength() != 3) {
     error(-1, "Bad 'cidToUnicode' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
-  collection = (GooString *)tokens->get(1);
-  name = (GooString *)tokens->get(2);
-  if ((old = (GooString *)cidToUnicodes->remove(collection))) {
-    delete old;
-  }
+  collection = (GooString *) tokens->get(1);
+  name = (GooString *) tokens->get(2);
+  delete (GooString *) cidToUnicodes->remove(collection);
   cidToUnicodes->add(collection->copy(), name->copy());
 }
 
 void GlobalParams::parseUnicodeToUnicode(GooList *tokens, GooString *fileName,
 					 int line) {
-  GooString *font, *file, *old;
+  GooString *font, *file;
 
   if (tokens->getLength() != 3) {
     error(-1, "Bad 'unicodeToUnicode' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
-  font = (GooString *)tokens->get(1);
-  file = (GooString *)tokens->get(2);
-  if ((old = (GooString *)unicodeToUnicodes->remove(font))) {
-    delete old;
-  }
+  font = (GooString *) tokens->get(1);
+  file = (GooString *) tokens->get(2);
+  delete (GooString *) unicodeToUnicodes->remove(font);
   unicodeToUnicodes->add(font->copy(), file->copy());
 }
 
 void GlobalParams::parseUnicodeMap(GooList *tokens, GooString *fileName,
 				   int line) {
-  GooString *encodingName, *name, *old;
+  GooString *encodingName, *name;
 
   if (tokens->getLength() != 3) {
     error(-1, "Bad 'unicodeMap' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
-  encodingName = (GooString *)tokens->get(1);
-  name = (GooString *)tokens->get(2);
-  if ((old = (GooString *)unicodeMaps->remove(encodingName))) {
-    delete old;
-  }
+  encodingName = (GooString *) tokens->get(1);
+  name = (GooString *) tokens->get(2);
+  delete (GooString *) unicodeMaps->remove(encodingName);
   unicodeMaps->add(encodingName->copy(), name->copy());
 }
 
@@ -872,7 +866,7 @@ void GlobalParams::parseToUnicodeDir(GooList *tokens, GooString *fileName,
 void GlobalParams::parseDisplayFont(GooList *tokens, GooHash *fontHash,
 				    DisplayFontParamKind kind,
 				    GooString *fileName, int line) {
-  DisplayFontParam *param, *old;
+  DisplayFontParam *param;
 
   if (tokens->getLength() < 2) {
     goto err1;
@@ -894,9 +888,7 @@ void GlobalParams::parseDisplayFont(GooList *tokens, GooHash *fontHash,
     break;
   }
 
-  if ((old = (DisplayFontParam *)fontHash->remove(param->name))) {
-    delete old;
-  }
+  delete (DisplayFontParam *) fontHash->remove(param->name);
   fontHash->add(param->name, param);
   return;
 
@@ -2115,12 +2107,8 @@ UnicodeMap *GlobalParams::getTextEncoding() {
 //------------------------------------------------------------------------
 
 void GlobalParams::addDisplayFont(DisplayFontParam *param) {
-  DisplayFontParam *old;
-
   lockGlobalParams;
-  if ((old = (DisplayFontParam *)displayFonts->remove(param->name))) {
-    delete old;
-  }
+  delete (DisplayFontParam *) displayFonts->remove(param->name);
   displayFonts->add(param->name, param);
   unlockGlobalParams;
 }
