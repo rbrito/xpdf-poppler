@@ -358,7 +358,7 @@ XPDFViewer::XPDFViewer(XPDFApp *appA, PDFDoc *doc, int pageA,
 XPDFViewer::~XPDFViewer() {
   delete core;
 #ifndef USE_COMBO_BOX
-  delete zoomMenuBtns;
+  delete [] zoomMenuBtns;
 #endif
   XmFontListFree(aboutBigFont);
   XmFontListFree(aboutVersionFont);
