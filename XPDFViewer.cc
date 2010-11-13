@@ -1395,7 +1395,7 @@ void XPDFViewer::initWindow(bool fullScreen) {
   Atom state, val;
   Arg args[20];
   int n;
-  char *title;
+  const char *title;
 
   display = XtDisplay(app->getAppShell());
   screenNum = XScreenNumberOfScreen(XtScreen(app->getAppShell()));
@@ -1420,7 +1420,7 @@ void XPDFViewer::initWindow(bool fullScreen) {
   // top-level window
   n = 0;
   title = app->getTitle() ? app->getTitle()->getCString()
-                          : (char *)xpdfAppName;
+                          : xpdfAppName;
   XtSetArg(args[n], XmNtitle, title); ++n;
   XtSetArg(args[n], XmNiconName, title); ++n;
   XtSetArg(args[n], XmNminWidth, 100); ++n;
