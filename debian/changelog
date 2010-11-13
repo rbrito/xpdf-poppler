@@ -1,4 +1,4 @@
-xpdf (3.02-4) experimental; urgency=low
+xpdf (3.02-4) UNRELEASED; urgency=low
 
   [ Michael Gilbert ]
   * Version the dependency on libpoppler-dev.
@@ -16,7 +16,13 @@ xpdf (3.02-4) experimental; urgency=low
     + set extra linker flags in an attempt to make things smaller
     + simplify the rules file slightly
 
- -- Rogério Brito <rbrito@ime.usp.br>  Sat, 05 Jun 2010 05:40:46 -0300
+  [ Barak A. Pearlmutter ]
+  * debian/compat:
+    + set to 8
+  * debian/control
+    + raise dependency to debhelper 8
+
+ -- Barak A. Pearlmutter <bap@debian.org>  Sat, 13 Nov 2010 10:27:43 +0000
 
 xpdf (3.02-3) experimental; urgency=low
 
