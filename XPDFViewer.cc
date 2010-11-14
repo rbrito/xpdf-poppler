@@ -2666,11 +2666,11 @@ void XPDFViewer::setupOutlineItems(GooList *items, Widget parent,
       title->append(buf, n);
     }
     n = 0;
-    XtSetArg(args[n], XPDFNentryPosition, i); ++n;
+    XtSetArg(args[n], (char*) XPDFNentryPosition, i); ++n;
     if (parent) {
-      XtSetArg(args[n], XPDFNentryParent, parent); ++n;
+      XtSetArg(args[n], (char*) XPDFNentryParent, parent); ++n;
     }
-    XtSetArg(args[n], XPDFNentryExpanded, item->isOpen()); ++n;
+    XtSetArg(args[n], (char *) XPDFNentryExpanded, item->isOpen()); ++n;
     s = XmStringCreateLocalized(title->getCString());
     delete title;
     XtSetArg(args[n], XmNlabelString, s); ++n;
