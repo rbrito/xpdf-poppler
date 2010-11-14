@@ -240,7 +240,7 @@ XPDFViewerCmd XPDFViewer::cmdTab[] = {
 XPDFViewer::XPDFViewer(XPDFApp *appA, GooString *fileName,
 		       int pageA, GooString *destName, bool fullScreen,
 		       GooString *ownerPassword, GooString *userPassword):
-	app(appA), win(NULL), core(NULL), ok(false),
+	app(appA), ok(false), win(NULL), core(NULL),
 	openDialog(NULL), saveAsDialog(NULL)
 {
   LinkDest *dest;
@@ -297,7 +297,7 @@ XPDFViewer::XPDFViewer(XPDFApp *appA, GooString *fileName,
 
 XPDFViewer::XPDFViewer(XPDFApp *appA, PDFDoc *doc, int pageA,
 		       GooString *destName, bool fullScreen):
-	app(appA), win(NULL), core(NULL), ok(false),
+	app(appA), ok(false), win(NULL), core(NULL),
 	openDialog(NULL), saveAsDialog(NULL)
 {
   LinkDest *dest;
