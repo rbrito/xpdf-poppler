@@ -2018,7 +2018,7 @@ void XPDFViewer::mapWindow() {
 
   // create the icon
 #ifdef HAVE_X11_XPM_H
-  if (XpmCreatePixmapFromData(display, XtWindow(win), xpdfIcon,
+  if (XpmCreatePixmapFromData(display, XtWindow(win), (char **)xpdfIcon,
 			      &iconPixmap, NULL, NULL) == XpmSuccess) {
     XtVaSetValues(win, XmNiconPixmap, iconPixmap, NULL);
   }
