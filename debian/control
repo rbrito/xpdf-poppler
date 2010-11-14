@@ -6,6 +6,7 @@ Standards-Version: 3.9.0
 Build-Depends: debhelper (>= 8),
 	       pkg-config,
 	       libx11-dev,
+	       libxpm-dev,
 	       lesstif2-dev,
 	       libpoppler-dev (>= 0.12.4)
 Homepage: http://www.foolabs.com/xpdf/
