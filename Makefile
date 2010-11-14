@@ -7,7 +7,6 @@ CPPFLAGS += -DHAVE_DIRENT_H
 CPPFLAGS += -DHAVE_X11_XPM_H
 
 CPPFLAGS += -Wall
-CPPFLAGS += -Wno-sign-compare
 CPPFLAGS += -Wno-write-strings
 
 CXXFLAGS += -Os
