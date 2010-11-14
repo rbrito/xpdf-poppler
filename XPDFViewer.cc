@@ -1335,10 +1335,10 @@ void XPDFViewer::cmdZoomFitWidth(GooString *args[], int nArgs,
 }
 
 void XPDFViewer::cmdZoomIn(GooString *args[], int nArgs,
-			   XEvent *event) {
-  int z;
+			   XEvent *event)
+{
+  unsigned z = getZoomIdx();
 
-  z = getZoomIdx();
   if (z <= minZoomIdx && z > maxZoomIdx) {
     --z;
     setZoomIdx(z);
@@ -1348,10 +1348,10 @@ void XPDFViewer::cmdZoomIn(GooString *args[], int nArgs,
 }
 
 void XPDFViewer::cmdZoomOut(GooString *args[], int nArgs,
-			    XEvent *event) {
-  int z;
+			    XEvent *event)
+{
+  unsigned z = getZoomIdx();
 
-  z = getZoomIdx();
   if (z < minZoomIdx && z >= maxZoomIdx) {
     ++z;
     setZoomIdx(z);
@@ -1361,10 +1361,10 @@ void XPDFViewer::cmdZoomOut(GooString *args[], int nArgs,
 }
 
 void XPDFViewer::cmdZoomPercent(GooString *args[], int nArgs,
-				XEvent *event) {
-  double z;
+				XEvent *event)
+{
+  double z = atof(args[0]->getCString());
 
-  z = atof(args[0]->getCString());
   setZoomVal(z);
   displayPage(core->getPageNum(), z, core->getRotate(), true, false);
 }
@@ -1553,7 +1553,6 @@ void XPDFViewer::initToolbar(Widget parent) {
   Arg args[20];
   int n;
   XmString s, emptyString;
-  int i;
 
   // toolbar
   n = 0;
@@ -1701,7 +1700,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   XtSetArg(args[n], XmNitems, st); ++n;
   XtSetArg(args[n], XmNitemCount, nZoomMenuItems); ++n;
   zoomComboBox = XmCreateComboBox(toolBar, "zoomComboBox", args, n);
-  for (i = 0; i < nZoomMenuItems; ++i) {
+  for (unsigned i = 0; i < nZoomMenuItems; ++i) {
     XmStringFree(st[i]);
   }
   addToolTip(zoomComboBox, "Zoom");
@@ -1715,7 +1714,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   zoomMenuBtns = new Widget[nZoomMenuItems];
   n = 0;
   menuPane = XmCreatePulldownMenu(toolBar, "zoomMenuPane", args, n);
-  for (i = 0; i < nZoomMenuItems; ++i) {
+  for (unsigned i = 0; i < nZoomMenuItems; ++i) {
     n = 0;
     s = XmStringCreateLocalized(zoomMenuInfo[i].label);
     XtSetArg(args[n], XmNlabelString, s); ++n;
@@ -2212,10 +2211,10 @@ void XPDFViewer::closeWindow() {
   XtDestroyWidget(win);
 }
 
-int XPDFViewer::getZoomIdx() {
-  int i;
+int XPDFViewer::getZoomIdx()
+{
 
-  for (i = 0; i < nZoomMenuItems; ++i) {
+  for (unsigned i = 0; i < nZoomMenuItems; ++i) {
     if (core->getZoom() == zoomMenuInfo[i].zoom) {
       return i;
     }
@@ -2242,9 +2241,8 @@ void XPDFViewer::setZoomVal(double z) {
 #if USE_COMBO_BOX
   char buf[32];
   XmString s;
-  int i;
 
-  for (i = 0; i < nZoomMenuItems; ++i) {
+  for (unsigned i = 0; i < nZoomMenuItems; ++i) {
     if (z == zoomMenuInfo[i].zoom) {
       XtVaSetValues(zoomComboBox, XmNselectedPosition, i + 1, NULL);
       return;
@@ -2255,7 +2253,7 @@ void XPDFViewer::setZoomVal(double z) {
   XtVaSetValues(zoomComboBox, XmNselectedItem, s, NULL);
   XmStringFree(s);
 #else
-  int i;
+  unsigned i;
 
   for (i = 0; i < nZoomMenuItems; ++i) {
     if (z == zoomMenuInfo[i].zoom) {
