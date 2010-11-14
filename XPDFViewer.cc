@@ -147,13 +147,13 @@ static ZoomMenuInfo zoomMenuInfo[] = {
   { "fit width", zoomWidth }
 };
 
-#define nZoomMenuItems (sizeof(zoomMenuInfo)/sizeof(struct ZoomMenuInfo))
+#define nZoomMenuItems ((int)(sizeof(zoomMenuInfo)/sizeof(struct ZoomMenuInfo)))
 
 #define maxZoomIdx   0
 #define defZoomIdx   7
-#define minZoomIdx   nZoomMenuItems - 3
-#define zoomPageIdx  nZoomMenuItems - 2
-#define zoomWidthIdx nZoomMenuItems - 1
+#define minZoomIdx   (nZoomMenuItems - 3)
+#define zoomPageIdx  (nZoomMenuItems - 2)
+#define zoomWidthIdx (nZoomMenuItems - 1)
 
 //------------------------------------------------------------------------
 
@@ -1337,7 +1337,7 @@ void XPDFViewer::cmdZoomFitWidth(GooString *args[], int nArgs,
 void XPDFViewer::cmdZoomIn(GooString *args[], int nArgs,
 			   XEvent *event)
 {
-  unsigned z = getZoomIdx();
+  int z = getZoomIdx();
 
   if (z <= minZoomIdx && z > maxZoomIdx) {
     --z;
@@ -1350,7 +1350,7 @@ void XPDFViewer::cmdZoomIn(GooString *args[], int nArgs,
 void XPDFViewer::cmdZoomOut(GooString *args[], int nArgs,
 			    XEvent *event)
 {
-  unsigned z = getZoomIdx();
+  int z = getZoomIdx();
 
   if (z < minZoomIdx && z >= maxZoomIdx) {
     ++z;

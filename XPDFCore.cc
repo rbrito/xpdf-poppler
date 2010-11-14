@@ -634,6 +634,14 @@ void XPDFCore::doAction(LinkAction *action) {
     movieAnnot.free();
     break;
 
+  // unimplemented action type
+  case actionRendition:
+  case actionSound:
+  case actionJavaScript:
+    error(-1, "Unimplemented link action type: '%s'",
+	  ((LinkUnknown *)action)->getAction()->getCString());
+    break;
+
   // unknown action type
   case actionUnknown:
     error(-1, "Unknown link action type: '%s'",
@@ -1088,7 +1096,16 @@ void XPDFCore::inputCbk(Widget widget, XtPointer ptr, XtPointer callData) {
 		s = ((LinkNamed *)action)->getName()->getCString();
 		break;
 	      case actionMovie:
-		s = "[movie]";
+		s = "[movie] (not implemented)";
+		break;
+	      case actionRendition:
+		s = "[rendition (not implemented)]";
+		break;
+	      case actionSound:
+		s = "[sound (not implemented)]";
+		break;
+	      case actionJavaScript:
+		s = "[javascript (not implemented)]";
 		break;
 	      case actionUnknown:
 		s = "[unknown link]";

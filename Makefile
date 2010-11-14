@@ -2,22 +2,19 @@ all: xpdf
 
 OBJS=CoreOutputDev.o GlobalParams.o PDFCore.o XPDFApp.o XPDFCore.o XPDFTree.o XPDFViewer.o parseargs.o xpdf.o
 
-CC=$(CXX)
-
 CPPFLAGS += $(strip $(shell pkg-config --cflags poppler))
 CPPFLAGS += -DHAVE_DIRENT_H
+CPPFLAGS += -DHAVE_X11_XPM_H
 
-CPPFLAGS += -Wall -Wno-sign-compare
+CPPFLAGS += -Wall
+CPPFLAGS += -Wno-write-strings
 
 CXXFLAGS += -Os
-CXXFLAGS += -Wno-write-strings
 
-CFLAGS += $(CXXFLAGS)
-
-LOADLIBES += $(shell pkg-config --libs poppler)
+LOADLIBES += $(strip $(shell pkg-config --libs poppler))
 LOADLIBES += -lXm
 
-LDFLAGS += -Os
+CC=$(CXX)
 
 xpdf: $(OBJS)
 

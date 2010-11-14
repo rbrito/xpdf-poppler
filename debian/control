@@ -3,7 +3,7 @@ Section: text
 Priority: optional
 Maintainer: Michael Gilbert <michael.s.gilbert@gmail.com>
 Standards-Version: 3.9.0
-Build-Depends: debhelper (>= 7.0.50~),
+Build-Depends: debhelper (>= 8),
 	       pkg-config,
 	       libx11-dev,
 	       lesstif2-dev,
