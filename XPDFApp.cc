@@ -94,15 +94,15 @@ static int defRGBCubeSize = defaultRGBCube;
 static Bool defReverseVideo = False;
 
 static XtResource xResources[] = {
-  { "geometry",             "Geometry",             XtRString, sizeof(String), XtOffsetOf(XPDFAppResources, geometry),             XtRString, (XtPointer)NULL             },
-  { "title",                "Title",                XtRString, sizeof(String), XtOffsetOf(XPDFAppResources, title),                XtRString, (XtPointer)NULL             },
-  { "installCmap",          "InstallCmap",          XtRBool,   sizeof(Bool),   XtOffsetOf(XPDFAppResources, installCmap),          XtRBool,   (XtPointer)&defInstallCmap  },
-  { "rgbCubeSize",          "RgbCubeSize",          XtRInt,    sizeof(int),    XtOffsetOf(XPDFAppResources, rgbCubeSize),          XtRInt,    (XtPointer)&defRGBCubeSize  },
-  { "reverseVideo",         "ReverseVideo",         XtRBool,   sizeof(Bool),   XtOffsetOf(XPDFAppResources, reverseVideo),         XtRBool,   (XtPointer)&defReverseVideo },
-  { "paperColor",           "PaperColor",           XtRString, sizeof(String), XtOffsetOf(XPDFAppResources, paperColor),           XtRString, (XtPointer)NULL             },
+  { "geometry",             "Geometry",             XtRString, sizeof(String), XtOffsetOf(XPDFAppResources, geometry),             XtRString, NULL             },
+  { "title",                "Title",                XtRString, sizeof(String), XtOffsetOf(XPDFAppResources, title),                XtRString, NULL             },
+  { "installCmap",          "InstallCmap",          XtRBool,   sizeof(Bool),   XtOffsetOf(XPDFAppResources, installCmap),          XtRBool,   &defInstallCmap  },
+  { "rgbCubeSize",          "RgbCubeSize",          XtRInt,    sizeof(int),    XtOffsetOf(XPDFAppResources, rgbCubeSize),          XtRInt,    &defRGBCubeSize  },
+  { "reverseVideo",         "ReverseVideo",         XtRBool,   sizeof(Bool),   XtOffsetOf(XPDFAppResources, reverseVideo),         XtRBool,   &defReverseVideo },
+  { "paperColor",           "PaperColor",           XtRString, sizeof(String), XtOffsetOf(XPDFAppResources, paperColor),           XtRString, NULL             },
   { "matteColor",           "MatteColor",           XtRString, sizeof(String), XtOffsetOf(XPDFAppResources, matteColor),           XtRString, (XtPointer)"gray50"         },
   { "fullScreenMatteColor", "FullScreenMatteColor", XtRString, sizeof(String), XtOffsetOf(XPDFAppResources, fullScreenMatteColor), XtRString, (XtPointer)"black"          },
-  { "initialZoom",          "InitialZoom",          XtRString, sizeof(String), XtOffsetOf(XPDFAppResources, initialZoom),          XtRString, (XtPointer)NULL             }
+  { "initialZoom",          "InitialZoom",          XtRString, sizeof(String), XtOffsetOf(XPDFAppResources, initialZoom),          XtRString, NULL             }
 };
 
 #define nXResources (sizeof(xResources) / sizeof(XtResource))
