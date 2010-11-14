@@ -61,7 +61,7 @@ Rogério Brito
 
 ----
 
-[0]: http://rb.doesntexist.org/blog/2010/05/27/please-let-me-zoom-my-documents/
+[0]: http://rb.doesntexist.org/blog/posts/please-let-me-zoom-my-documents-/
 [1]: http://github.com/rbrito/xpdf-poppler/tree/debian
 [2]: http://github.com/rbrito/xpdf-poppler/tree/original
 [3]: http://poppler.freedesktop.org/
