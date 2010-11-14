@@ -1337,7 +1337,7 @@ void XPDFViewer::cmdZoomFitWidth(GooString *args[], int nArgs,
 void XPDFViewer::cmdZoomIn(GooString *args[], int nArgs,
 			   XEvent *event)
 {
-  unsigned z = getZoomIdx();
+  int z = getZoomIdx();
 
   if (z <= minZoomIdx && z > maxZoomIdx) {
     --z;
@@ -1350,7 +1350,7 @@ void XPDFViewer::cmdZoomIn(GooString *args[], int nArgs,
 void XPDFViewer::cmdZoomOut(GooString *args[], int nArgs,
 			    XEvent *event)
 {
-  unsigned z = getZoomIdx();
+  int z = getZoomIdx();
 
   if (z < minZoomIdx && z >= maxZoomIdx) {
     ++z;
