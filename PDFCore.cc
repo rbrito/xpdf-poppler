@@ -34,18 +34,14 @@
 // PDFCorePage
 //------------------------------------------------------------------------
 
-PDFCorePage::PDFCorePage(int pageA, int wA, int hA, int tileWA, int tileHA) {
-  page = pageA;
-  tiles = new GooList();
-  w = wA;
-  h = hA;
-  tileW = tileWA;
-  tileH = tileHA;
-  links = NULL;
-  text = NULL;
-}
+PDFCorePage::PDFCorePage(int pageA, int wA, int hA, int tileWA, int tileHA):
+	page(pageA), tiles(new GooList()), w(wA), h(hA), tileW(tileWA),
+	tileH(tileHA), links(NULL), text(NULL)
+{}
 
-PDFCorePage::~PDFCorePage() {
+
+PDFCorePage::~PDFCorePage()
+{
   deleteGooList(tiles, PDFCoreTile);
   delete links;
   if (text) {
@@ -57,15 +53,10 @@ PDFCorePage::~PDFCorePage() {
 // PDFCoreTile
 //------------------------------------------------------------------------
 
-PDFCoreTile::PDFCoreTile(int xDestA, int yDestA) {
-  xMin = 0;
-  yMin = 0;
-  xMax = 0;
-  yMax = 0;
-  xDest = xDestA;
-  yDest = yDestA;
-  bitmap = NULL;
-}
+PDFCoreTile::PDFCoreTile(int xDestA, int yDestA):
+	xMin(0), yMin(0), xMax(0), yMax(0), xDest(xDestA), yDest(yDestA),
+        bitmap(NULL)
+{}
 
 PDFCoreTile::~PDFCoreTile() {
   delete bitmap;
@@ -104,7 +95,6 @@ PDFCore::PDFCore(SplashColorMode colorModeA, int bitmapRowPadA,
     history[i].fileName = NULL;
   }
 
-
   pages = new GooList();
   curTile = NULL;
 
@@ -114,6 +104,7 @@ PDFCore::PDFCore(SplashColorMode colorModeA, int bitmapRowPadA,
 			  &redrawCbk, this);
   out->startDoc(NULL);
 }
+
 
 PDFCore::~PDFCore() {
   int i;

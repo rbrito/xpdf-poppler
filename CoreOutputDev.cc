@@ -25,11 +25,10 @@ CoreOutputDev::CoreOutputDev(SplashColorMode colorModeA, int bitmapRowPadA,
 			     bool incrementalUpdateA,
 			     CoreOutRedrawCbk redrawCbkA,
 			     void *redrawCbkDataA):
-  SplashOutputDev(colorModeA, bitmapRowPadA, reverseVideoA, paperColorA)
+	SplashOutputDev(colorModeA, bitmapRowPadA, reverseVideoA, paperColorA),
+	incrementalUpdate(incrementalUpdateA), redrawCbk(redrawCbkA),
+	redrawCbkData(redrawCbkDataA)
 {
-  incrementalUpdate = incrementalUpdateA;
-  redrawCbk = redrawCbkA;
-  redrawCbkData = redrawCbkDataA;
 }
 
 CoreOutputDev::~CoreOutputDev() {

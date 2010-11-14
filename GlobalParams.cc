@@ -102,9 +102,9 @@ GlobalParams *globalParams = NULL;
 //------------------------------------------------------------------------
 
 DisplayFontParam::DisplayFontParam(GooString *nameA,
-				   DisplayFontParamKind kindA) {
-  name = nameA;
-  kind = kindA;
+				   DisplayFontParamKind kindA):
+	name(nameA), kind(kindA)
+{
   switch (kind) {
   case displayFontT1:
     t1.fileName = NULL;
@@ -115,7 +115,8 @@ DisplayFontParam::DisplayFontParam(GooString *nameA,
   }
 }
 
-DisplayFontParam::~DisplayFontParam() {
+DisplayFontParam::~DisplayFontParam()
+{
   delete name;
   switch (kind) {
   case displayFontT1:
@@ -132,14 +133,14 @@ DisplayFontParam::~DisplayFontParam() {
 //------------------------------------------------------------------------
 
 PSFontParam::PSFontParam(GooString *pdfFontNameA, int wModeA,
-			 GooString *psFontNameA, GooString *encodingA) {
-  pdfFontName = pdfFontNameA;
-  wMode = wModeA;
-  psFontName = psFontNameA;
-  encoding = encodingA;
+			 GooString *psFontNameA, GooString *encodingA):
+	pdfFontName(pdfFontNameA), wMode(wModeA), psFontName(psFontNameA),
+	encoding(encodingA)
+{
 }
 
-PSFontParam::~PSFontParam() {
+PSFontParam::~PSFontParam()
+{
   delete pdfFontName;
   delete psFontName;
   delete encoding;
@@ -149,32 +150,27 @@ PSFontParam::~PSFontParam() {
 // KeyBinding
 //------------------------------------------------------------------------
 
-KeyBinding::KeyBinding(int codeA, int modsA, int contextA, char *cmd0) {
-  code = codeA;
-  mods = modsA;
-  context = contextA;
-  cmds = new GooList();
+KeyBinding::KeyBinding(int codeA, int modsA, int contextA, char *cmd0):
+	code(codeA), mods(modsA), context(contextA), cmds(new GooList())
+{
   cmds->append(new GooString(cmd0));
 }
 
 KeyBinding::KeyBinding(int codeA, int modsA, int contextA,
-		       char *cmd0, char *cmd1) {
-  code = codeA;
-  mods = modsA;
-  context = contextA;
-  cmds = new GooList();
+		       char *cmd0, char *cmd1):
+	code(codeA), mods(modsA), context(contextA), cmds(new GooList())
+{
   cmds->append(new GooString(cmd0));
   cmds->append(new GooString(cmd1));
 }
 
-KeyBinding::KeyBinding(int codeA, int modsA, int contextA, GooList *cmdsA) {
-  code = codeA;
-  mods = modsA;
-  context = contextA;
-  cmds = cmdsA;
+KeyBinding::KeyBinding(int codeA, int modsA, int contextA, GooList *cmdsA):
+	code(codeA), mods(modsA), context(contextA), cmds(cmdsA)
+{
 }
 
-KeyBinding::~KeyBinding() {
+KeyBinding::~KeyBinding()
+{
   deleteGooList(cmds, GooString);
 }
 
