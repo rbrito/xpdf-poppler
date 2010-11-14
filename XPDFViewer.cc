@@ -239,15 +239,14 @@ XPDFViewerCmd XPDFViewer::cmdTab[] = {
 
 XPDFViewer::XPDFViewer(XPDFApp *appA, GooString *fileName,
 		       int pageA, GooString *destName, bool fullScreen,
-		       GooString *ownerPassword, GooString *userPassword) {
+		       GooString *ownerPassword, GooString *userPassword):
+	app(appA), win(NULL), core(NULL), ok(false),
+	openDialog(NULL), saveAsDialog(NULL)
+{
   LinkDest *dest;
   int pg;
   double z;
 
-  app = appA;
-  win = NULL;
-  core = NULL;
-  ok = false;
 #ifndef DISABLE_OUTLINE
   outlineLabels = NULL;
   outlineLabelsLength = outlineLabelsSize = 0;
@@ -260,8 +259,6 @@ XPDFViewer::XPDFViewer(XPDFApp *appA, GooString *fileName,
   initAboutDialog();
   initFindDialog();
   initPrintDialog();
-  openDialog = NULL;
-  saveAsDialog = NULL;
 
   dest = NULL; // make gcc happy
   pg = pageA; // make gcc happy
@@ -299,15 +296,14 @@ XPDFViewer::XPDFViewer(XPDFApp *appA, GooString *fileName,
 }
 
 XPDFViewer::XPDFViewer(XPDFApp *appA, PDFDoc *doc, int pageA,
-		       GooString *destName, bool fullScreen) {
+		       GooString *destName, bool fullScreen):
+	app(appA), win(NULL), core(NULL), ok(false),
+	openDialog(NULL), saveAsDialog(NULL)
+{
   LinkDest *dest;
   int pg;
   double z;
 
-  app = appA;
-  win = NULL;
-  core = NULL;
-  ok = false;
 #ifndef DISABLE_OUTLINE
   outlineLabels = NULL;
   outlineLabelsLength = outlineLabelsSize = 0;
@@ -320,8 +316,6 @@ XPDFViewer::XPDFViewer(XPDFApp *appA, PDFDoc *doc, int pageA,
   initAboutDialog();
   initFindDialog();
   initPrintDialog();
-  openDialog = NULL;
-  saveAsDialog = NULL;
 
   dest = NULL; // make gcc happy
   pg = pageA; // make gcc happy
