@@ -5,7 +5,31 @@ EXTRA_DIST = \
 	icons \
 	doc
 
-noinst_HEADERS = \
+man_MANS = \
+	doc/xpdfrc.5 \
+	doc/xpdf.1
+
+bin_PROGRAMS = xpdf
+xpdf_LDADD = \
+	$(X11_LIBS) \
+	$(POPPLER_LIBS) \
+	$(FONTCONFIG_LIBS) \
+	$(MOTIF_LIBS)
+xpdf_CPPFLAGS = \
+	$(X11_CFLAGS) \
+	$(POPPLER_CFLAGS) \
+	$(FONTCONFIG_CFLAGS) \
+	-DSYSTEM_XPDFRC=\"$(sysconfdir)/xpdfrc\"
+xpdf_SOURCES = \
+	CoreOutputDev.cc \
+	GlobalParams.cc \
+	PDFCore.cc \
+	XPDFApp.cc \
+	XPDFCore.cc \
+	XPDFTree.cc \
+	XPDFViewer.cc \
+	parseargs.cc \
+	xpdf.cc \
 	about-text.h \
 	config.h \
 	CoreOutputDev.h \
@@ -17,24 +41,3 @@ noinst_HEADERS = \
 	XPDFTree.h \
 	XPDFTreeP.h \
 	XPDFViewer.h
-
-man_MANS = \
-	doc/xpdfrc.5 \
-	doc/xpdf.1
-
-bin_PROGRAMS = xpdf
-xpdf_LDADD = \
-	@X11_LIBS@ \
-	@POPPLER_LIBS@ \
-	@FONTCONFIG_LIBS@ \
-	@MOTIF_LIBS@
-xpdf_SOURCES = \
-	CoreOutputDev.cc \
-	GlobalParams.cc \
-	PDFCore.cc \
-	XPDFApp.cc \
-	XPDFCore.cc \
-	XPDFTree.cc \
-	XPDFViewer.cc \
-	parseargs.cc \
-	xpdf.cc
