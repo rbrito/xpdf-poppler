@@ -1694,13 +1694,14 @@ void XPDFViewer::initToolbar(Widget parent) {
   XtSetArg(args[n], XmNcomboBoxType, XmDROP_DOWN_COMBO_BOX); ++n;
   XtSetArg(args[n], XmNpositionMode, XmONE_BASED); ++n;
   XtSetArg(args[n], XmNcolumns, 7); ++n;
-  int i;
-  for (i = 0; i < nZoomMenuItems; ++i) {
+
+  for (unsigned i = 0; i < nZoomMenuItems; ++i) {
     st[i] = XmStringCreateLocalized(zoomMenuInfo[i].label);
   }
   XtSetArg(args[n], XmNitems, st); ++n;
   XtSetArg(args[n], XmNitemCount, nZoomMenuItems); ++n;
   zoomComboBox = XmCreateComboBox(toolBar, "zoomComboBox", args, n);
+
   for (unsigned i = 0; i < nZoomMenuItems; ++i) {
     XmStringFree(st[i]);
   }
