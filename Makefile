@@ -13,6 +13,7 @@ CXXFLAGS += -Os
 
 LOADLIBES += $(strip $(shell pkg-config --libs poppler))
 LOADLIBES += -lXm
+LOADLIBES += -lXpm
 
 CC=$(CXX)
 
