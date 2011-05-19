@@ -526,7 +526,11 @@ void GlobalParams::createDefaultKeyBindings() {
 				     xpdfKeyContextAny, "zoomPercent(125)"));
   keyBindings->append(new KeyBinding('+', xpdfKeyModNone,
 				     xpdfKeyContextAny, "zoomIn"));
+  keyBindings->append(new KeyBinding(xpdfKeyCodeAdd, xpdfKeyModNone,
+				     xpdfKeyContextAny, "zoomIn"));
   keyBindings->append(new KeyBinding('-', xpdfKeyModNone,
+				     xpdfKeyContextAny, "zoomOut"));
+  keyBindings->append(new KeyBinding(xpdfKeyCodeSubtract, xpdfKeyModNone,
 				     xpdfKeyContextAny, "zoomOut"));
   keyBindings->append(new KeyBinding('z', xpdfKeyModNone,
 				     xpdfKeyContextAny, "zoomFitPage"));

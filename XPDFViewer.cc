@@ -98,6 +98,12 @@
 #ifndef XK_KP_Delete
 #define XK_KP_Delete            0xFF9F
 #endif
+#ifndef XK_KP_Add
+#define XK_KP_Add               0xFFAB
+#endif
+#ifndef XK_KP_Subtract
+#define XK_KP_Subtract          0xFFAD
+#endif
 
 //------------------------------------------------------------------------
 // GUI includes
@@ -567,6 +573,10 @@ void XPDFViewer::keyPressCbk(void *data, KeySym key, unsigned modifiers,
     keyCode = xpdfKeyCodeDown;
   } else if (key >= XK_F1 && key <= XK_F35) {
     keyCode = xpdfKeyCodeF1 + (key - XK_F1);
+  } else if (key == XK_KP_Add) {
+    keyCode = xpdfKeyCodeAdd;
+  } else if (key == XK_KP_Subtract) {
+    keyCode = xpdfKeyCodeSubtract;
   } else {
     return;
   }
