@@ -3555,7 +3555,7 @@ void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
   // Normal print mode
   if (printAll && !printBack)
   {
-    psOut = new PSOutputDev(psFileName->getCString(), doc->getXRef(),
+    psOut = new PSOutputDev(psFileName->getCString(), doc, doc->getXRef(),
           doc->getCatalog(), NULL, firstPage, lastPage,
           psModePS);
     if (psOut->isOk()) {
@@ -3601,7 +3601,7 @@ void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
     {
       for (i=beginPage;; i+=step)
       {
-        psOut = new PSOutputDev(psFileName->getCString(), doc->getXRef(),
+        psOut = new PSOutputDev(psFileName->getCString(), doc, doc->getXRef(),
               doc->getCatalog(), NULL, i, i, psModePS);
         if (psOut->isOk()) {
           doc->displayPages(psOut, i, i, 72, 72,
