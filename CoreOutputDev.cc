@@ -15,6 +15,7 @@
 #include "poppler/Object.h"
 #include "poppler/TextOutputDev.h"
 #include "CoreOutputDev.h"
+#include "GlobalParamsGUI.h"
 
 //------------------------------------------------------------------------
 // CoreOutputDev
@@ -29,6 +30,7 @@ CoreOutputDev::CoreOutputDev(SplashColorMode colorModeA, int bitmapRowPadA,
 	incrementalUpdate(incrementalUpdateA), redrawCbk(redrawCbkA),
 	redrawCbkData(redrawCbkDataA)
 {
+  setFreeTypeHinting(globalParamsGUI->getEnableFreeTypeHinting());
 }
 
 CoreOutputDev::~CoreOutputDev() {

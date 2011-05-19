@@ -17,7 +17,7 @@
 #include <math.h>
 #include "poppler/goo/GooString.h"
 #include "poppler/goo/GooList.h"
-#include "GlobalParams.h"
+#include "GlobalParamsGUI.h"
 #include "poppler/splash/Splash.h"
 #include "poppler/splash/SplashBitmap.h"
 #include "poppler/splash/SplashPattern.h"
@@ -73,7 +73,7 @@ PDFCore::PDFCore(SplashColorMode colorModeA, int bitmapRowPadA,
   int i;
 
   doc = NULL;
-  continuousMode = globalParams->getContinuousView();
+  continuousMode = globalParamsGUI->getContinuousView();
   drawAreaWidth = drawAreaHeight = 0;
   maxPageW = totalDocH = 0;
   pageY = NULL;

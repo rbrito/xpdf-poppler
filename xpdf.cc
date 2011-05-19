@@ -11,7 +11,8 @@
 #include "parseargs.h"
 #include "poppler/goo/gfile.h"
 #include "poppler/goo/gmem.h"
-#include "GlobalParams.h"
+#include "GlobalParamsGUI.h"
+#include <GlobalParams.h>
 #include "poppler/Object.h"
 #include "XPDFApp.h"
 #include "config.h"
@@ -25,6 +26,7 @@ static char enableT1libStr[16] = "";
 static char enableFreeTypeStr[16] = "";
 static char antialiasStr[16] = "";
 static char vectorAntialiasStr[16] = "";
+static char autohintingStr[16] = "no";
 static char psFileArg[256];
 static char paperSize[15] = "";
 static int paperWidth = 0;
@@ -79,6 +81,8 @@ static ArgDesc argDesc[] = {
    "enable font anti-aliasing: yes, no"},
   {"-aaVector",   argString,      vectorAntialiasStr, sizeof(vectorAntialiasStr),
    "enable vector anti-aliasing: yes, no"},
+  {"-ah",         argString,      autohintingStr, sizeof(autohintingStr),
+   "enable font auto-hinting: yes, no (default no)"},
   {"-ps",         argString,      psFileArg,      sizeof(psFileArg),
    "default PostScript file name or command"},
   {"-paper",      argString,      paperSize,      sizeof(paperSize),
@@ -154,63 +158,71 @@ int main(int argc, char *argv[]) {
     goto done0;
   }
 
+  // poppler's globalParams
+  globalParams = new GlobalParams;
+
   // read config file
-  globalParams = new GlobalParams(cfgFileName);
-  globalParams->setupBaseFonts(NULL);
+  globalParamsGUI = new GlobalParamsGUI(cfgFileName);
+  globalParamsGUI->setupBaseFonts(NULL);
   if (contView) {
-    globalParams->setContinuousView(contView);
+    globalParamsGUI->setContinuousView(contView);
   }
   if (psFileArg[0]) {
-    globalParams->setPSFile(psFileArg);
+    globalParamsGUI->setPSFile(psFileArg);
   }
   if (paperSize[0]) {
-    if (!globalParams->setPSPaperSize(paperSize)) {
+    if (!globalParamsGUI->setPSPaperSize(paperSize)) {
       fprintf(stderr, "Invalid paper size\n");
     }
   } else {
     if (paperWidth) {
-      globalParams->setPSPaperWidth(paperWidth);
+      globalParamsGUI->setPSPaperWidth(paperWidth);
     }
     if (paperHeight) {
-      globalParams->setPSPaperHeight(paperHeight);
+      globalParamsGUI->setPSPaperHeight(paperHeight);
     }
   }
   if (level1) {
-    globalParams->setPSLevel(psLevel1);
+    globalParamsGUI->setPSLevel(psLevel1);
   }
   if (textEncName[0]) {
-    globalParams->setTextEncoding(textEncName);
+    globalParamsGUI->setTextEncoding(textEncName);
   }
   if (textEOL[0]) {
-    if (!globalParams->setTextEOL(textEOL)) {
+    if (!globalParamsGUI->setTextEOL(textEOL)) {
       fprintf(stderr, "Bad '-eol' value on command line\n");
     }
   }
   if (enableT1libStr[0]) {
-    if (!globalParams->setEnableT1lib(enableT1libStr)) {
+    if (!globalParamsGUI->setEnableT1lib(enableT1libStr)) {
       fprintf(stderr, "Bad '-t1lib' value on command line\n");
     }
   }
   if (enableFreeTypeStr[0]) {
-    if (!globalParams->setEnableFreeType(enableFreeTypeStr)) {
+    if (!globalParamsGUI->setEnableFreeType(enableFreeTypeStr)) {
       fprintf(stderr, "Bad '-freetype' value on command line\n");
     }
   }
   if (antialiasStr[0]) {
-    if (!globalParams->setAntialias(antialiasStr)) {
+    if (!globalParamsGUI->setAntialias(antialiasStr)) {
       fprintf(stderr, "Bad '-aa' value on command line\n");
     }
   }
   if (vectorAntialiasStr[0]) {
-    if (!globalParams->setVectorAntialias(vectorAntialiasStr)) {
+    if (!globalParamsGUI->setVectorAntialias(vectorAntialiasStr)) {
       fprintf(stderr, "Bad '-aaVector' value on command line\n");
     }
   }
+  if (autohintingStr[0]) {
+    if (!globalParamsGUI->setEnableFreeTypeHinting(autohintingStr)) {
+      fprintf(stderr, "Bad '-ah' value on command line\n");
+    }
+  }
   if (printCommands) {
-    globalParams->setPrintCommands(printCommands);
+    globalParamsGUI->setPrintCommands(printCommands);
   }
   if (quiet) {
-    globalParams->setErrQuiet(quiet);
+    globalParamsGUI->setErrQuiet(quiet);
   }
 
   // create the XPDFApp object
@@ -219,7 +231,7 @@ int main(int argc, char *argv[]) {
   // the initialZoom parameter can be set in either the config file or
   // as an X resource (or command line arg)
   if (app->getInitialZoom()) {
-    globalParams->setInitialZoom(app->getInitialZoom()->getCString());
+    globalParamsGUI->setInitialZoom(app->getInitialZoom()->getCString());
   }
 
   // check command line
@@ -326,6 +338,7 @@ int main(int argc, char *argv[]) {
   delete fileName;
  done1:
   delete app;
+  delete globalParamsGUI;
   delete globalParams;
 
   // check for memory leaks

@@ -21,7 +21,7 @@
 #include "poppler/goo/GooString.h"
 #include "poppler/goo/GooList.h"
 #include "poppler/Error.h"
-#include "GlobalParams.h"
+#include "GlobalParamsGUI.h"
 #include "poppler/PDFDoc.h"
 #include "poppler/Link.h"
 #include "poppler/FileSpec.h"
@@ -116,7 +116,7 @@ XPDFCore::XPDFCore(Widget shellA, Widget parentWidgetA,
   if (fullScreen) {
     zoom = zoomPage;
   } else {
-    initialZoom = globalParams->getInitialZoom();
+    initialZoom = globalParamsGUI->getInitialZoom();
     if (!initialZoom->cmp("page")) {
       zoom = zoomPage;
     } else if (!initialZoom->cmp("width")) {
@@ -548,7 +548,7 @@ void XPDFCore::doAction(LinkAction *action) {
 
   // URI action
   case actionURI:
-    if (!(cmd = globalParams->getURLCommand())) {
+    if (!(cmd = globalParamsGUI->getURLCommand())) {
       error(-1, "No urlCommand defined in config file");
       break;
     }
@@ -585,7 +585,7 @@ void XPDFCore::doAction(LinkAction *action) {
 
   // Movie action
   case actionMovie:
-    if (!(cmd = globalParams->getMovieCommand())) {
+    if (!(cmd = globalParamsGUI->getMovieCommand())) {
       error(-1, "No movieCommand defined in config file");
       break;
     }

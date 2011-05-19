@@ -1,6 +1,6 @@
 all: xpdf
 
-OBJS=CoreOutputDev.o GlobalParams.o PDFCore.o XPDFApp.o XPDFCore.o XPDFTree.o XPDFViewer.o parseargs.o xpdf.o
+OBJS=CoreOutputDev.o GlobalParamsGUI.o PDFCore.o XPDFApp.o XPDFCore.o XPDFTree.o XPDFViewer.o parseargs.o xpdf.o
 
 CPPFLAGS += $(strip $(shell pkg-config --cflags poppler))
 CPPFLAGS += -DHAVE_DIRENT_H
@@ -16,6 +16,7 @@ LOADLIBES += -lXm
 LOADLIBES += -lXpm
 LOADLIBES += -lXt
 LOADLIBES += -lX11
+LOADLIBES += -lfontconfig
 
 CC=$(CXX)
 

@@ -27,7 +27,7 @@
 #include "poppler/goo/GooString.h"
 #include "poppler/goo/GooList.h"
 #include "poppler/Error.h"
-#include "GlobalParams.h"
+#include "GlobalParamsGUI.h"
 #include "poppler/PDFDoc.h"
 #include "poppler/Link.h"
 #include "poppler/ErrorCodes.h"
@@ -581,7 +581,7 @@ void XPDFViewer::keyPressCbk(void *data, KeySym key, unsigned modifiers,
     return;
   }
 
-  if ((cmds = globalParams->getKeyBinding(keyCode,
+  if ((cmds = globalParamsGUI->getKeyBinding(keyCode,
 					  viewer->getModifiers(modifiers),
 					  viewer->getContext(modifiers)))) {
     for (i = 0; i < cmds->getLength(); ++i) {
@@ -613,7 +613,7 @@ void XPDFViewer::mouseCbk(void *data, XEvent *event) {
     return;
   }
 
-  if ((cmds = globalParams->getKeyBinding(keyCode,
+  if ((cmds = globalParamsGUI->getKeyBinding(keyCode,
 					  viewer->getModifiers(
 						      event->xkey.state),
 					  viewer->getContext(
@@ -2646,7 +2646,7 @@ void XPDFViewer::setupOutline() {
     items = core->getDoc()->getOutline()->getItems();
     if (items && items->getLength() > 0) {
       enc = new GooString("Latin1");
-      uMap = globalParams->getUnicodeMap(enc);
+      uMap = globalParamsGUI->getUnicodeMap(enc);
       delete enc;
       setupOutlineItems(items, NULL, uMap);
       uMap->decRefCnt();
@@ -3387,7 +3387,7 @@ void XPDFViewer::initPrintDialog() {
   XtSetValues(printDialog, args, n);
 
   //----- initial values
-  if ((psFileName = globalParams->getPSFile())) {
+  if ((psFileName = globalParamsGUI->getPSFile())) {
     if (psFileName->getChar(0) == '|') {
       XmTextFieldSetString(printCmdText,
 			   psFileName->getCString() + 1);
@@ -3459,7 +3459,7 @@ void XPDFViewer::setupPrintDialog() {
   char *p;
 
   doc = core->getDoc();
-  psFileName = globalParams->getPSFile();
+  psFileName = globalParamsGUI->getPSFile();
   if (!psFileName || psFileName->getChar(0) == '|') {
     pdfFileName = doc->getFileName();
     p = pdfFileName->getCString() + pdfFileName->getLength() - 4;
@@ -3570,7 +3570,7 @@ void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
           psModePS);
     if (psOut->isOk()) {
       doc->displayPages(psOut, firstPage, lastPage, 72, 72,
-            0, true, globalParams->getPSCrop(), false);
+            0, true, globalParamsGUI->getPSCrop(), false);
     }
     delete psOut;
   }
@@ -3615,7 +3615,7 @@ void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
               doc->getCatalog(), NULL, i, i, psModePS);
         if (psOut->isOk()) {
           doc->displayPages(psOut, i, i, 72, 72,
-                0, true, globalParams->getPSCrop(), false);
+                0, true, globalParamsGUI->getPSCrop(), false);
         }
         else
         {
