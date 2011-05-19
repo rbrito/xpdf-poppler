@@ -1575,7 +1575,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   addToolTip(backBtn, "Back");
   XtManageChild(backBtn);
   XtAddCallback(backBtn, XmNactivateCallback,
-		&backCbk, (XtPointer)this);
+		&backCbk, this);
   n = 0;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNleftWidget, backBtn); ++n;
@@ -1588,7 +1588,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   addToolTip(prevTenPageBtn, "-10 pages");
   XtManageChild(prevTenPageBtn);
   XtAddCallback(prevTenPageBtn, XmNactivateCallback,
-		&prevTenPageCbk, (XtPointer)this);
+		&prevTenPageCbk, this);
   n = 0;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNleftWidget, prevTenPageBtn); ++n;
@@ -1601,7 +1601,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   addToolTip(prevPageBtn, "Previous page");
   XtManageChild(prevPageBtn);
   XtAddCallback(prevPageBtn, XmNactivateCallback,
-		&prevPageCbk, (XtPointer)this);
+		&prevPageCbk, this);
   n = 0;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNleftWidget, prevPageBtn); ++n;
@@ -1614,7 +1614,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   addToolTip(nextPageBtn, "Next page");
   XtManageChild(nextPageBtn);
   XtAddCallback(nextPageBtn, XmNactivateCallback,
-		&nextPageCbk, (XtPointer)this);
+		&nextPageCbk, this);
   n = 0;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNleftWidget, nextPageBtn); ++n;
@@ -1627,7 +1627,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   addToolTip(nextTenPageBtn, "+10 pages");
   XtManageChild(nextTenPageBtn);
   XtAddCallback(nextTenPageBtn, XmNactivateCallback,
-		&nextTenPageCbk, (XtPointer)this);
+		&nextTenPageCbk, this);
   n = 0;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNleftWidget, nextTenPageBtn); ++n;
@@ -1640,7 +1640,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   addToolTip(forwardBtn, "Forward");
   XtManageChild(forwardBtn);
   XtAddCallback(forwardBtn, XmNactivateCallback,
-		&forwardCbk, (XtPointer)this);
+		&forwardCbk, this);
 
   // page number display
   n = 0;
@@ -1664,7 +1664,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   pageNumText = XmCreateTextField(toolBar, "pageNum", args, n);
   XtManageChild(pageNumText);
   XtAddCallback(pageNumText, XmNactivateCallback,
-		&pageNumCbk, (XtPointer)this);
+		&pageNumCbk, this);
   n = 0;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNleftWidget, pageNumText); ++n;
@@ -1707,7 +1707,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   }
   addToolTip(zoomComboBox, "Zoom");
   XtAddCallback(zoomComboBox, XmNselectionCallback,
-		&zoomComboBoxCbk, (XtPointer)this);
+		&zoomComboBoxCbk, this);
   XtManageChild(zoomComboBox);
   zoomWidget = zoomComboBox;
 #else
@@ -1726,7 +1726,7 @@ void XPDFViewer::initToolbar(Widget parent) {
     XmStringFree(s);
     XtManageChild(btn);
     XtAddCallback(btn, XmNactivateCallback,
-		  &zoomMenuCbk, (XtPointer)this);
+		  &zoomMenuCbk, this);
     zoomMenuBtns[i] = btn;
   }
   n = 0;
@@ -1755,7 +1755,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   addToolTip(findBtn, "Find");
   XtManageChild(findBtn);
   XtAddCallback(findBtn, XmNactivateCallback,
-		&findCbk, (XtPointer)this);
+		&findCbk, this);
   n = 0;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNleftWidget, findBtn); ++n;
@@ -1767,7 +1767,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   addToolTip(printBtn, "Print");
   XtManageChild(printBtn);
   XtAddCallback(printBtn, XmNactivateCallback,
-		&printCbk, (XtPointer)this);
+		&printCbk, this);
   n = 0;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNleftWidget, printBtn); ++n;
@@ -1779,7 +1779,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   addToolTip(aboutBtn, "About / help");
   XtManageChild(aboutBtn);
   XtAddCallback(aboutBtn, XmNactivateCallback,
-		&aboutCbk, (XtPointer)this);
+		&aboutCbk, this);
   lastBtn = aboutBtn;
 
   // quit button
@@ -1794,7 +1794,7 @@ void XPDFViewer::initToolbar(Widget parent) {
   XmStringFree(s);
   XtManageChild(quitBtn);
   XtAddCallback(quitBtn, XmNactivateCallback,
-		&quitCbk, (XtPointer)this);
+		&quitCbk, this);
 
   // link label
   n = 0;
@@ -1845,7 +1845,7 @@ void XPDFViewer::initPanedWin(Widget parent) {
   outlineTree = XPDFCreateTree(outlineScroll, "outlineTree", args, n);
   XtManageChild(outlineTree);
   XtAddCallback(outlineTree, XPDFNselectionCallback, &outlineSelectCbk,
-		(XtPointer)this);
+		this);
 }
 #endif
 
@@ -1880,7 +1880,7 @@ void XPDFViewer::initPopupMenu() {
   XmStringFree(s2);
   XtManageChild(btn);
   XtAddCallback(btn, XmNactivateCallback,
-		&openCbk, (XtPointer)this);
+		&openCbk, this);
   n = 0;
   s = XmStringCreateLocalized("Open in new window...");
   XtSetArg(args[n], XmNlabelString, s); ++n;
@@ -1888,7 +1888,7 @@ void XPDFViewer::initPopupMenu() {
   XmStringFree(s);
   XtManageChild(btn);
   XtAddCallback(btn, XmNactivateCallback,
-		&openInNewWindowCbk, (XtPointer)this);
+		&openInNewWindowCbk, this);
   n = 0;
   s = XmStringCreateLocalized("Reload");
   XtSetArg(args[n], XmNlabelString, s); ++n;
@@ -1899,7 +1899,7 @@ void XPDFViewer::initPopupMenu() {
   XmStringFree(s2);
   XtManageChild(btn);
   XtAddCallback(btn, XmNactivateCallback,
-		&reloadCbk, (XtPointer)this);
+		&reloadCbk, this);
   n = 0;
   s = XmStringCreateLocalized("Save as...");
   XtSetArg(args[n], XmNlabelString, s); ++n;
@@ -1907,7 +1907,7 @@ void XPDFViewer::initPopupMenu() {
   XmStringFree(s);
   XtManageChild(btn);
   XtAddCallback(btn, XmNactivateCallback,
-		&saveAsCbk, (XtPointer)this);
+		&saveAsCbk, this);
   n = 0;
   btn = XmCreateSeparator(popupMenu, "sep1", args, n);
   XtManageChild(btn);
@@ -1921,7 +1921,7 @@ void XPDFViewer::initPopupMenu() {
   XmStringFree(s);
   XtManageChild(btn);
   XtAddCallback(btn, XmNvalueChangedCallback,
-		&continuousModeToggleCbk, (XtPointer)this);
+		&continuousModeToggleCbk, this);
   n = 0;
   s = XmStringCreateLocalized("Full screen");
   XtSetArg(args[n], XmNlabelString, s); ++n;
@@ -1932,7 +1932,7 @@ void XPDFViewer::initPopupMenu() {
   XmStringFree(s);
   XtManageChild(btn);
   XtAddCallback(btn, XmNvalueChangedCallback,
-		&fullScreenToggleCbk, (XtPointer)this);
+		&fullScreenToggleCbk, this);
   n = 0;
   s = XmStringCreateLocalized("Rotate counterclockwise");
   XtSetArg(args[n], XmNlabelString, s); ++n;
@@ -1940,7 +1940,7 @@ void XPDFViewer::initPopupMenu() {
   XmStringFree(s);
   XtManageChild(btn);
   XtAddCallback(btn, XmNactivateCallback,
-		&rotateCCWCbk, (XtPointer)this);
+		&rotateCCWCbk, this);
   n = 0;
   s = XmStringCreateLocalized("Rotate clockwise");
   XtSetArg(args[n], XmNlabelString, s); ++n;
@@ -1948,7 +1948,7 @@ void XPDFViewer::initPopupMenu() {
   XmStringFree(s);
   XtManageChild(btn);
   XtAddCallback(btn, XmNactivateCallback,
-		&rotateCWCbk, (XtPointer)this);
+		&rotateCWCbk, this);
   n = 0;
   s = XmStringCreateLocalized("Zoom to selection");
   XtSetArg(args[n], XmNlabelString, s); ++n;
@@ -1956,7 +1956,7 @@ void XPDFViewer::initPopupMenu() {
   XmStringFree(s);
   XtManageChild(btn);
   XtAddCallback(btn, XmNactivateCallback,
-		&zoomToSelectionCbk, (XtPointer)this);
+		&zoomToSelectionCbk, this);
   n = 0;
   btn = XmCreateSeparator(popupMenu, "sep2", args, n);
   XtManageChild(btn);
@@ -1970,7 +1970,7 @@ void XPDFViewer::initPopupMenu() {
   XmStringFree(s2);
   XtManageChild(btn);
   XtAddCallback(btn, XmNactivateCallback,
-		&closeCbk, (XtPointer)this);
+		&closeCbk, this);
   n = 0;
   s = XmStringCreateLocalized("Quit");
   XtSetArg(args[n], XmNlabelString, s); ++n;
@@ -1981,7 +1981,7 @@ void XPDFViewer::initPopupMenu() {
   XmStringFree(s2);
   XtManageChild(btn);
   XtAddCallback(btn, XmNactivateCallback,
-		&quitCbk, (XtPointer)this);
+		&quitCbk, this);
 
   // this is magic (taken from DDD) - weird things happen if this
   // call isn't made
@@ -2853,7 +2853,7 @@ void XPDFViewer::initOpenDialog() {
   XtUnmanageChild(XmFileSelectionBoxGetChild(openDialog,
 					     XmDIALOG_HELP_BUTTON));
   XtAddCallback(openDialog, XmNokCallback,
-		&openOkCbk, (XtPointer)this);
+		&openOkCbk, this);
 
   if (core->getDoc() && core->getDoc()->getFileName()) {
     dir = makePathAbsolute(grabPath(
@@ -2933,7 +2933,7 @@ void XPDFViewer::initFindDialog() {
   okBtn = XmCreatePushButton(findDialog, "Find", args, n);
   XtManageChild(okBtn);
   XtAddCallback(okBtn, XmNactivateCallback,
-		&findFindCbk, (XtPointer)this);
+		&findFindCbk, this);
   n = 0;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); ++n;
   XtSetArg(args[n], XmNrightOffset, 4); ++n;
@@ -2943,7 +2943,7 @@ void XPDFViewer::initFindDialog() {
   closeBtn = XmCreatePushButton(findDialog, "Close", args, n);
   XtManageChild(closeBtn);
   XtAddCallback(closeBtn, XmNactivateCallback,
-		&findCloseCbk, (XtPointer)this);
+		&findCloseCbk, this);
 
   //----- checkboxes
   n = 0;
@@ -3008,7 +3008,7 @@ void XPDFViewer::initFindDialog() {
   XtManageChild(findText);
 #ifdef LESSTIF_VERSION
   XtAddCallback(findText, XmNactivateCallback,
-		&findFindCbk, (XtPointer)this);
+		&findFindCbk, this);
 #endif
 
   //----- dialog parameters
@@ -3080,7 +3080,7 @@ void XPDFViewer::initSaveAsDialog() {
   XtUnmanageChild(XmFileSelectionBoxGetChild(saveAsDialog,
 					     XmDIALOG_HELP_BUTTON));
   XtAddCallback(saveAsDialog, XmNokCallback,
-		&saveAsOkCbk, (XtPointer)this);
+		&saveAsOkCbk, this);
 
   if (core->getDoc() && core->getDoc()->getFileName()) {
     dir = makePathAbsolute(grabPath(
@@ -3155,7 +3155,7 @@ void XPDFViewer::initPrintDialog() {
   XmStringFree(s);
   XtManageChild(printWithCmdBtn);
   XtAddCallback(printWithCmdBtn, XmNvalueChangedCallback,
-		&printWithCmdBtnCbk, (XtPointer)this);
+		&printWithCmdBtnCbk, this);
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNtopWidget, printWithCmdBtn); ++n;
@@ -3182,7 +3182,7 @@ void XPDFViewer::initPrintDialog() {
   XmStringFree(s);
   XtManageChild(printToFileBtn);
   XtAddCallback(printToFileBtn, XmNvalueChangedCallback,
-		&printToFileBtnCbk, (XtPointer)this);
+		&printToFileBtnCbk, this);
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNtopWidget, printToFileBtn); ++n;
@@ -3269,7 +3269,7 @@ void XPDFViewer::initPrintDialog() {
   XmStringFree(s);
   XtManageChild(printAllPages);
   XtAddCallback(printAllPages, XmNvalueChangedCallback,
-    &printAllPagesBtnCbk, (XtPointer)this);
+    &printAllPagesBtnCbk, this);
 
   //----- Print Odd Pages
   n = 0;
@@ -3286,7 +3286,7 @@ void XPDFViewer::initPrintDialog() {
   XmStringFree(s);
   XtManageChild(printOddPages);
   XtAddCallback(printOddPages, XmNvalueChangedCallback,
-    &printOddPagesBtnCbk, (XtPointer)this);
+    &printOddPagesBtnCbk, this);
 
   //----- Print Even Pages
   n = 0;
@@ -3303,7 +3303,7 @@ void XPDFViewer::initPrintDialog() {
   XmStringFree(s);
   XtManageChild(printEvenPages);
   XtAddCallback(printEvenPages, XmNvalueChangedCallback,
-    &printEvenPagesBtnCbk, (XtPointer)this);
+    &printEvenPagesBtnCbk, this);
 
   //----- separator
   n = 0;
@@ -3333,7 +3333,7 @@ void XPDFViewer::initPrintDialog() {
   XmStringFree(s);
   XtManageChild(printBackOrder);
   XtAddCallback(printBackOrder, XmNvalueChangedCallback,
-    &printBackOrderBtnCbk, (XtPointer)this);
+    &printBackOrderBtnCbk, this);
 
   //----- separator
   n = 0;
@@ -3360,7 +3360,7 @@ void XPDFViewer::initPrintDialog() {
   okBtn = XmCreatePushButton(printDialog, "Print", args, n);
   XtManageChild(okBtn);
   XtAddCallback(okBtn, XmNactivateCallback,
-		&printPrintCbk, (XtPointer)this);
+		&printPrintCbk, this);
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); ++n;
   XtSetArg(args[n], XmNtopWidget, sep3); ++n;
