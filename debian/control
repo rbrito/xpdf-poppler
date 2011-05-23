@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 8),
 	       libx11-dev,
 	       libxpm-dev,
 	       lesstif2-dev,
-	       libpoppler-dev (>= 0.12.4)
+	       libpoppler-dev (>= 0.16)
 Homepage: http://www.foolabs.com/xpdf/
 
 Package: xpdf
