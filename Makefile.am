@@ -22,7 +22,7 @@ xpdf_CPPFLAGS = \
 	-DSYSTEM_XPDFRC=\"$(sysconfdir)/xpdfrc\"
 xpdf_SOURCES = \
 	CoreOutputDev.cc \
-	GlobalParams.cc \
+	GlobalParamsGUI.cc \
 	PDFCore.cc \
 	XPDFApp.cc \
 	XPDFCore.cc \
@@ -33,7 +33,7 @@ xpdf_SOURCES = \
 	about-text.h \
 	config.h \
 	CoreOutputDev.h \
-	GlobalParams.h \
+	GlobalParamsGUI.h \
 	parseargs.h \
 	PDFCore.h \
 	XPDFApp.h \
