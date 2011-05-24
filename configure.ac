@@ -1,6 +1,7 @@
 dnl Process this file with autoconf to create configure.
 
-AC_PREREQ(2.65)
+# header
+AC_PREREQ([2.65])
 
 dnl Version definitions.
 
@@ -13,19 +14,17 @@ AC_INIT([xpdf],[xpdf_version],[https://github.com/rbrito/xpdf-poppler/issues])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([1.11 foreign dist-xz])
 m4_define([AM_SILENT_RULES])
+AC_LANG([C++])
 
 dnl Defines for the config.h (FIXME: this should be done here not hardcoded in config.h)
 dnl AM_CONFIG_HEADER(config.h)
 
+# Checks for programs.
 AC_PROG_CXX
 
-dnl Cflags should not require altering. FIXME at some point.
-dnl Same goes for those defines, these should be removed first.
-CPPFLAGS="$CPPFLAGS -Wno-write-strings -DHAVE_DIRENT_H -DHAVE_X11_XPM_H"
-
-PKG_CHECK_MODULES(X11, x11 xpm)
-PKG_CHECK_MODULES(FONTCONFIG, fontconfig)
-PKG_CHECK_MODULES(POPPLER, poppler)
+# Checks for libraries.
+PKG_CHECK_MODULES([PKG_CONFIG], [poppler >= 0.16 xt xpm x11 fontconfig])
+m4_pattern_allow(PKG_CONFIG_PKG_ERRORS)
 
 dnl Openmotif does not provide pkgconfig files.
 AC_ARG_WITH(motif-prefix,
@@ -36,10 +35,23 @@ AS_IF([test "x$with_motif_prefix" != "xyes"], [
 		LDFLAGS="$LDFLAGS -L$with_motif_prefix/lib"
 	]
 )
-AC_CHECK_LIB([Xm], [XmStringFree], [], [AC_ERROR([motif libraries not found])])
-MOTIF_LIBS=-lXm
-AC_SUBST(MOTIF_LIBS)
+AC_CHECK_LIB([Xm], [XmStringFree],, AC_MSG_ERROR([Cannot find motif (Xm) library]))
 
+# Combine libraries
+LIBS="${LIBS} ${PKG_CONFIG_LIBS}"
+
+# Checks for header files.
+AC_CHECK_HEADERS([langinfo.h locale.h stddef.h stdlib.h string.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_C_INLINE
+
+# Checks for library functions.
+AC_FUNC_ERROR_AT_LINE
+AC_CHECK_FUNCS([floor memset nl_langinfo setlocale strcasecmp strchr strncasecmp strrchr strstr])
+
+# trailer
 AC_CONFIG_FILES([Makefile])
 
 AC_OUTPUT
