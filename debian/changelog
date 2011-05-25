@@ -1,4 +1,4 @@
-xpdf (3.02-4) UNRELEASED; urgency=low
+xpdf (3.3.0-1) UNRELEASED; urgency=low
 
   [ Michael Gilbert ]
   * Version the dependency on libpoppler-dev.
@@ -21,8 +21,14 @@ xpdf (3.02-4) UNRELEASED; urgency=low
     + set to 8
   * debian/control
     + raise dependency to debhelper 8
-
- -- Barak A. Pearlmutter <bap@debian.org>  Sat, 13 Nov 2010 10:27:43 +0000
+    + add dependency on various autotools components for ./autogen.sh
+    + raise dependency on libpoppler-dev
+  * debian/xpdf-wrapper: remove
+  * debian/zxpdf: move upstream
+  * debian/{rules,xpdf.links,xpdf.manpages}: simplify or remove
+  * update version number for consistency with configure.ac
+  
+ -- Barak A. Pearlmutter <bap@debian.org>  Wed, 25 May 2011 16:03:01 +0100
 
 xpdf (3.02-3) experimental; urgency=low
 
