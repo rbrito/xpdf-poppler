@@ -1,13 +1,8 @@
 #!/usr/bin/make -f
 
-CFLAGS += -g
-CXXFLAGS += -g
-LDFLAGS += -g
-LDFLAGS += -Wl,--as-needed -Wl,-z,defs -Wl,-O1
-
-export CFLAGS
-export CXXFLAGS
-export LDFLAGS
-
 %:
-	dh ${@}
+	dh $@ --parallel
+
+override_dh_auto_configure:
+	./autogen.sh
+	dh_auto_configure

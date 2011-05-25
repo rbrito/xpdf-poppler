@@ -1,2 +1,15 @@
+*.log
 *.o
+/.deps/
+/Makefile
+/Makefile.in
+/aclocal.m4
+/autom4te.cache/
+/config.h
+/config.status
+/configure
+/depcomp
+/install-sh
+/m4/pkg.m4
+/missing
 /xpdf

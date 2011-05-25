@@ -1,5 +1,0 @@
-#!/bin/bash
-LANG=C
-LC_ALL=C
-export LANG LC_ALL
-exec -a xpdf xpdf.bin "$@"

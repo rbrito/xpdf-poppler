@@ -4,11 +4,12 @@ Priority: optional
 Maintainer: Michael Gilbert <michael.s.gilbert@gmail.com>
 Standards-Version: 3.9.0
 Build-Depends: debhelper (>= 8),
+	       autoconf (>= 2.65), automake, libtool,
 	       pkg-config,
 	       libx11-dev,
 	       libxpm-dev,
 	       lesstif2-dev,
-	       libpoppler-dev (>= 0.12.4)
+	       libpoppler-dev (>= 0.16)
 Homepage: http://www.foolabs.com/xpdf/
 
 Package: xpdf
