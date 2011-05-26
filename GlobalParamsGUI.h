@@ -37,9 +37,6 @@ class CMapCache;
 struct XpdfSecurityHandler;
 class GlobalParamsGUI;
 class GfxFont;
-#ifdef WIN32
-class WinFontList;
-#endif
 
 //------------------------------------------------------------------------
 
@@ -397,9 +394,6 @@ private:
   GooList *toUnicodeDirs;		// list of ToUnicode CMap dirs [GooString]
   GooHash *displayFonts;		// display font info, indexed by font name
 				//   [DisplayFontParam]
-#ifdef WIN32
-  WinFontList *winFontList;	// system TrueType fonts
-#endif
   GooHash *displayCIDFonts;	// display CID font info, indexed by
 				//   collection [DisplayFontParam]
   GooHash *displayNamedCIDFonts;	// display CID font info, indexed by

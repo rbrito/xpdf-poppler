@@ -15,14 +15,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
-#ifdef ENABLE_PLUGINS
-#  ifndef WIN32
-#    include <dlfcn.h>
-#  endif
-#endif
-#ifdef WIN32
-#  include <shlobj.h>
-#endif
 #if HAVE_PAPER_H
 #include <paper.h>
 #endif
@@ -45,10 +37,6 @@
 #endif
 #include "GlobalParamsGUI.h"
 #include "GfxFont.h"
-
-#ifdef WIN32
-#  define strcasecmp stricmp
-#endif
 
 #if MULTITHREADED
 #  define lockGlobalParamsGUI            gLockMutex(&mutex)
@@ -73,12 +61,6 @@
 #include "NameToUnicodeTable.h"
 #include "UnicodeMapTables.h"
 #include "UTF8.h"
-
-#ifdef ENABLE_PLUGINS
-#  ifdef WIN32
-extern XpdfPluginVecTable xpdfPluginVecTable;
-#  endif
-#endif
 
 //------------------------------------------------------------------------
 
@@ -109,13 +91,6 @@ static struct {
   {NULL}
 };
 
-#ifdef WIN32
-static char *displayFontDirs[] = {
-  "c:/windows/fonts",
-  "c:/winnt/fonts",
-  NULL
-};
-#else
 static char *displayFontDirs[] = {
   "/usr/share/ghostscript/fonts",
   "/usr/local/share/ghostscript/fonts",
@@ -124,7 +99,6 @@ static char *displayFontDirs[] = {
   "/usr/share/fonts/type1/gsfonts",
   NULL
 };
-#endif
 
 //------------------------------------------------------------------------
 
@@ -163,251 +137,6 @@ DisplayFontParam::~DisplayFontParam() {
     break;
   }
 }
-
-#ifdef WIN32
-
-//------------------------------------------------------------------------
-// WinFontInfo
-//------------------------------------------------------------------------
-
-class WinFontInfo: public DisplayFontParam {
-public:
-
-  GBool bold, italic;
-
-  static WinFontInfo *make(GooString *nameA, GBool boldA, GBool italicA,
-			   HKEY regKey, char *winFontDir);
-  WinFontInfo(GooString *nameA, GBool boldA, GBool italicA,
-	      GooString *fileNameA);
-  virtual ~WinFontInfo();
-  GBool equals(WinFontInfo *fi);
-};
-
-WinFontInfo *WinFontInfo::make(GooString *nameA, GBool boldA, GBool italicA,
-			       HKEY regKey, char *winFontDir) {
-  GooString *regName;
-  GooString *fileNameA;
-  char buf[MAX_PATH];
-  DWORD n;
-  char c;
-  int i;
-
-  //----- find the font file
-  fileNameA = NULL;
-  regName = nameA->copy();
-  if (boldA) {
-    regName->append(" Bold");
-  }
-  if (italicA) {
-    regName->append(" Italic");
-  }
-  regName->append(" (TrueType)");
-  n = sizeof(buf);
-  if (RegQueryValueEx(regKey, regName->getCString(), NULL, NULL,
-		      (LPBYTE)buf, &n) == ERROR_SUCCESS) {
-    fileNameA = new GooString(winFontDir);
-    fileNameA->append('\\')->append(buf);
-  }
-  delete regName;
-  if (!fileNameA) {
-    delete nameA;
-    return NULL;
-  }
-
-  //----- normalize the font name
-  i = 0;
-  while (i < nameA->getLength()) {
-    c = nameA->getChar(i);
-    if (c == ' ' || c == ',' || c == '-') {
-      nameA->del(i);
-    } else {
-      ++i;
-    }
-  }
-
-  return new WinFontInfo(nameA, boldA, italicA, fileNameA);
-}
-
-WinFontInfo::WinFontInfo(GooString *nameA, GBool boldA, GBool italicA,
-			 GooString *fileNameA):
-  DisplayFontParam(nameA, displayFontTT)
-{
-  bold = boldA;
-  italic = italicA;
-  tt.fileName = fileNameA;
-}
-
-WinFontInfo::~WinFontInfo() {
-}
-
-GBool WinFontInfo::equals(WinFontInfo *fi) {
-  return !name->cmp(fi->name) && bold == fi->bold && italic == fi->italic;
-}
-
-//------------------------------------------------------------------------
-// WinFontList
-//------------------------------------------------------------------------
-
-class WinFontList {
-public:
-
-  WinFontList(char *winFontDirA);
-  ~WinFontList();
-  WinFontInfo *find(GooString *font);
-
-private:
-
-  void add(WinFontInfo *fi);
-  static int CALLBACK enumFunc1(CONST LOGFONT *font,
-				CONST TEXTMETRIC *metrics,
-				DWORD type, LPARAM data);
-  static int CALLBACK enumFunc2(CONST LOGFONT *font,
-				CONST TEXTMETRIC *metrics,
-				DWORD type, LPARAM data);
-
-  GooList *fonts;			// [WinFontInfo]
-  HDC dc;			// (only used during enumeration)
-  HKEY regKey;			// (only used during enumeration)
-  char *winFontDir;		// (only used during enumeration)
-};
-
-WinFontList::WinFontList(char *winFontDirA) {
-  OSVERSIONINFO version;
-  char *path;
-
-  fonts = new GooList();
-  dc = GetDC(NULL);
-  winFontDir = winFontDirA;
-  version.dwOSVersionInfoSize = sizeof(version);
-  GetVersionEx(&version);
-  if (version.dwPlatformId == VER_PLATFORM_WIN32_NT) {
-    path = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\\";
-  } else {
-    path = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Fonts\\";
-  }
-  if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, path, 0,
-		   KEY_QUERY_VALUE | KEY_ENUMERATE_SUB_KEYS,
-		   &regKey) == ERROR_SUCCESS) {
-    EnumFonts(dc, NULL, &WinFontList::enumFunc1, (LPARAM)this);
-    RegCloseKey(regKey);
-  }
-  ReleaseDC(NULL, dc);
-}
-
-WinFontList::~WinFontList() {
-  deleteGooList(fonts, WinFontInfo);
-}
-
-void WinFontList::add(WinFontInfo *fi) {
-  int i;
-
-  for (i = 0; i < fonts->getLength(); ++i) {
-    if (((WinFontInfo *)fonts->get(i))->equals(fi)) {
-      delete fi;
-      return;
-    }
-  }
-  fonts->append(fi);
-}
-
-WinFontInfo *WinFontList::find(GooString *font) {
-  GooString *name;
-  GBool bold, italic;
-  WinFontInfo *fi;
-  char c;
-  int n, i;
-
-  name = font->copy();
-
-  // remove space, comma, dash chars
-  i = 0;
-  while (i < name->getLength()) {
-    c = name->getChar(i);
-    if (c == ' ' || c == ',' || c == '-') {
-      name->del(i);
-    } else {
-      ++i;
-    }
-  }
-  n = name->getLength();
-
-  // remove trailing "MT" (Foo-MT, Foo-BoldMT, etc.)
-  if (!strcmp(name->getCString() + n - 2, "MT")) {
-    name->del(n - 2, 2);
-    n -= 2;
-  }
-
-  // look for "Italic"
-  if (!strcmp(name->getCString() + n - 6, "Italic")) {
-    name->del(n - 6, 6);
-    italic = gTrue;
-    n -= 6;
-  } else {
-    italic = gFalse;
-  }
-
-  // look for "Bold"
-  if (!strcmp(name->getCString() + n - 4, "Bold")) {
-    name->del(n - 4, 4);
-    bold = gTrue;
-    n -= 4;
-  } else {
-    bold = gFalse;
-  }
-
-  // remove trailing "MT" (FooMT-Bold, etc.)
-  if (!strcmp(name->getCString() + n - 2, "MT")) {
-    name->del(n - 2, 2);
-    n -= 2;
-  }
-
-  // remove trailing "PS"
-  if (!strcmp(name->getCString() + n - 2, "PS")) {
-    name->del(n - 2, 2);
-    n -= 2;
-  }
-
-  // search for the font
-  fi = NULL;
-  for (i = 0; i < fonts->getLength(); ++i) {
-    fi = (WinFontInfo *)fonts->get(i);
-    if (!fi->name->cmp(name) && fi->bold == bold && fi->italic == italic) {
-      break;
-    }
-    fi = NULL;
-  }
-
-  delete name;
-  return fi;
-}
-
-int CALLBACK WinFontList::enumFunc1(CONST LOGFONT *font,
-				    CONST TEXTMETRIC *metrics,
-				    DWORD type, LPARAM data) {
-  WinFontList *fl = (WinFontList *)data;
-
-  EnumFonts(fl->dc, font->lfFaceName, &WinFontList::enumFunc2, (LPARAM)fl);
-  return 1;
-}
-
-int CALLBACK WinFontList::enumFunc2(CONST LOGFONT *font,
-				    CONST TEXTMETRIC *metrics,
-				    DWORD type, LPARAM data) {
-  WinFontList *fl = (WinFontList *)data;
-  WinFontInfo *fi;
-
-  if (type & TRUETYPE_FONTTYPE) {
-    if ((fi = WinFontInfo::make(new GooString(font->lfFaceName),
-				font->lfWeight >= 600,
-				font->lfItalic ? gTrue : gFalse,
-				fl->regKey, fl->winFontDir))) {
-      fl->add(fi);
-    }
-  }
-  return 1;
-}
-
-#endif // WIN32
 
 //------------------------------------------------------------------------
 // PSFontParam
@@ -475,13 +204,8 @@ public:
 
 private:
 
-#ifdef WIN32
-  Plugin(HMODULE libA);
-  HMODULE lib;
-#else
   Plugin(void *dlA);
   void *dl;
-#endif
 };
 
 Plugin *Plugin::load(char *type, char *name) {
@@ -489,31 +213,13 @@ Plugin *Plugin::load(char *type, char *name) {
   Plugin *plugin;
   XpdfPluginVecTable *vt;
   XpdfBool (*xpdfInitPlugin)(void);
-#ifdef WIN32
-  HMODULE libA;
-#else
   void *dlA;
-#endif
 
   path = globalParamsGUI->getBaseDir();
   appendToPath(path, "plugins");
   appendToPath(path, type);
   appendToPath(path, name);
 
-#ifdef WIN32
-  path->append(".dll");
-  if (!(libA = LoadLibrary(path->getCString()))) {
-    error(-1, "Failed to load plugin '%s'",
-	  path->getCString());
-    goto err1;
-  }
-  if (!(vt = (XpdfPluginVecTable *)
-	         GetProcAddress(libA, "xpdfPluginVecTable"))) {
-    error(-1, "Failed to find xpdfPluginVecTable in plugin '%s'",
-	  path->getCString());
-    goto err2;
-  }
-#else
   //~ need to deal with other extensions here
   path->append(".so");
   if (!(dlA = dlopen(path->getCString(), RTLD_NOW))) {
@@ -526,7 +232,6 @@ Plugin *Plugin::load(char *type, char *name) {
 	  path->getCString());
     goto err2;
   }
-#endif
 
   if (vt->version != xpdfPluginVecTable.version) {
     error(-1, "Plugin '%s' is wrong version", path->getCString());
@@ -534,20 +239,11 @@ Plugin *Plugin::load(char *type, char *name) {
   }
   memcpy(vt, &xpdfPluginVecTable, sizeof(xpdfPluginVecTable));
 
-#ifdef WIN32
-  if (!(xpdfInitPlugin = (XpdfBool (*)(void))
-	                     GetProcAddress(libA, "xpdfInitPlugin"))) {
-    error(-1, "Failed to find xpdfInitPlugin in plugin '%s'",
-	  path->getCString());
-    goto err2;
-  }
-#else
   if (!(xpdfInitPlugin = (XpdfBool (*)(void))dlsym(dlA, "xpdfInitPlugin"))) {
     error(-1, "Failed to find xpdfInitPlugin in plugin '%s'",
 	  path->getCString());
     goto err2;
   }
-#endif
 
   if (!(*xpdfInitPlugin)()) {
     error(-1, "Initialization of plugin '%s' failed",
@@ -555,51 +251,29 @@ Plugin *Plugin::load(char *type, char *name) {
     goto err2;
   }
 
-#ifdef WIN32
-  plugin = new Plugin(libA);
-#else
   plugin = new Plugin(dlA);
-#endif
 
   delete path;
   return plugin;
 
  err2:
-#ifdef WIN32
-  FreeLibrary(libA);
-#else
   dlclose(dlA);
-#endif
  err1:
   delete path;
   return NULL;
 }
 
-#ifdef WIN32
-Plugin::Plugin(HMODULE libA) {
-  lib = libA;
-}
-#else
 Plugin::Plugin(void *dlA) {
   dl = dlA;
 }
-#endif
 
 Plugin::~Plugin() {
   void (*xpdfFreePlugin)(void);
 
-#ifdef WIN32
-  if ((xpdfFreePlugin = (void (*)(void))
-                            GetProcAddress(lib, "xpdfFreePlugin"))) {
-    (*xpdfFreePlugin)();
-  }
-  FreeLibrary(lib);
-#else
   if ((xpdfFreePlugin = (void (*)(void))dlsym(dl, "xpdfFreePlugin"))) {
     (*xpdfFreePlugin)();
   }
   dlclose(dl);
-#endif
 }
 
 #endif // ENABLE_PLUGINS
@@ -632,12 +306,7 @@ GlobalParamsGUI::GlobalParamsGUI(char *cfgFileName) {
     }
   }
 
-#ifdef WIN32
-  // baseDir will be set by a call to setBaseDir
-  baseDir = new GooString();
-#else
   baseDir = appendToPath(getHomeDir(), ".xpdf");
-#endif
   nameToUnicode = new NameToCharCode();
   cidToUnicodes = new GooHash(gTrue);
   unicodeToUnicodes = new GooHash(gTrue);
@@ -692,13 +361,7 @@ GlobalParamsGUI::GlobalParamsGUI(char *cfgFileName) {
          textEncoding = new GooString("Latin1");
   else
          textEncoding = new GooString("UTF-8");
-#if defined(WIN32)
-  textEOL = eolDOS;
-#elif defined(MACOS)
-  textEOL = eolMac;
-#else
   textEOL = eolUnix;
-#endif
   textPageBreaks = gTrue;
   textKeepTinyChars = gFalse;
   fontDirs = new GooList();
@@ -730,10 +393,6 @@ GlobalParamsGUI::GlobalParamsGUI(char *cfgFileName) {
       new CharCodeToUnicodeCache(unicodeToUnicodeCacheSize);
   unicodeMapCache = new UnicodeMapCache();
   cMapCache = new CMapCache();
-
-#ifdef WIN32
-  winFontList = NULL;
-#endif
 
 #ifdef ENABLE_PLUGINS
   plugins = new GooList();
@@ -779,18 +438,7 @@ GlobalParamsGUI::GlobalParamsGUI(char *cfgFileName) {
     }
   }
   if (!f) {
-#if defined(WIN32) && !defined(__CYGWIN32__)
-    char buf[512];
-    i = GetModuleFileName(NULL, buf, sizeof(buf));
-    if (i <= 0 || i >= sizeof(buf)) {
-      // error or path too long for buffer - just use the current dir
-      buf[0] = '\0';
-    }
-    fileName = grabPath(buf);
-    appendToPath(fileName, xpdfSysConfigFile);
-#else
     fileName = new GooString(xpdfSysConfigFile);
-#endif
     if (!(f = fopen(fileName->getCString(), "r"))) {
       delete fileName;
     }
@@ -1841,11 +1489,6 @@ GlobalParamsGUI::~GlobalParamsGUI() {
   deleteGooHash(displayFonts, DisplayFontParam);
   deleteGooHash(displayCIDFonts, DisplayFontParam);
   deleteGooHash(displayNamedCIDFonts, DisplayFontParam);
-#ifdef WIN32
-  if (winFontList) {
-    delete winFontList;
-  }
-#endif
   if (psFile) {
     delete psFile;
   }
@@ -1888,35 +1531,11 @@ void GlobalParamsGUI::setBaseDir(char *dir) {
 void GlobalParamsGUI::setupBaseFonts(char *dir) {
   GooString *fontName;
   GooString *fileName;
-#ifdef WIN32
-  HMODULE shell32Lib;
-  BOOL (__stdcall *SHGetSpecialFolderPathFunc)(HWND hwndOwner,
-					       LPTSTR lpszPath,
-					       int nFolder,
-					       BOOL fCreate);
-  char winFontDir[MAX_PATH];
-#endif
   FILE *f;
   DisplayFontParamKind kind;
   DisplayFontParam *dfp;
   int i, j;
 
-#ifdef WIN32
-  // SHGetSpecialFolderPath isn't available in older versions of
-  // shell32.dll (Win95 and WinNT4), so do a dynamic load
-  winFontDir[0] = '\0';
-  if ((shell32Lib = LoadLibrary("shell32.dll"))) {
-    if ((SHGetSpecialFolderPathFunc =
-	 (BOOL (__stdcall *)(HWND hwndOwner, LPTSTR lpszPath,
-			     int nFolder, BOOL fCreate))
-	 GetProcAddress(shell32Lib, "SHGetSpecialFolderPathA"))) {
-      if (!(*SHGetSpecialFolderPathFunc)(NULL, winFontDir,
-					 CSIDL_FONTS, FALSE)) {
-	winFontDir[0] = '\0';
-      }
-    }
-  }
-#endif
   for (i = 0; displayFontTab[i].name; ++i) {
     fontName = new GooString(displayFontTab[i].name);
     if (getDisplayFont(fontName)) {
@@ -1935,35 +1554,6 @@ void GlobalParamsGUI::setupBaseFonts(char *dir) {
 	fileName = NULL;
       }
     }
-#ifdef WIN32
-    if (!fileName && winFontDir[0] && displayFontTab[i].ttFileName) {
-      fileName = appendToPath(new GooString(winFontDir),
-			      displayFontTab[i].ttFileName);
-      kind = displayFontTT;
-      if ((f = fopen(fileName->getCString(), "rb"))) {
-	fclose(f);
-      } else {
-	delete fileName;
-	fileName = NULL;
-      }
-    }
-    // SHGetSpecialFolderPath(CSIDL_FONTS) doesn't work on Win 2k Server
-    // or Win2003 Server, or with older versions of shell32.dll, so check
-    // the "standard" directories
-    if (displayFontTab[i].ttFileName) {
-      for (j = 0; !fileName && displayFontDirs[j]; ++j) {
-	fileName = appendToPath(new GooString(displayFontDirs[j]),
-				displayFontTab[i].ttFileName);
-	kind = displayFontTT;
-	if ((f = fopen(fileName->getCString(), "rb"))) {
-	  fclose(f);
-	} else {
-	  delete fileName;
-	  fileName = NULL;
-	}
-      }
-    }
-#else
     for (j = 0; !fileName && displayFontDirs[j]; ++j) {
       fileName = appendToPath(new GooString(displayFontDirs[j]),
 			      displayFontTab[i].t1FileName);
@@ -1975,7 +1565,6 @@ void GlobalParamsGUI::setupBaseFonts(char *dir) {
 	fileName = NULL;
       }
     }
-#endif
     if (!fileName) {
       error(-1, "No display font for '%s'", displayFontTab[i].name);
       delete fontName;
@@ -1986,11 +1575,6 @@ void GlobalParamsGUI::setupBaseFonts(char *dir) {
     globalParamsGUI->addDisplayFont(dfp);
   }
 
-#ifdef WIN32
-  if (winFontDir[0]) {
-    winFontList = new WinFontList(winFontDir);
-  }
-#endif
 }
 
 //------------------------------------------------------------------------
@@ -2312,11 +1896,6 @@ DisplayFontParam *GlobalParamsGUI::getDisplayFont(GooString *fontName) {
 
   lockGlobalParamsGUI;
   dfp = (DisplayFontParam *)displayFonts->lookup(fontName);
-#ifdef WIN32
-  if (!dfp && winFontList) {
-    dfp = winFontList->find(fontName);
-  }
-#endif
   unlockGlobalParamsGUI;
   return dfp;
 }
