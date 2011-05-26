@@ -1,4 +1,4 @@
-xpdf (3.3.0-1) UNRELEASED; urgency=low
+xpdf-poppler (3.3.0-1) UNRELEASED; urgency=low
 
   [ Michael Gilbert ]
   * Version the dependency on libpoppler-dev.
