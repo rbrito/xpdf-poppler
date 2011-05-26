@@ -3,19 +3,30 @@ Section: text
 Priority: optional
 Maintainer: Rogério Brito <rbrito@ime.usp.br>
 Standards-Version: 3.9.0
-Build-Depends: debhelper (>= 8),
-	       autoconf (>= 2.65), automake, libtool,
-	       pkg-config,
-	       libx11-dev,
-	       libxpm-dev,
-	       lesstif2-dev,
-	       libpoppler-dev (>= 0.16)
+Build-Depends:
+ autoconf (>= 2.65),
+ automake,
+ debhelper (>= 8),
+ lesstif2-dev,
+ libpoppler-dev (>= 0.16),
+ libtool,
+ libx11-dev,
+ libxpm-dev,
+ pkg-config
 Homepage: http://www.foolabs.com/xpdf/
 
 Package: xpdf-poppler
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Recommends: poppler-utils, poppler-data
-Provides: pdf-viewer, postscript-preview, xpdf-reader, xpdf-common
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends}
+Recommends:
+ poppler-data,
+ poppler-utils
+Provides:
+ pdf-viewer,
+ postscript-preview,
+ xpdf-common,
+ xpdf-reader
 Description: Portable Document Format (PDF) viewer
  xpdf-poppler is a simple viewer for Portable Document Format (PDF) files.
