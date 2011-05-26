@@ -1,7 +1,7 @@
 Source: xpdf-poppler
 Section: text
 Priority: optional
-Maintainer: Michael Gilbert <michael.s.gilbert@gmail.com>
+Maintainer: Rogério Brito <rbrito@ime.usp.br>
 Standards-Version: 3.9.0
 Build-Depends: debhelper (>= 8),
 	       autoconf (>= 2.65), automake, libtool,
