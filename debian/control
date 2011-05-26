@@ -24,9 +24,6 @@ Recommends:
  poppler-data,
  poppler-utils
 Provides:
- pdf-viewer,
- postscript-preview,
- xpdf-common,
- xpdf-reader
+ pdf-viewer
 Description: Portable Document Format (PDF) viewer
  xpdf-poppler is a simple viewer for Portable Document Format (PDF) files.
