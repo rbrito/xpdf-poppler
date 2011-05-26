@@ -1,4 +1,4 @@
-Source: xpdf
+Source: xpdf-poppler
 Section: text
 Priority: optional
 Maintainer: Michael Gilbert <michael.s.gilbert@gmail.com>
@@ -12,10 +12,9 @@ Build-Depends: debhelper (>= 8),
 	       libpoppler-dev (>= 0.16)
 Homepage: http://www.foolabs.com/xpdf/
 
-Package: xpdf
+Package: xpdf-poppler
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Replaces: xpdf-reader (<< 3.02-3), xpdf-common (<< 3.02-3)
 Recommends: poppler-utils, poppler-data
 Provides: pdf-viewer, postscript-preview, xpdf-reader, xpdf-common
 Description: Portable Document Format (PDF) suite
