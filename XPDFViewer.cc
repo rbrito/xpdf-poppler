@@ -650,16 +650,14 @@ int XPDFViewer::getContext(unsigned modifiers) {
 }
 
 void XPDFViewer::execCmd(GooString *cmd, XEvent *event) {
-  GooString *name;
+  GooString *name = NULL;
   GooString *args[cmdMaxArgs];
   char *p0, *p1;
-  int nArgs, i;
+  int nArgs = 0;
   int a, b, m, cmp;
 
   //----- parse the command
-  name = NULL;
-  nArgs = 0;
-  for (i = 0; i < cmdMaxArgs; ++i) {
+  for (unsigned i = 0; i < cmdMaxArgs; ++i) {
     args[i] = NULL;
   }
   p0 = cmd->getCString();
@@ -719,7 +717,7 @@ void XPDFViewer::execCmd(GooString *cmd, XEvent *event) {
 
   //----- clean up
   delete name;
-  for (i = 0; i < nArgs; ++i) {
+  for (int i = 0; i < nArgs; ++i) {
     delete args[i];
   }
   return;
@@ -728,7 +726,7 @@ void XPDFViewer::execCmd(GooString *cmd, XEvent *event) {
   error(-1, "Invalid command syntax: '%s'", cmd->getCString());
  err2:
   delete name;
-  for (i = 0; i < nArgs; ++i) {
+  for (int i = 0; i < nArgs; ++i) {
     delete args[i];
   }
 }
