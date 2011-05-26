@@ -1917,7 +1917,7 @@ GooString *GlobalParamsGUI::getPSFile() {
   GooString *s;
 
   lockGlobalParamsGUI;
-  s = psFile ? psFile->copy() : (GooString *)NULL;
+  s = psFile ? psFile->copy() : NULL;
   unlockGlobalParamsGUI;
   return s;
 }
