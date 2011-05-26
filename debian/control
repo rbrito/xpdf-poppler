@@ -17,10 +17,5 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Recommends: poppler-utils, poppler-data
 Provides: pdf-viewer, postscript-preview, xpdf-reader, xpdf-common
-Description: Portable Document Format (PDF) suite
- xpdf is a suite of tools for Portable Document Format (PDF) files. (These are
- sometimes called 'Acrobat' files after the name of Adobe's PDF software.)
- .
- The tools include xpdf, a PDF viewer (in the package xpdf-reader),
- and PDF converters (including to/from PostScript) (in the package
- xpdf-utils).
+Description: Portable Document Format (PDF) viewer
+ xpdf-poppler is a simple viewer for Portable Document Format (PDF) files.
