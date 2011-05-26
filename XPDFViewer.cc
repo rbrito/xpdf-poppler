@@ -249,8 +249,8 @@ XPDFViewer::XPDFViewer(XPDFApp *appA, GooString *fileName,
 	app(appA), ok(false), win(NULL), core(NULL),
 	openDialog(NULL), saveAsDialog(NULL)
 {
-  LinkDest *dest;
-  int pg;
+  LinkDest *dest = NULL;
+  int pg = pageA;
   double z;
 
 #ifndef DISABLE_OUTLINE
@@ -265,9 +265,6 @@ XPDFViewer::XPDFViewer(XPDFApp *appA, GooString *fileName,
   initAboutDialog();
   initFindDialog();
   initPrintDialog();
-
-  dest = NULL; // make gcc happy
-  pg = pageA; // make gcc happy
 
   if (fileName) {
     if (loadFile(fileName, ownerPassword, userPassword)) {
@@ -306,8 +303,8 @@ XPDFViewer::XPDFViewer(XPDFApp *appA, PDFDoc *doc, int pageA,
 	app(appA), ok(false), win(NULL), core(NULL),
 	openDialog(NULL), saveAsDialog(NULL)
 {
-  LinkDest *dest;
-  int pg;
+  LinkDest *dest = NULL;
+  int pg = pageA;
   double z;
 
 #ifndef DISABLE_OUTLINE
@@ -322,9 +319,6 @@ XPDFViewer::XPDFViewer(XPDFApp *appA, PDFDoc *doc, int pageA,
   initAboutDialog();
   initFindDialog();
   initPrintDialog();
-
-  dest = NULL; // make gcc happy
-  pg = pageA; // make gcc happy
 
   if (doc) {
     core->loadDoc(doc);
