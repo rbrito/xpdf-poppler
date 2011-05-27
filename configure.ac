@@ -5,12 +5,12 @@ AC_PREREQ([2.65])
 
 dnl Version definitions.
 
-m4_define([xpdf_version_major],[3])
-m4_define([xpdf_version_minor],[3])
-m4_define([xpdf_version_micro],[0])
-m4_define([xpdf_version],[xpdf_version_major.xpdf_version_minor.xpdf_version_micro])
+m4_define([xpdf-poppler_version_major],[3])
+m4_define([xpdf-poppler_version_minor],[3])
+m4_define([xpdf-poppler_version_micro],[0])
+m4_define([xpdf-poppler_version],[xpdf-poppler_version_major.xpdf-poppler_version_minor.xpdf-poppler_version_micro])
 
-AC_INIT([xpdf],[xpdf_version],[https://github.com/rbrito/xpdf-poppler/issues])
+AC_INIT([xpdf-poppler],[xpdf-poppler_version],[https://github.com/rbrito/xpdf-poppler/issues])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([1.11 foreign dist-xz])
 m4_define([AM_SILENT_RULES])

@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=xpdf
+Name=xpdf-poppler
 GenericName=PDF viewer
 Comment=View PDF files
-Exec=xpdf
+Exec=xpdf-poppler
 Icon=xpdf
 Terminal=false
 Type=Application
