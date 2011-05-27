@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    configure)
+	update-xpdf-poppler-rc
+
+	# usurp parental robes
+	update-alternatives --quiet \
+	    --install /usr/bin/xpdf xpdf /usr/bin/xpdf-poppler 30 \
+	    --slave \
+	    /usr/share/man/man1/xpdf.1.gz xpdf.1.gz \
+	    /usr/share/man/man1/xpdf-poppler.1.gz
+	;;
+esac
+
+#DEBHELPER#

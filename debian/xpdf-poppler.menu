@@ -1,8 +1,8 @@
-?package(xpdf):\
+?package(xpdf-poppler):\
 	needs="x11" \
 	section="Applications/Viewers" \
-	command="/usr/bin/xpdf" \
-	title="Xpdf" \
+	command="/usr/bin/xpdf-poppler" \
+	title="Xpdf-Poppler" \
 	hints="Documents" \
-	icon="/usr/share/pixmaps/xpdf.xpm" \
+	icon="/usr/share/pixmaps/xpdf-poppler.xpm" \
 	longtitle="Xpdf: Portable Document Format (PDF) file viewer for X"

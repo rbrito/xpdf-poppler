@@ -1,0 +1,2 @@
+debian/update-xpdf-poppler-rc /usr/sbin
+debian/xpdf-poppler.xpm /usr/share/pixmaps
