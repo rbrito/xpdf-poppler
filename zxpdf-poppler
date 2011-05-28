@@ -4,13 +4,12 @@
 # Please distribute under the terms of the GNU GPL, version 2
 
 # Author: Yann Dirson <yann.dirson@fr.alcove.com>
-# $Id: zxpdf,v 1.1 2001/09/28 10:23:35 ydirson Exp $
 
 set -e
 
 file=
 flags=
-title="zxpdf"
+title="zxpdf-poppler"
 while [ $# -gt 0 ]
 do
     case "$1" in
@@ -43,7 +42,7 @@ fi
 
 if [ x"$title" == x -a x"$tmp" != x ]
 then
-    title="zxpdf: $file"
+    title="zxpdf-poppler: $file"
 fi
 
 if [ -z "$cat" ]
@@ -56,8 +55,8 @@ else
 fi
 
 if [ "$tmp" == "" ]; then
-    exec xpdf -title $title $flags
+    exec xpdf-poppler -title $title $flags
 else
     trap "rm -f \"$tmp\"" 0 1 2 15
-    exec xpdf -title $title $flags "$tmp" $pages
+    exec xpdf-poppler -title $title $flags "$tmp" $pages
 fi
