@@ -13,7 +13,9 @@ Build-Depends:
  libx11-dev,
  libxpm-dev,
  pkg-config
-Homepage: http://www.foolabs.com/xpdf/
+Homepage: http://github.com/rbrito/xpdf-poppler
+Vcs-Git: git://github.com/rbrito/xpdf-poppler
+Vcs-Browser: http://github.com/rbrito/xpdf-poppler.git
 
 Package: xpdf-poppler
 Architecture: any
@@ -26,4 +28,7 @@ Recommends:
 Provides:
  pdf-viewer
 Description: Portable Document Format (PDF) viewer
- xpdf-poppler is a simple viewer for Portable Document Format (PDF) files.
+ xpdf-poppler is a simple lightweight viewer for Portable Document
+ Format (PDF) files.  It is a fork of xpdf which uses the external
+ shared poppler library for parsing and rendering PDF files, thus
+ availing of libpoppler's updates, and bug fixes, security fixes.

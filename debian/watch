@@ -1,2 +1,5 @@
 version=3
-ftp://ftp.foolabs.com/pub/xpdf/xpdf-([\d.]+)\.tar\.gz
+http://githubredir.debian.net/github/rbrito/xpdf-poppler \
+ /github/rbrito/xpdf-poppler/release-(.*).tar.gz
+http://githubredir.debian.net/github/barak/xpdf-poppler \
+ /github/barak/xpdf-poppler/upstream/(.*).tar.gz
