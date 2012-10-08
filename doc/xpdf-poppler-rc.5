@@ -398,6 +398,14 @@ anti-aliasing control provided by the old "t1libControl" and
 Enables or disables anti-aliasing of vector graphics in the PDF
 rasterizer.  This defaults to "yes".
 .TP
+.BR enableFreeTypeHinting " yes | no"
+Enable or disable FreeType font auto-hinting. This defaults to "no".
+.TP
+.BR enableFreeTypeSlightHinting " yes | no"
+Enable or disable FreeType font slight hinting. This defaults
+to "no", which means full hinting will be used instead if hinting
+is enabled.
+.TP
 .BR strokeAdjust " yes | no"
 Enables or disables stroke adjustment.  This defaults to "yes".
 .TP

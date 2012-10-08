@@ -131,6 +131,15 @@ Enable or disable font anti-aliasing.  This defaults to "yes".
 Enable or disable vector anti-aliasing.  This defaults to "yes".
 .RB "[config file: " vectorAntialias ]
 .TP
+.BI \-ah " yes | no"
+Enable or disable FreeType font auto-hinting.  This defaults to "no".
+.RB "[config file: " enableFreeTypeHinting ]
+.TP
+.BI \-sh " yes | no"
+Enable or disable FreeType font slight hinting.  This defaults to
+"no", which means full hinting if auto-hinting is enabled.
+.RB "[config file: " enableFreeTypeSlightHinting ]
+.TP
 .BI \-ps " PS-file"
 Set the default file name for PostScript output (i.e., the name which
 will appear in the print dialog).  This can also be of the

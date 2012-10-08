@@ -722,6 +722,10 @@ void GlobalParamsGUI::parseLine(char *buf, GooString *fileName, int line) {
       parseYesNo("enableT1lib", &enableT1lib, tokens, fileName, line);
     } else if (!cmd->cmp("enableFreeType")) {
       parseYesNo("enableFreeType", &enableFreeType, tokens, fileName, line);
+    } else if (!cmd->cmp("enableFreeTypeHinting")) {
+      parseYesNo("enableFreeTypeHinting", &enableFreeTypeHinting , tokens, fileName, line);
+    } else if (!cmd->cmp("enableFreeTypeSlightHinting")) {
+      parseYesNo("enableFreeTypeSlightHinting", &enableFreeTypeSlightHinting, tokens, fileName, line);
     } else if (!cmd->cmp("antialias")) {
       parseYesNo("antialias", &antialias, tokens, fileName, line);
     } else if (!cmd->cmp("vectorAntialias")) {
