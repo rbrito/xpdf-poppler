@@ -30,7 +30,8 @@ CoreOutputDev::CoreOutputDev(SplashColorMode colorModeA, int bitmapRowPadA,
 	incrementalUpdate(incrementalUpdateA), redrawCbk(redrawCbkA),
 	redrawCbkData(redrawCbkDataA)
 {
-  setFreeTypeHinting(globalParamsGUI->getEnableFreeTypeHinting());
+  setFreeTypeHinting(globalParamsGUI->getEnableFreeTypeHinting(),
+                     globalParamsGUI->getEnableFreeTypeSlightHinting());
 }
 
 CoreOutputDev::~CoreOutputDev() {

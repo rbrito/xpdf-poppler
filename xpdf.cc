@@ -27,6 +27,7 @@ static char enableFreeTypeStr[16] = "";
 static char antialiasStr[16] = "";
 static char vectorAntialiasStr[16] = "";
 static char autohintingStr[16] = "no";
+static char slighthintingStr[16] = "no";
 static char psFileArg[256];
 static char paperSize[15] = "";
 static int paperWidth = 0;
@@ -83,6 +84,8 @@ static ArgDesc argDesc[] = {
    "enable vector anti-aliasing: yes, no"},
   {"-ah",         argString,      autohintingStr, sizeof(autohintingStr),
    "enable font auto-hinting: yes, no (default no)"},
+  {"-sh",         argString,      slighthintingStr, sizeof(slighthintingStr),
+   "enable slight hinting for font auto-hinting: yes, no (default no)"},
   {"-ps",         argString,      psFileArg,      sizeof(psFileArg),
    "default PostScript file name or command"},
   {"-paper",      argString,      paperSize,      sizeof(paperSize),
@@ -216,6 +219,11 @@ int main(int argc, char *argv[]) {
   if (autohintingStr[0]) {
     if (!globalParamsGUI->setEnableFreeTypeHinting(autohintingStr)) {
       fprintf(stderr, "Bad '-ah' value on command line\n");
+    }
+  }
+  if (slighthintingStr[0]) {
+    if (!globalParamsGUI->setEnableFreeTypeSlightHinting(slighthintingStr)) {
+      fprintf(stderr, "Bad '-sh' value on command line\n");
     }
   }
   if (printCommands) {

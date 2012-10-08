@@ -169,6 +169,7 @@ public:
   GBool getEnableT1lib();
   GBool getEnableFreeType();
   GBool getEnableFreeTypeHinting();
+  GBool getEnableFreeTypeSlightHinting();
   GBool getAntialias();
   GBool getVectorAntialias();
   GBool getStrokeAdjust();
@@ -225,6 +226,7 @@ public:
   GBool setEnableT1lib(char *s);
   GBool setEnableFreeType(char *s);
   GBool setEnableFreeTypeHinting(char *s);
+  GBool setEnableFreeTypeSlightHinting(char *s);
   GBool setAntialias(char *s);
   GBool setVectorAntialias(char *s);
   void setStrokeAdjust(GBool strokeAdjust);
@@ -357,6 +359,7 @@ private:
   GBool enableT1lib;		// t1lib enable flag
   GBool enableFreeType;		// FreeType enable flag
   GBool enableFreeTypeHinting;  // FreeType hinting enable flag
+  GBool enableFreeTypeSlightHinting;  // FreeType hinting enable flag
   GBool antialias;		// anti-aliasing enable flag
   GBool vectorAntialias;	// vector anti-aliasing enable flag
   GBool strokeAdjust;		// stroke adjustment enable flag

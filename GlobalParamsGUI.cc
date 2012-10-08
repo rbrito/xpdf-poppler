@@ -370,6 +370,7 @@ GlobalParamsGUI::GlobalParamsGUI(char *cfgFileName) {
   enableT1lib = true;
   enableFreeType = true;
   enableFreeTypeHinting = gFalse;
+  enableFreeTypeSlightHinting = gFalse;
   antialias = true;
   vectorAntialias = true;
   strokeAdjust = true;
@@ -2211,6 +2212,15 @@ bool GlobalParamsGUI::getEnableFreeTypeHinting() {
   return f;
 }
 
+bool GlobalParamsGUI::getEnableFreeTypeSlightHinting() {
+  bool f;
+
+  lockGlobalParamsGUI;
+  f = enableFreeTypeSlightHinting;
+  unlockGlobalParamsGUI;
+  return f;
+}
+
 bool GlobalParamsGUI::getAntialias() {
   bool f;
 
@@ -2656,6 +2666,15 @@ bool GlobalParamsGUI::setEnableFreeTypeHinting(char *s) {
 
   lockGlobalParamsGUI;
   ok = parseYesNo2(s, &enableFreeTypeHinting);
+  unlockGlobalParamsGUI;
+  return ok;
+}
+
+bool GlobalParamsGUI::setEnableFreeTypeSlightHinting(char *s) {
+  bool ok;
+
+  lockGlobalParamsGUI;
+  ok = parseYesNo2(s, &enableFreeTypeSlightHinting);
   unlockGlobalParamsGUI;
   return ok;
 }
