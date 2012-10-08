@@ -19,6 +19,7 @@
 #include <GlobalParams.h>
 #include "goo/gtypes.h"
 #include "CharTypes.h"
+#include "poppler-api.h"
 
 #if MULTITHREADED
 #include "goo/GooMutex.h"
