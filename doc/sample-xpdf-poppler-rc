@@ -79,10 +79,8 @@
 
 #----- misc settings
 
-# Enable t1lib, FreeType, and anti-aliased text.
+# Enable anti-aliased text.
 
-#enableT1lib		yes
-#enableFreeType		yes
 #antialias		yes
 
 # Set the command used to run a web browser when a URL hyperlink is

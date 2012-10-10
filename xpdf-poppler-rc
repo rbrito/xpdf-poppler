@@ -74,16 +74,6 @@ psFile			"|lpr"
 
 #----- misc settings
 
-# Enable Type 1 font rasterizing with t1lib. Default "yes".
-
-#enableT1lib		no
-
-# Enable TrueType and Type 1 font rasterizing with FreeType. Default "yes".
-
-#enableFreeType		no
-
-# Enable anti-aliasing of fonts. Default "yes".
-
 #antialias		no
 
 # Set the command used to run a web browser when a URL hyperlink is

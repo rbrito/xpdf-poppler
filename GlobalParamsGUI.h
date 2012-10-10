@@ -20,10 +20,6 @@
 #include "goo/gtypes.h"
 #include "CharTypes.h"
 
-#if MULTITHREADED
-#include "goo/GooMutex.h"
-#endif
-
 class GooString;
 class GooList;
 class GooHash;
@@ -113,61 +109,23 @@ public:
 
 //------------------------------------------------------------------------
 
-class GlobalParamsGUI {
+class GlobalParamsGUI : public GlobalParams {
 public:
 
   // Initialize the global parameters by attempting to read a config
   // file.
   GlobalParamsGUI(char *cfgFileName = NULL);
 
-  ~GlobalParamsGUI();
-
-  void setBaseDir(char *dir);
-  void setupBaseFonts(char *dir);
-
   void parseLine(char *buf, GooString *fileName, int line);
+
+  void warnDeprecated(char *option, char *message = NULL);
 
   //----- accessors
 
-  CharCode getMacRomanCharCode(char *charName);
-
-  GooString *getBaseDir();
-  Unicode mapNameToUnicode(char *charName);
-  UnicodeMap *getResidentUnicodeMap(GooString *encodingName);
-  FILE *getUnicodeMapFile(GooString *encodingName);
-  FILE *findCMapFile(GooString *collection, GooString *cMapName);
-  FILE *findToUnicodeFile(GooString *name);
-  DisplayFontParam *getDisplayFont(GfxFont *font);
-  DisplayFontParam *getDisplayFont(GooString *fontName);
-  DisplayFontParam *getDisplayCIDFont(GooString *fontName, GooString *collection);
   GooString *getPSFile();
-  int getPSPaperWidth();
-  int getPSPaperHeight();
-  void getPSImageableArea(int *llx, int *lly, int *urx, int *ury);
-  GBool getPSDuplex();
   GBool getPSCrop();
-  GBool getPSExpandSmaller();
-  GBool getPSShrinkLarger();
-  GBool getPSCenter();
-  PSLevel getPSLevel();
-  PSFontParam16 *getPSFont(GooString *fontName);
-  PSFontParam16 *getPSFont16(GooString *fontName, GooString *collection, int wMode);
-  GBool getPSEmbedType1();
-  GBool getPSEmbedTrueType();
-  GBool getPSEmbedCIDPostScript();
-  GBool getPSEmbedCIDTrueType();
-  GBool getPSPreload();
-  GBool getPSOPI();
-  GBool getPSASCIIHex();
-  GooString *getTextEncodingName();
-  EndOfLineKind getTextEOL();
-  GBool getTextPageBreaks();
-  GBool getTextKeepTinyChars();
-  GooString *findFontFile(GooString *fontName, char **exts);
   GooString *getInitialZoom();
   GBool getContinuousView();
-  GBool getEnableT1lib();
-  GBool getEnableFreeType();
   GBool getEnableFreeTypeHinting();
   GBool getEnableFreeTypeSlightHinting();
   GBool getAntialias();
@@ -193,9 +151,6 @@ public:
   UnicodeMap *getUnicodeMap(GooString *encodingName);
   CMap *getCMap(GooString *collection, GooString *cMapName, Stream *stream);
   UnicodeMap *getTextEncoding();
-#ifdef ENABLE_PLUGINS
-  GBool loadPlugin(char *type, char *name);
-#endif
 
   //----- functions to set parameters
   void addDisplayFont(DisplayFontParam *param);
@@ -290,10 +245,6 @@ private:
 		  GooList *tokens, GooString *fileName, int line);
   UnicodeMap *getUnicodeMap2(GooString *encodingName);
 
-  void addCIDToUnicode(GooString *collection, GooString *fileName);
-  void addUnicodeMap(GooString *encodingName, GooString *fileName);
-  void addCMapDir(GooString *collection, GooString *dir);
-
   //----- static tables
 
   NameToCharCode *		// mapping from char name to
@@ -384,18 +335,6 @@ private:
   CMapCache *cMapCache;
 
   FcConfig *FCcfg;
-
-#ifdef ENABLE_PLUGINS
-  GooList *plugins;		// list of plugins [Plugin]
-  GooList *securityHandlers;	// list of loaded security handlers
-				//   [XpdfSecurityHandler]
-#endif
-
-#if MULTITHREADED
-  GooMutex mutex;
-  GooMutex unicodeMapCacheMutex;
-  GooMutex cMapCacheMutex;
-#endif
 };
 
 #endif

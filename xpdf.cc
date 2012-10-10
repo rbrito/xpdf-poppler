@@ -70,14 +70,10 @@ static ArgDesc argDesc[] = {
    "initial zoom level (percent, 'page', 'width')"},
   {"-cont",       argFlag,        &contView,      0,
    "start in continuous view mode" },
-#if HAVE_T1LIB_H
   {"-t1lib",      argString,      enableT1libStr, sizeof(enableT1libStr),
-   "enable t1lib font rasterizer: yes, no"},
-#endif
-#if HAVE_FREETYPE_FREETYPE_H | HAVE_FREETYPE_H
+   "deprecated (freetype is always used)"},
   {"-freetype",   argString,      enableFreeTypeStr, sizeof(enableFreeTypeStr),
-   "enable FreeType font rasterizer: yes, no"},
-#endif
+   "deprecated (freetype is always used)"},
   {"-aa",         argString,      antialiasStr,   sizeof(antialiasStr),
    "enable font anti-aliasing: yes, no"},
   {"-aaVector",   argString,      vectorAntialiasStr, sizeof(vectorAntialiasStr),
@@ -197,14 +193,10 @@ int main(int argc, char *argv[]) {
     }
   }
   if (enableT1libStr[0]) {
-    if (!globalParamsGUI->setEnableT1lib(enableT1libStr)) {
-      fprintf(stderr, "Bad '-t1lib' value on command line\n");
-    }
+    warnDeprecated("-t1lib", "Freetype font engine is now used.");
   }
   if (enableFreeTypeStr[0]) {
-    if (!globalParamsGUI->setEnableFreeType(enableFreeTypeStr)) {
-      fprintf(stderr, "Bad '-freetype' value on command line\n");
-    }
+    warnDeprecated("-freeType", "Freetype font engine is now always used.");
   }
   if (antialiasStr[0]) {
     if (!globalParamsGUI->setAntialias(antialiasStr)) {
