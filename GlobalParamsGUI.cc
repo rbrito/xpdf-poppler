@@ -139,19 +139,19 @@ DisplayFontParam::~DisplayFontParam() {
 }
 
 //------------------------------------------------------------------------
-// PSFontParam
+// PSFontParam16
 //------------------------------------------------------------------------
 
-PSFontParam::PSFontParam(GooString *pdfFontNameA, int wModeA,
+PSFontParam16::PSFontParam16(GooString *nameA, int wModeA,
 			 GooString *psFontNameA, GooString *encodingA) {
-  pdfFontName = pdfFontNameA;
+  name = nameA;
   wMode = wModeA;
   psFontName = psFontNameA;
   encoding = encodingA;
 }
 
-PSFontParam::~PSFontParam() {
-  delete pdfFontName;
+PSFontParam16::~PSFontParam16() {
+  delete name;
   delete psFontName;
   if (encoding) {
     delete encoding;
@@ -223,30 +223,30 @@ Plugin *Plugin::load(char *type, char *name) {
   //~ need to deal with other extensions here
   path->append(".so");
   if (!(dlA = dlopen(path->getCString(), RTLD_NOW))) {
-    error(-1, "Failed to load plugin '%s': %s",
+    error(errIO, -1, "Failed to load plugin '%s': %s",
 	  path->getCString(), dlerror());
     goto err1;
   }
   if (!(vt = (XpdfPluginVecTable *)dlsym(dlA, "xpdfPluginVecTable"))) {
-    error(-1, "Failed to find xpdfPluginVecTable in plugin '%s'",
+    error(errInternal, -1, "Failed to find xpdfPluginVecTable in plugin '%s'",
 	  path->getCString());
     goto err2;
   }
 
   if (vt->version != xpdfPluginVecTable.version) {
-    error(-1, "Plugin '%s' is wrong version", path->getCString());
+    error(errInternal, -1, "Plugin '%s' is wrong version", path->getCString());
     goto err2;
   }
   memcpy(vt, &xpdfPluginVecTable, sizeof(xpdfPluginVecTable));
 
   if (!(xpdfInitPlugin = (XpdfBool (*)(void))dlsym(dlA, "xpdfInitPlugin"))) {
-    error(-1, "Failed to find xpdfInitPlugin in plugin '%s'",
+    error(errInternal, -1, "Failed to find xpdfInitPlugin in plugin '%s'",
 	  path->getCString());
     goto err2;
   }
 
   if (!(*xpdfInitPlugin)()) {
-    error(-1, "Initialization of plugin '%s' failed",
+    error(errInternal, -1, "Initialization of plugin '%s' failed",
 	  path->getCString());
     goto err2;
   }
@@ -326,7 +326,7 @@ GlobalParamsGUI::GlobalParamsGUI(char *cfgFileName) {
     psPaperWidth = (int)paperpswidth(paperType);
     psPaperHeight = (int)paperpsheight(paperType);
   } else {
-    error(-1, "No paper information available - using defaults");
+    error(errInternal, -1, "No paper information available - using defaults");
     psPaperWidth = defPaperWidth;
     psPaperHeight = defPaperHeight;
   }
@@ -624,11 +624,11 @@ void GlobalParamsGUI::parseLine(char *buf, GooString *fileName, int line) {
 	  parseFile(incFile, f2);
 	  fclose(f2);
 	} else {
-	  error(-1, "Couldn't find included config file: '%s' (%s:%d)",
+	  error(errIO, -1, "Couldn't find included config file: '%s' (%s:%d)",
 		incFile->getCString(), fileName->getCString(), line);
 	}
       } else {
-	error(-1, "Bad 'include' config file command (%s:%d)",
+	error(errConfig, -1, "Bad 'include' config file command (%s:%d)",
 	      fileName->getCString(), line);
       }
     } else if (!cmd->cmp("nameToUnicode")) {
@@ -768,17 +768,17 @@ void GlobalParamsGUI::parseLine(char *buf, GooString *fileName, int line) {
     } else if (!cmd->cmp("errQuiet")) {
       parseYesNo("errQuiet", &errQuiet, tokens, fileName, line);
     } else {
-      error(-1, "Unknown config file command '%s' (%s:%d)",
+      error(errConfig, -1, "Unknown config file command '%s' (%s:%d)",
 	    cmd->getCString(), fileName->getCString(), line);
       if (!cmd->cmp("displayFontX") ||
 	  !cmd->cmp("displayNamedCIDFontX") ||
 	  !cmd->cmp("displayCIDFontX")) {
-	error(-1, "-- Xpdf no longer supports X fonts");
+	error(errConfig, -1, "-- Xpdf no longer supports X fonts");
       } else if (!cmd->cmp("t1libControl") || !cmd->cmp("freetypeControl")) {
-	error(-1, "-- The t1libControl and freetypeControl options have been replaced");
-	error(-1, "   by the enableT1lib, enableFreeType, and antialias options");
+	error(errConfig, -1, "-- The t1libControl and freetypeControl options have been replaced");
+	error(errConfig, -1, "   by the enableT1lib, enableFreeType, and antialias options");
       } else if (!cmd->cmp("fontpath") || !cmd->cmp("fontmap")) {
-	error(-1, "-- the config file format has changed since Xpdf 0.9x");
+	error(errConfig, -1, "-- the config file format has changed since Xpdf 0.9x");
       }
     }
   }
@@ -796,13 +796,13 @@ void GlobalParamsGUI::parseNameToUnicode(GooList *tokens, GooString *fileName,
   Unicode u;
 
   if (tokens->getLength() != 2) {
-    error(-1, "Bad 'nameToUnicode' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'nameToUnicode' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
   name = (GooString *)tokens->get(1);
   if (!(f = fopen(name->getCString(), "r"))) {
-    error(-1, "Couldn't open 'nameToUnicode' file '%s'",
+    error(errIO, -1, "Couldn't open 'nameToUnicode' file '%s'",
 	  name->getCString());
     return;
   }
@@ -814,7 +814,7 @@ void GlobalParamsGUI::parseNameToUnicode(GooList *tokens, GooString *fileName,
       sscanf(tok1, "%x", &u);
       nameToUnicode->add(tok2, u);
     } else {
-      error(-1, "Bad line in 'nameToUnicode' file (%s:%d)",
+      error(errConfig, -1, "Bad line in 'nameToUnicode' file (%s:%d)",
 	    name->getCString(), line2);
     }
     ++line2;
@@ -830,7 +830,7 @@ void GlobalParamsGUI::parseNameToUnicode(GooString *name) {
   Unicode u;
 
   if (!(f = fopen(name->getCString(), "r"))) {
-    error(-1, "Couldn't open 'nameToUnicode' file '%s'",
+    error(errIO, -1, "Couldn't open 'nameToUnicode' file '%s'",
 	  name->getCString());
     return;
   }
@@ -842,7 +842,7 @@ void GlobalParamsGUI::parseNameToUnicode(GooString *name) {
       sscanf(tok1, "%x", &u);
       nameToUnicode->add(tok2, u);
     } else {
-      error(-1, "Bad line in 'nameToUnicode' file (%s:%d)",
+      error(errConfig, -1, "Bad line in 'nameToUnicode' file (%s:%d)",
 	    name->getCString(), line);
     }
     ++line;
@@ -855,7 +855,7 @@ void GlobalParamsGUI::parseCIDToUnicode(GooList *tokens, GooString *fileName,
   GooString *collection, *name, *old;
 
   if (tokens->getLength() != 3) {
-    error(-1, "Bad 'cidToUnicode' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'cidToUnicode' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -872,7 +872,7 @@ void GlobalParamsGUI::parseUnicodeToUnicode(GooList *tokens, GooString *fileName
   GooString *font, *file, *old;
 
   if (tokens->getLength() != 3) {
-    error(-1, "Bad 'unicodeToUnicode' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'unicodeToUnicode' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -889,7 +889,7 @@ void GlobalParamsGUI::parseUnicodeMap(GooList *tokens, GooString *fileName,
   GooString *encodingName, *name, *old;
 
   if (tokens->getLength() != 3) {
-    error(-1, "Bad 'unicodeMap' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'unicodeMap' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -906,7 +906,7 @@ void GlobalParamsGUI::parseCMapDir(GooList *tokens, GooString *fileName, int lin
   GooList *list;
 
   if (tokens->getLength() != 3) {
-    error(-1, "Bad 'cMapDir' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'cMapDir' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -922,7 +922,7 @@ void GlobalParamsGUI::parseCMapDir(GooList *tokens, GooString *fileName, int lin
 void GlobalParamsGUI::parseToUnicodeDir(GooList *tokens, GooString *fileName,
 				     int line) {
   if (tokens->getLength() != 2) {
-    error(-1, "Bad 'toUnicodeDir' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'toUnicodeDir' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -963,7 +963,7 @@ void GlobalParamsGUI::parseDisplayFont(GooList *tokens, GooHash *fontHash,
  err2:
   delete param;
  err1:
-  error(-1, "Bad 'display*Font*' config file command (%s:%d)",
+  error(errConfig, -1, "Bad 'display*Font*' config file command (%s:%d)",
 	fileName->getCString(), line);
 }
 
@@ -974,7 +974,7 @@ void GlobalParamsGUI::parsePSPaperSize(GooList *tokens, GooString *fileName,
   if (tokens->getLength() == 2) {
     tok = (GooString *)tokens->get(1);
     if (!setPSPaperSize(tok->getCString())) {
-      error(-1, "Bad 'psPaperSize' config file command (%s:%d)",
+      error(errConfig, -1, "Bad 'psPaperSize' config file command (%s:%d)",
 	    fileName->getCString(), line);
     }
   } else if (tokens->getLength() == 3) {
@@ -986,7 +986,7 @@ void GlobalParamsGUI::parsePSPaperSize(GooList *tokens, GooString *fileName,
     psImageableURX = psPaperWidth;
     psImageableURY = psPaperHeight;
   } else {
-    error(-1, "Bad 'psPaperSize' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'psPaperSize' config file command (%s:%d)",
 	  fileName->getCString(), line);
   }
 }
@@ -994,7 +994,7 @@ void GlobalParamsGUI::parsePSPaperSize(GooList *tokens, GooString *fileName,
 void GlobalParamsGUI::parsePSImageableArea(GooList *tokens, GooString *fileName,
 					int line) {
   if (tokens->getLength() != 5) {
-    error(-1, "Bad 'psImageableArea' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'psImageableArea' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -1008,7 +1008,7 @@ void GlobalParamsGUI::parsePSLevel(GooList *tokens, GooString *fileName, int lin
   GooString *tok;
 
   if (tokens->getLength() != 2) {
-    error(-1, "Bad 'psLevel' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'psLevel' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -1026,14 +1026,14 @@ void GlobalParamsGUI::parsePSLevel(GooList *tokens, GooString *fileName, int lin
   } else if (!tok->cmp("level3Sep")) {
     psLevel = psLevel3Sep;
   } else {
-    error(-1, "Bad 'psLevel' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'psLevel' config file command (%s:%d)",
 	  fileName->getCString(), line);
   }
 }
 
 void GlobalParamsGUI::parsePSFile(GooList *tokens, GooString *fileName, int line) {
   if (tokens->getLength() != 2) {
-    error(-1, "Bad 'psFile' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'psFile' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -1044,26 +1044,26 @@ void GlobalParamsGUI::parsePSFile(GooList *tokens, GooString *fileName, int line
 }
 
 void GlobalParamsGUI::parsePSFont(GooList *tokens, GooString *fileName, int line) {
-  PSFontParam *param;
+  PSFontParam16 *param;
 
   if (tokens->getLength() != 3) {
-    error(-1, "Bad 'psFont' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'psFont' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
-  param = new PSFontParam(((GooString *)tokens->get(1))->copy(), 0,
+  param = new PSFontParam16(((GooString *)tokens->get(1))->copy(), 0,
 			  ((GooString *)tokens->get(2))->copy(), NULL);
-  psFonts->add(param->pdfFontName, param);
+  psFonts->add(param->name, param);
 }
 
 void GlobalParamsGUI::parsePSFont16(char *cmdName, GooList *fontList,
 				 GooList *tokens, GooString *fileName, int line) {
-  PSFontParam *param;
+  PSFontParam16 *param;
   int wMode;
   GooString *tok;
 
   if (tokens->getLength() != 5) {
-    error(-1, "Bad '%s' config file command (%s:%d)",
+    error(errConfig, -1, "Bad '%s' config file command (%s:%d)",
 	  cmdName, fileName->getCString(), line);
     return;
   }
@@ -1073,11 +1073,11 @@ void GlobalParamsGUI::parsePSFont16(char *cmdName, GooList *fontList,
   } else if (!tok->cmp("V")) {
     wMode = 1;
   } else {
-    error(-1, "Bad '%s' config file command (%s:%d)",
+    error(errConfig, -1, "Bad '%s' config file command (%s:%d)",
 	  cmdName, fileName->getCString(), line);
     return;
   }
-  param = new PSFontParam(((GooString *)tokens->get(1))->copy(),
+  param = new PSFontParam16(((GooString *)tokens->get(1))->copy(),
 			  wMode,
 			  ((GooString *)tokens->get(3))->copy(),
 			  ((GooString *)tokens->get(4))->copy());
@@ -1087,7 +1087,7 @@ void GlobalParamsGUI::parsePSFont16(char *cmdName, GooList *fontList,
 void GlobalParamsGUI::parseTextEncoding(GooList *tokens, GooString *fileName,
 				     int line) {
   if (tokens->getLength() != 2) {
-    error(-1, "Bad 'textEncoding' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'textEncoding' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -1099,7 +1099,7 @@ void GlobalParamsGUI::parseTextEOL(GooList *tokens, GooString *fileName, int lin
   GooString *tok;
 
   if (tokens->getLength() != 2) {
-    error(-1, "Bad 'textEOL' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'textEOL' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -1111,14 +1111,14 @@ void GlobalParamsGUI::parseTextEOL(GooList *tokens, GooString *fileName, int lin
   } else if (!tok->cmp("mac")) {
     textEOL = eolMac;
   } else {
-    error(-1, "Bad 'textEOL' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'textEOL' config file command (%s:%d)",
 	  fileName->getCString(), line);
   }
 }
 
 void GlobalParamsGUI::parseFontDir(GooList *tokens, GooString *fileName, int line) {
   if (tokens->getLength() != 2) {
-    error(-1, "Bad 'fontDir' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'fontDir' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -1128,7 +1128,7 @@ void GlobalParamsGUI::parseFontDir(GooList *tokens, GooString *fileName, int lin
 void GlobalParamsGUI::parseInitialZoom(GooList *tokens,
 				    GooString *fileName, int line) {
   if (tokens->getLength() != 2) {
-    error(-1, "Bad 'initialZoom' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'initialZoom' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -1141,7 +1141,7 @@ void GlobalParamsGUI::parseScreenType(GooList *tokens, GooString *fileName,
   GooString *tok;
 
   if (tokens->getLength() != 2) {
-    error(-1, "Bad 'screenType' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'screenType' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -1153,7 +1153,7 @@ void GlobalParamsGUI::parseScreenType(GooList *tokens, GooString *fileName,
   } else if (!tok->cmp("stochasticClustered")) {
     screenType = screenStochasticClustered;
   } else {
-    error(-1, "Bad 'screenType' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'screenType' config file command (%s:%d)",
 	  fileName->getCString(), line);
   }
 }
@@ -1164,7 +1164,7 @@ void GlobalParamsGUI::parseBind(GooList *tokens, GooString *fileName, int line) 
   int code, mods, context, i;
 
   if (tokens->getLength() < 4) {
-    error(-1, "Bad 'bind' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'bind' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -1194,7 +1194,7 @@ void GlobalParamsGUI::parseUnbind(GooList *tokens, GooString *fileName, int line
   int code, mods, context, i;
 
   if (tokens->getLength() != 3) {
-    error(-1, "Bad 'unbind' config file command (%s:%d)",
+    error(errConfig, -1, "Bad 'unbind' config file command (%s:%d)",
 	  fileName->getCString(), line);
     return;
   }
@@ -1283,7 +1283,7 @@ bool GlobalParamsGUI::parseKey(GooString *modKeyStr, GooString *contextStr,
   } else if (*p0 >= 0x20 && *p0 <= 0x7e && !p0[1]) {
     *code = (int)*p0;
   } else {
-    error(-1, "Bad key/modifier in '%s' config file command (%s:%d)",
+    error(errConfig, -1, "Bad key/modifier in '%s' config file command (%s:%d)",
 	  cmdName, fileName->getCString(), line);
     return gFalse;
   }
@@ -1325,7 +1325,7 @@ bool GlobalParamsGUI::parseKey(GooString *modKeyStr, GooString *contextStr,
 	*context |= xpdfKeyContextScrLockOff;
 	p0 += 10;
       } else {
-	error(-1, "Bad context in '%s' config file command (%s:%d)",
+	error(errConfig, -1, "Bad context in '%s' config file command (%s:%d)",
 	      cmdName, fileName->getCString(), line);
 	return gFalse;
       }
@@ -1333,7 +1333,7 @@ bool GlobalParamsGUI::parseKey(GooString *modKeyStr, GooString *contextStr,
 	break;
       }
       if (*p0 != ',') {
-	error(-1, "Bad context in '%s' config file command (%s:%d)",
+	error(errConfig, -1, "Bad context in '%s' config file command (%s:%d)",
 	      cmdName, fileName->getCString(), line);
 	return gFalse;
       }
@@ -1347,7 +1347,7 @@ bool GlobalParamsGUI::parseKey(GooString *modKeyStr, GooString *contextStr,
 void GlobalParamsGUI::parseCommand(char *cmdName, GooString **val,
 				GooList *tokens, GooString *fileName, int line) {
   if (tokens->getLength() != 2) {
-    error(-1, "Bad '%s' config file command (%s:%d)",
+    error(errConfig, -1, "Bad '%s' config file command (%s:%d)",
 	  cmdName, fileName->getCString(), line);
     return;
   }
@@ -1362,13 +1362,13 @@ void GlobalParamsGUI::parseYesNo(char *cmdName, bool *flag,
   GooString *tok;
 
   if (tokens->getLength() != 2) {
-    error(-1, "Bad '%s' config file command (%s:%d)",
+    error(errConfig, -1, "Bad '%s' config file command (%s:%d)",
 	  cmdName, fileName->getCString(), line);
     return;
   }
   tok = (GooString *)tokens->get(1);
   if (!parseYesNo2(tok->getCString(), flag)) {
-    error(-1, "Bad '%s' config file command (%s:%d)",
+    error(errConfig, -1, "Bad '%s' config file command (%s:%d)",
 	  cmdName, fileName->getCString(), line);
   }
 }
@@ -1390,13 +1390,13 @@ void GlobalParamsGUI::parseInteger(char *cmdName, int *val,
   int i;
 
   if (tokens->getLength() != 2) {
-    error(-1, "Bad '%s' config file command (%s:%d)",
+    error(errConfig, -1, "Bad '%s' config file command (%s:%d)",
 	  cmdName, fileName->getCString(), line);
     return;
   }
   tok = (GooString *)tokens->get(1);
   if (tok->getLength() == 0) {
-    error(-1, "Bad '%s' config file command (%s:%d)",
+    error(errConfig, -1, "Bad '%s' config file command (%s:%d)",
 	  cmdName, fileName->getCString(), line);
     return;
   }
@@ -1407,7 +1407,7 @@ void GlobalParamsGUI::parseInteger(char *cmdName, int *val,
   }
   for (; i < tok->getLength(); ++i) {
     if (tok->getChar(i) < '0' || tok->getChar(i) > '9') {
-      error(-1, "Bad '%s' config file command (%s:%d)",
+      error(errConfig, -1, "Bad '%s' config file command (%s:%d)",
 	    cmdName, fileName->getCString(), line);
       return;
     }
@@ -1421,13 +1421,13 @@ void GlobalParamsGUI::parseFloat(char *cmdName, double *val,
   int i;
 
   if (tokens->getLength() != 2) {
-    error(-1, "Bad '%s' config file command (%s:%d)",
+    error(errConfig, -1, "Bad '%s' config file command (%s:%d)",
 	  cmdName, fileName->getCString(), line);
     return;
   }
   tok = (GooString *)tokens->get(1);
   if (tok->getLength() == 0) {
-    error(-1, "Bad '%s' config file command (%s:%d)",
+    error(errConfig, -1, "Bad '%s' config file command (%s:%d)",
 	  cmdName, fileName->getCString(), line);
     return;
   }
@@ -1439,7 +1439,7 @@ void GlobalParamsGUI::parseFloat(char *cmdName, double *val,
   for (; i < tok->getLength(); ++i) {
     if (!((tok->getChar(i) >= '0' && tok->getChar(i) <= '9') ||
 	  tok->getChar(i) == '.')) {
-      error(-1, "Bad '%s' config file command (%s:%d)",
+      error(errConfig, -1, "Bad '%s' config file command (%s:%d)",
 	    cmdName, fileName->getCString(), line);
       return;
     }
@@ -1497,9 +1497,9 @@ GlobalParamsGUI::~GlobalParamsGUI() {
   if (psFile) {
     delete psFile;
   }
-  deleteGooHash(psFonts, PSFontParam);
-  deleteGooList(psNamedFonts16, PSFontParam);
-  deleteGooList(psFonts16, PSFontParam);
+  deleteGooHash(psFonts, PSFontParam16);
+  deleteGooList(psNamedFonts16, PSFontParam16);
+  deleteGooList(psFonts16, PSFontParam16);
   delete textEncoding;
   deleteGooList(fontDirs, GooString);
 
@@ -1571,7 +1571,7 @@ void GlobalParamsGUI::setupBaseFonts(char *dir) {
       }
     }
     if (!fileName) {
-      error(-1, "No display font for '%s'", displayFontTab[i].name);
+      error(errIO, -1, "No display font for '%s'", displayFontTab[i].name);
       delete fontName;
       continue;
     }
@@ -1816,7 +1816,7 @@ static FcPattern *buildFcPattern(GfxFont *font)
         lang = "xx";
       else
       {
-        error(-1, "Unknown CID font collection, please report to poppler bugzilla.");
+        error(errInternal, -1, "Unknown CID font collection, please report to poppler bugzilla.");
         lang = "xx";
       }
     }
@@ -2008,26 +2008,26 @@ PSLevel GlobalParamsGUI::getPSLevel() {
   return level;
 }
 
-PSFontParam *GlobalParamsGUI::getPSFont(GooString *fontName) {
-  PSFontParam *p;
+PSFontParam16 *GlobalParamsGUI::getPSFont(GooString *fontName) {
+  PSFontParam16 *p;
 
   lockGlobalParamsGUI;
-  p = (PSFontParam *)psFonts->lookup(fontName);
+  p = (PSFontParam16 *)psFonts->lookup(fontName);
   unlockGlobalParamsGUI;
   return p;
 }
 
-PSFontParam *GlobalParamsGUI::getPSFont16(GooString *fontName,
+PSFontParam16 *GlobalParamsGUI::getPSFont16(GooString *fontName,
 				       GooString *collection, int wMode) {
-  PSFontParam *p;
+  PSFontParam16 *p;
   int i;
 
   lockGlobalParamsGUI;
   p = NULL;
   if (fontName) {
     for (i = 0; i < psNamedFonts16->getLength(); ++i) {
-      p = (PSFontParam *)psNamedFonts16->get(i);
-      if (!p->pdfFontName->cmp(fontName) &&
+      p = (PSFontParam16 *)psNamedFonts16->get(i);
+      if (!p->name->cmp(fontName) &&
 	  p->wMode == wMode) {
 	break;
       }
@@ -2036,8 +2036,8 @@ PSFontParam *GlobalParamsGUI::getPSFont16(GooString *fontName,
   }
   if (!p && collection) {
     for (i = 0; i < psFonts16->getLength(); ++i) {
-      p = (PSFontParam *)psFonts16->get(i);
-      if (!p->pdfFontName->cmp(collection) &&
+      p = (PSFontParam16 *)psFonts16->get(i);
+      if (!p->name->cmp(collection) &&
 	  p->wMode == wMode) {
 	break;
       }

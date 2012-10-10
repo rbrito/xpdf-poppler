@@ -184,7 +184,7 @@ void XPDFApp::getResources() {
       paperRGB[2] = xcol.blue >> 8;
       paperPixel = xcol.pixel;
     } else {
-      error(-1, "Couldn't allocate color '%s'", resources.paperColor);
+      error(errInternal, -1, "Couldn't allocate color '%s'", resources.paperColor);
     }
   }
   if (XAllocNamedColor(display, colormap, resources.matteColor,

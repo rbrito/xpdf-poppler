@@ -723,7 +723,7 @@ void XPDFViewer::execCmd(GooString *cmd, XEvent *event) {
   return;
 
  err1:
-  error(-1, "Invalid command syntax: '%s'", cmd->getCString());
+  error(errConfig, -1, "Invalid command syntax: '%s'", cmd->getCString());
  err2:
   delete name;
   for (int i = 0; i < nArgs; ++i) {

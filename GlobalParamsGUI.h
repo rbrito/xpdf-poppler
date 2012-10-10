@@ -19,7 +19,6 @@
 #include <GlobalParams.h>
 #include "goo/gtypes.h"
 #include "CharTypes.h"
-#include "poppler-api.h"
 
 #if MULTITHREADED
 #include "goo/GooMutex.h"
@@ -151,8 +150,8 @@ public:
   GBool getPSShrinkLarger();
   GBool getPSCenter();
   PSLevel getPSLevel();
-  PSFontParam *getPSFont(GooString *fontName);
-  PSFontParam *getPSFont16(GooString *fontName, GooString *collection, int wMode);
+  PSFontParam16 *getPSFont(GooString *fontName);
+  PSFontParam16 *getPSFont16(GooString *fontName, GooString *collection, int wMode);
   GBool getPSEmbedType1();
   GBool getPSEmbedTrueType();
   GBool getPSEmbedCIDPostScript();
@@ -337,9 +336,9 @@ private:
   GBool psDuplex;		// enable duplexing in PostScript?
   PSLevel psLevel;		// PostScript level to generate
   GooHash *psFonts;		// PostScript font info, indexed by PDF
-				//   font name [PSFontParam]
-  GooList *psNamedFonts16;	// named 16-bit fonts [PSFontParam]
-  GooList *psFonts16;		// generic 16-bit fonts [PSFontParam]
+				//   font name [PSFontParam16]
+  GooList *psNamedFonts16;	// named 16-bit fonts [PSFontParam16]
+  GooList *psFonts16;		// generic 16-bit fonts [PSFontParam16]
   GBool psEmbedType1;		// embed Type 1 fonts?
   GBool psEmbedTrueType;	// embed TrueType fonts?
   GBool psEmbedCIDPostScript;	// embed CID PostScript fonts?

@@ -23,7 +23,7 @@ dnl AM_CONFIG_HEADER(config.h)
 AC_PROG_CXX
 
 # Checks for libraries.
-PKG_CHECK_MODULES([PKG_CONFIG], [poppler >= 0.16 xt xpm x11 fontconfig])
+PKG_CHECK_MODULES([PKG_CONFIG], [poppler >= 0.20 xt xpm x11 fontconfig])
 m4_pattern_allow(PKG_CONFIG_PKG_ERRORS)
 
 dnl Openmotif does not provide pkgconfig files.

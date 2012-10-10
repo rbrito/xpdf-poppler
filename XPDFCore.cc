@@ -549,7 +549,7 @@ void XPDFCore::doAction(LinkAction *action) {
   // URI action
   case actionURI:
     if (!(cmd = globalParamsGUI->getURLCommand())) {
-      error(-1, "No urlCommand defined in config file");
+      error(errConfig, -1, "No urlCommand defined in config file");
       break;
     }
     runCommand(cmd, ((LinkURI *)action)->getURI());
@@ -579,14 +579,14 @@ void XPDFCore::doAction(LinkAction *action) {
 	(*actionCbk)(actionCbkData, actionName->getCString());
       }
     } else {
-      error(-1, "Unknown named action: '%s'", actionName->getCString());
+      error(errUnimplemented, -1, "Unknown named action: '%s'", actionName->getCString());
     }
     break;
 
   // Movie action
   case actionMovie:
     if (!(cmd = globalParamsGUI->getMovieCommand())) {
-      error(-1, "No movieCommand defined in config file");
+      error(errConfig, -1, "No movieCommand defined in config file");
       break;
     }
     if (((LinkMovie *)action)->hasAnnotRef()) {
@@ -638,13 +638,13 @@ void XPDFCore::doAction(LinkAction *action) {
   case actionRendition:
   case actionSound:
   case actionJavaScript:
-    error(-1, "Unimplemented link action type: '%s'",
+    error(errUnimplemented, -1, "Unimplemented link action type: '%s'",
 	  ((LinkUnknown *)action)->getAction()->getCString());
     break;
 
   // unknown action type
   case actionUnknown:
-    error(-1, "Unknown link action type: '%s'",
+    error(errUnimplemented, -1, "Unknown link action type: '%s'",
 	  ((LinkUnknown *)action)->getAction()->getCString());
     break;
   }
@@ -1335,7 +1335,7 @@ void XPDFCore::redrawRect(PDFCoreTile *tileA, int xSrc, int ySrc,
     XPutImage(display, drawAreaWin, drawAreaGC, tile->image,
 	      xSrc, ySrc, xDest, yDest, width, height);
     else
-      error(-1, "tile->image NULL in tile @ %p", tile);
+      error(errInternal, -1, "tile->image NULL in tile @ %p", tile);
 
   // draw the background
   } else {
