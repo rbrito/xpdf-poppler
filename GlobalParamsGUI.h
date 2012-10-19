@@ -307,8 +307,6 @@ private:
   GooList *fontDirs;		// list of font dirs [GooString]
   GooString *initialZoom;		// initial zoom level
   GBool continuousView;		// continuous view mode
-  GBool enableT1lib;		// t1lib enable flag
-  GBool enableFreeType;		// FreeType enable flag
   GBool enableFreeTypeHinting;  // FreeType hinting enable flag
   GBool enableFreeTypeSlightHinting;  // FreeType Slight (or Full) hinting enable flag
   GBool antialias;		// anti-aliasing enable flag
