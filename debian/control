@@ -2,7 +2,7 @@ Source: xpdf-poppler
 Section: text
 Priority: optional
 Maintainer: Rogério Brito <rbrito@ime.usp.br>
-Standards-Version: 3.9.0
+Standards-Version: 3.9.4
 Build-Depends:
  autoconf (>= 2.65),
  automake,
