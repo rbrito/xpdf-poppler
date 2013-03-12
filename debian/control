@@ -9,6 +9,7 @@ Build-Depends:
  debhelper (>= 8),
  lesstif2-dev,
  libpoppler-dev (>= 0.16),
+ libpoppler-private-dev,
  libtool,
  libx11-dev,
  libxpm-dev,
