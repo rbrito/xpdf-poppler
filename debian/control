@@ -7,7 +7,7 @@ Build-Depends:
  autoconf (>= 2.65),
  automake,
  debhelper (>= 8),
- lesstif2-dev,
+ lesstif2-dev | libmotif-dev,
  libpoppler-dev (<< 0.19),
  libpoppler-dev (>= 0.18),
  libpoppler-private-dev (<< 0.19),
