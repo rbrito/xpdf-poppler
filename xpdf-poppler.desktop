@@ -2,7 +2,7 @@
 Name=xpdf-poppler
 GenericName=PDF viewer
 Comment=View PDF files
-Exec=xpdf-poppler
+Exec=xpdf-poppler %f
 Icon=xpdf
 Terminal=false
 Type=Application
