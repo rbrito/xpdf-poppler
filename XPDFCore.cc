@@ -228,7 +228,6 @@ void XPDFCore::loadDoc(PDFDoc *docA) {
 
 void XPDFCore::resizeToPage(int pg) {
   Dimension width, height;
-  double width1, height1;
   Dimension topW, topH, topBorder, daW, daH;
   Dimension displayW, displayH;
 
@@ -238,6 +237,7 @@ void XPDFCore::resizeToPage(int pg) {
     width = displayW;
     height = displayH;
   } else {
+    double width1, height1;
     if (!doc || pg <= 0 || pg > doc->getNumPages()) {
       width1 = 612;
       height1 = 792;
@@ -374,10 +374,9 @@ void XPDFCore::startSelection(int wx, int wy) {
 
 void XPDFCore::endSelection(int wx, int wy) {
   int pg, x, y;
-  bool ok;
 
   if (doc && doc->getNumPages() > 0) {
-    ok = cvtWindowToDev(wx, wy, &pg, &x, &y);
+    bool ok = cvtWindowToDev(wx, wy, &pg, &x, &y);
     if (dragging) {
       dragging = false;
       setCursor(None);
@@ -741,12 +740,9 @@ void XPDFCore::takeFocus() {
 void XPDFCore::setupX(bool installCmap, int rgbCubeSizeA) {
   XVisualInfo visualTempl;
   XVisualInfo *visualList;
-  unsigned long mask;
   int nVisuals;
   XColor xcolor;
   XColor *xcolors;
-  int r, g, b, n, m;
-  bool ok;
 
   // for some reason, querying XmNvisual doesn't work (even if done
   // after the window is mapped)
@@ -766,6 +762,7 @@ void XPDFCore::setupX(bool installCmap, int rgbCubeSizeA) {
   }
   depth = visualList->depth;
   if (visualList->c_class == TrueColor) {
+    unsigned long mask;
     trueColor = true;
     for (mask = visualList->red_mask, rShift = 0;
          mask && !(mask & 1);
@@ -786,17 +783,18 @@ void XPDFCore::setupX(bool installCmap, int rgbCubeSizeA) {
 
   // allocate a color cube
   if (!trueColor) {
+    int r, g, b, n;
 
     // set colors in private colormap
     if (installCmap) {
       for (rgbCubeSize = xMaxRGBCube; rgbCubeSize >= 2; --rgbCubeSize) {
-        m = rgbCubeSize * rgbCubeSize * rgbCubeSize;
+        int m = rgbCubeSize * rgbCubeSize * rgbCubeSize;
         if (XAllocColorCells(display, colormap, False, NULL, 0, colors, m)) {
           break;
         }
       }
       if (rgbCubeSize >= 2) {
-        m = rgbCubeSize * rgbCubeSize * rgbCubeSize;
+        int m = rgbCubeSize * rgbCubeSize * rgbCubeSize;
         xcolors = (XColor *)gmallocn(m, sizeof(XColor));
         n = 0;
         for (r = 0; r < rgbCubeSize; ++r) {
@@ -824,7 +822,7 @@ void XPDFCore::setupX(bool installCmap, int rgbCubeSizeA) {
       if (rgbCubeSize > xMaxRGBCube) {
         rgbCubeSize = xMaxRGBCube;
       }
-      ok = false;
+      bool ok = false;
       for (rgbCubeSize = rgbCubeSizeA; rgbCubeSize >= 2; --rgbCubeSize) {
         ok = true;
         n = 0;
@@ -1155,15 +1153,12 @@ void XPDFCore::updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
   unsigned long pixel;
   unsigned char *ap;
   unsigned char alpha, alpha1;
-  int w, h, bw, x, y, r, g, b, gray;
+  int bw, x, y, r, g, b;
   int *errDownR, *errDownG, *errDownB;
-  int errRightR, errRightG, errRightB;
-  int errDownRightR, errDownRightG, errDownRightB;
-  int r0, g0, b0, re, ge, be;
 
   if (!tile->image) {
-    w = tile->xMax - tile->xMin;
-    h = tile->yMax - tile->yMin;
+    int w = tile->xMax - tile->xMin;
+    int h = tile->yMax - tile->yMin;
     image = XCreateImage(display, visual, depth, ZPixmap, 0, NULL, w, h, 8, 0);
     image->data = (char *)gmalloc(h * image->bytes_per_line);
     tile->image = image;
@@ -1226,7 +1221,7 @@ void XPDFCore::updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
 	  g = div255(alpha1 * paperColor[1] + alpha * g);
 	  b = div255(alpha1 * paperColor[2] + alpha * b);
 	}
-	gray = (int)(0.299 * r + 0.587 * g + 0.114 * b + 0.5);
+	int gray = (int)(0.299 * r + 0.587 * g + 0.114 * b + 0.5);
 	if (gray < 128) {
 	  pixel = colors[0];
 	} else {
@@ -1237,6 +1232,9 @@ void XPDFCore::updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
       }
     }
   } else {
+    int errDownRightR, errDownRightG, errDownRightB;
+    int errRightR, errRightG, errRightB;
+
     // do Floyd-Steinberg dithering on the whole bitmap
     errDownR = (int *)gmallocn(width + 2, sizeof(int));
     errDownG = (int *)gmallocn(width + 2, sizeof(int));
@@ -1265,9 +1263,9 @@ void XPDFCore::updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
 	  g = div255(alpha1 * paperColor[1] + alpha * g);
 	  b = div255(alpha1 * paperColor[2] + alpha * b);
 	}
-	r0 = r + errRightR + errDownR[x+1];
-	g0 = g + errRightG + errDownG[x+1];
-	b0 = b + errRightB + errDownB[x+1];
+	int r0 = r + errRightR + errDownR[x+1];
+	int g0 = g + errRightG + errDownG[x+1];
+	int b0 = b + errRightB + errDownB[x+1];
 	if (r0 < 0) {
 	  r = 0;
 	} else if (r0 >= 255) {
@@ -1289,9 +1287,9 @@ void XPDFCore::updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
 	} else {
 	  b = div255(b0 * (rgbCubeSize - 1));
 	}
-	re = r0 - ((r << 8) - r) / (rgbCubeSize - 1);
-	ge = g0 - ((g << 8) - g) / (rgbCubeSize - 1);
-	be = b0 - ((b << 8) - b) / (rgbCubeSize - 1);
+	int re = r0 - ((r << 8) - r) / (rgbCubeSize - 1);
+	int ge = g0 - ((g << 8) - g) / (rgbCubeSize - 1);
+	int be = b0 - ((b << 8) - b) / (rgbCubeSize - 1);
 	errRightR = (re * 7) >> 4;
 	errRightG = (ge * 7) >> 4;
 	errRightB = (be * 7) >> 4;
