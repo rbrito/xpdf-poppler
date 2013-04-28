@@ -946,7 +946,7 @@ void XPDFCore::initWindow() {
 
 void XPDFCore::hScrollChangeCbk(Widget widget, XtPointer ptr,
 			     XtPointer callData) {
-  XPDFCore *core = (XPDFCore *)ptr;
+  XPDFCore *core = static_cast<XPDFCore *>(ptr);
   XmScrollBarCallbackStruct *data = (XmScrollBarCallbackStruct *)callData;
 
   core->scrollTo(data->value, core->scrollY);
@@ -954,7 +954,7 @@ void XPDFCore::hScrollChangeCbk(Widget widget, XtPointer ptr,
 
 void XPDFCore::hScrollDragCbk(Widget widget, XtPointer ptr,
 			      XtPointer callData) {
-  XPDFCore *core = (XPDFCore *)ptr;
+  XPDFCore *core = static_cast<XPDFCore *>(ptr);
   XmScrollBarCallbackStruct *data = (XmScrollBarCallbackStruct *)callData;
 
   core->scrollTo(data->value, core->scrollY);
@@ -962,7 +962,7 @@ void XPDFCore::hScrollDragCbk(Widget widget, XtPointer ptr,
 
 void XPDFCore::vScrollChangeCbk(Widget widget, XtPointer ptr,
 			     XtPointer callData) {
-  XPDFCore *core = (XPDFCore *)ptr;
+  XPDFCore *core = static_cast<XPDFCore *>(ptr);
   XmScrollBarCallbackStruct *data = (XmScrollBarCallbackStruct *)callData;
 
   core->scrollTo(core->scrollX, data->value);
@@ -970,14 +970,14 @@ void XPDFCore::vScrollChangeCbk(Widget widget, XtPointer ptr,
 
 void XPDFCore::vScrollDragCbk(Widget widget, XtPointer ptr,
 			      XtPointer callData) {
-  XPDFCore *core = (XPDFCore *)ptr;
+  XPDFCore *core = static_cast<XPDFCore *>(ptr);
   XmScrollBarCallbackStruct *data = (XmScrollBarCallbackStruct *)callData;
 
   core->scrollTo(core->scrollX, data->value);
 }
 
 void XPDFCore::resizeCbk(Widget widget, XtPointer ptr, XtPointer callData) {
-  XPDFCore *core = (XPDFCore *)ptr;
+  XPDFCore *core = static_cast<XPDFCore *>(ptr);
   XEvent event;
   Widget top;
   Window rootWin;
@@ -1022,7 +1022,7 @@ void XPDFCore::resizeCbk(Widget widget, XtPointer ptr, XtPointer callData) {
 }
 
 void XPDFCore::redrawCbk(Widget widget, XtPointer ptr, XtPointer callData) {
-  XPDFCore *core = (XPDFCore *)ptr;
+  XPDFCore *core = static_cast<XPDFCore *>(ptr);
   XmDrawingAreaCallbackStruct *data = (XmDrawingAreaCallbackStruct *)callData;
   int x, y, w, h;
 
@@ -1041,7 +1041,7 @@ void XPDFCore::redrawCbk(Widget widget, XtPointer ptr, XtPointer callData) {
 }
 
 void XPDFCore::inputCbk(Widget widget, XtPointer ptr, XtPointer callData) {
-  XPDFCore *core = (XPDFCore *)ptr;
+  XPDFCore *core = static_cast<XPDFCore *>(ptr);
   XmDrawingAreaCallbackStruct *data = (XmDrawingAreaCallbackStruct *)callData;
   LinkAction *action;
   int pg, x, y;
@@ -1147,7 +1147,7 @@ PDFCoreTile *XPDFCore::newTile(int xDestA, int yDestA) {
 
 void XPDFCore::updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
 			      int width, int height, bool composited) {
-  XPDFCoreTile *tile = (XPDFCoreTile *)tileA;
+  XPDFCoreTile *tile = dynamic_cast<XPDFCoreTile *>(tileA);
   XImage *image;
   SplashColorPtr dataPtr, p;
   unsigned long pixel;
@@ -1316,7 +1316,7 @@ void XPDFCore::updateTileData(PDFCoreTile *tileA, int xSrc, int ySrc,
 void XPDFCore::redrawRect(PDFCoreTile *tileA, int xSrc, int ySrc,
 			  int xDest, int yDest, int width, int height,
 			  bool composited) {
-  XPDFCoreTile *tile = (XPDFCoreTile *)tileA;
+  XPDFCoreTile *tile = dynamic_cast<XPDFCoreTile *>(tileA);
   Window drawAreaWin;
   XGCValues gcValues;
 
@@ -1351,7 +1351,9 @@ void XPDFCore::updateScrollbars() {
     if (continuousMode) {
       maxPos = maxPageW;
     } else {
-      maxPos = ((PDFCorePage *)pages->get(0))->w;
+      // GooList doesn't have type information, so casting
+      // from void* to PDFCorePage* here
+      maxPos = static_cast<PDFCorePage *>(pages->get(0))->w;
     }
   } else {
     maxPos = 1;
@@ -1371,7 +1373,9 @@ void XPDFCore::updateScrollbars() {
     if (continuousMode) {
       maxPos = totalDocH;
     } else {
-      maxPos = ((PDFCorePage *)pages->get(0))->h;
+      // GooList doesn't have type information, so casting
+      // from void* to PDFCorePage* here
+      maxPos = static_cast<PDFCorePage *>(pages->get(0))->h;
     }
   } else {
     maxPos = 1;
@@ -1484,14 +1488,14 @@ bool XPDFCore::doDialog(int type, bool hasCancel,
 
 void XPDFCore::dialogOkCbk(Widget widget, XtPointer ptr,
 			   XtPointer callData) {
-  XPDFCore *core = (XPDFCore *)ptr;
+  XPDFCore *core = static_cast<XPDFCore *>(ptr);
 
   core->dialogDone = 1;
 }
 
 void XPDFCore::dialogCancelCbk(Widget widget, XtPointer ptr,
 			       XtPointer callData) {
-  XPDFCore *core = (XPDFCore *)ptr;
+  XPDFCore *core = static_cast<XPDFCore *>(ptr);
 
   core->dialogDone = -1;
 }
@@ -1586,7 +1590,7 @@ void XPDFCore::initPasswordDialog() {
 
 void XPDFCore::passwordTextVerifyCbk(Widget widget, XtPointer ptr,
 				     XtPointer callData) {
-  XPDFCore *core = (XPDFCore *)ptr;
+  XPDFCore *core = static_cast<XPDFCore *>(ptr);
   XmTextVerifyCallbackStruct *data =
       (XmTextVerifyCallbackStruct *)callData;
   int i, n;
@@ -1610,14 +1614,14 @@ void XPDFCore::passwordTextVerifyCbk(Widget widget, XtPointer ptr,
 
 void XPDFCore::passwordOkCbk(Widget widget, XtPointer ptr,
 			     XtPointer callData) {
-  XPDFCore *core = (XPDFCore *)ptr;
+  XPDFCore *core = static_cast<XPDFCore *>(ptr);
 
   core->dialogDone = 1;
 }
 
 void XPDFCore::passwordCancelCbk(Widget widget, XtPointer ptr,
 				 XtPointer callData) {
-  XPDFCore *core = (XPDFCore *)ptr;
+  XPDFCore *core = static_cast<XPDFCore *>(ptr);
 
   core->dialogDone = -1;
 }
