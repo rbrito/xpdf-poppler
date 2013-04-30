@@ -167,7 +167,7 @@ int PDFCore::loadFile2(PDFDoc *newDoc) {
   // nothing displayed yet
   topPage = -99;
   while (pages->getLength() > 0) {
-    delete (PDFCorePage *)pages->del(0);
+    delete static_cast<PDFCorePage *>(pages->del(0));
   }
 
   // compute the max unscaled page size
@@ -202,7 +202,7 @@ void PDFCore::clear() {
   // no page displayed
   topPage = -99;
   while (pages->getLength() > 0) {
-    delete (PDFCorePage *)pages->del(0);
+    delete static_cast<PDFCorePage *>(pages->del(0));
   }
 
   // redraw
@@ -226,7 +226,7 @@ PDFDoc *PDFCore::takeDoc(bool redraw) {
   // no page displayed
   topPage = -99;
   while (pages->getLength() > 0) {
-    delete (PDFCorePage *)pages->del(0);
+    delete static_cast<PDFCorePage *>(pages->del(0));
   }
 
   // redraw
@@ -417,7 +417,7 @@ void PDFCore::update(int topPageA, int scrollXA, int scrollYA,
     needUpdate = true;
     setSelection(0, 0, 0, 0, 0);
     while (pages->getLength() > 0) {
-      delete (PDFCorePage *)pages->del(0);
+      delete static_cast<PDFCorePage *>(pages->del(0));
     }
     zoom = zoomA;
     rotate = rotateA;
@@ -466,7 +466,7 @@ void PDFCore::update(int topPageA, int scrollXA, int scrollYA,
   if (continuousMode) {
     page = NULL; // make gcc happy
   } else {
-    page = (PDFCorePage *)pages->get(0);
+    page = static_cast<PDFCorePage *>(pages->get(0));
   }
   topPage = topPageA;
 
@@ -517,14 +517,14 @@ void PDFCore::update(int topPageA, int scrollXA, int scrollYA,
     // delete pages that are no longer needed and insert new pages
     // objects that are needed
     while (pages->getLength() > 0 &&
-	   ((PDFCorePage *)pages->get(0))->page < pg0) {
-      delete (PDFCorePage *)pages->del(0);
+	   (static_cast<PDFCorePage *>(pages->get(0)))->page < pg0) {
+      delete static_cast<PDFCorePage *>(pages->del(0));
     }
     i = pages->getLength() - 1;
-    while (i > 0 && ((PDFCorePage *)pages->get(i))->page > pg1) {
-      delete (PDFCorePage *)pages->del(i--);
+    while (i > 0 && (static_cast<PDFCorePage *>(pages->get(i)))->page > pg1) {
+      delete static_cast<PDFCorePage *>(pages->del(i--));
     }
-    j = pages->getLength() > 0 ? ((PDFCorePage *)pages->get(0))->page - 1
+    j = pages->getLength() > 0 ? (static_cast<PDFCorePage *>(pages->get(0)))->page - 1
                                : pg1;
     for (i = pg0; i <= j; ++i) {
       rot = rotate + doc->getPageRotate(i);
@@ -535,7 +535,7 @@ void PDFCore::update(int topPageA, int scrollXA, int scrollYA,
       }
       addPage(i, rot);
     }
-    j = ((PDFCorePage *)pages->get(pages->getLength() - 1))->page;
+    j = (static_cast<PDFCorePage *>(pages->get(pages->getLength() - 1)))->page;
     for (i = j + 1; i <= pg1; ++i) {
       rot = rotate + doc->getPageRotate(i);
       if (rot >= 360) {
@@ -552,10 +552,10 @@ void PDFCore::update(int topPageA, int scrollXA, int scrollYA,
 
   // delete tiles that are no longer needed
   for (i = 0; i < pages->getLength(); ++i) {
-    page = (PDFCorePage *)pages->get(i);
+    page = static_cast<PDFCorePage *>(pages->get(i));
     j = 0;
     while (j < page->tiles->getLength()) {
-      tile = (PDFCoreTile *)page->tiles->get(j);
+      tile = static_cast<PDFCoreTile *>(page->tiles->get(j));
       if (continuousMode) {
 	y0 = pageY[page->page - 1] + tile->yMin;
 	y1 = pageY[page->page - 1] + tile->yMax;
@@ -567,7 +567,7 @@ void PDFCore::update(int topPageA, int scrollXA, int scrollYA,
 	  tile->xMin > scrollX + drawAreaWidth + drawAreaWidth / 2 ||
 	  y1 < scrollY - drawAreaHeight / 2 ||
 	  y0 > scrollY + drawAreaHeight + drawAreaHeight / 2) {
-	delete (PDFCoreTile *)page->tiles->del(j);
+	delete static_cast<PDFCoreTile *>(page->tiles->del(j));
       } else {
 	++j;
       }
@@ -576,7 +576,7 @@ void PDFCore::update(int topPageA, int scrollXA, int scrollYA,
 
   // update page positions
   for (i = 0; i < pages->getLength(); ++i) {
-    page = (PDFCorePage *)pages->get(i);
+    page = static_cast<PDFCorePage *>(pages->get(i));
     page->xDest = -scrollX;
     if (continuousMode) {
       page->yDest = pageY[page->page - 1] - scrollY;
@@ -602,7 +602,7 @@ void PDFCore::update(int topPageA, int scrollXA, int scrollYA,
 
   // rasterize any new tiles
   for (i = 0; i < pages->getLength(); ++i) {
-    page = (PDFCorePage *)pages->get(i);
+    page = static_cast<PDFCorePage *>(pages->get(i));
     x0 = page->xDest;
     x1 = x0 + page->w - 1;
     if (x0 < -drawAreaWidth / 2) {
@@ -632,9 +632,9 @@ void PDFCore::update(int topPageA, int scrollXA, int scrollYA,
 
   // update tile positions
   for (i = 0; i < pages->getLength(); ++i) {
-    page = (PDFCorePage *)pages->get(i);
+    page = static_cast<PDFCorePage *>(pages->get(i));
     for (j = 0; j < page->tiles->getLength(); ++j) {
-      tile = (PDFCoreTile *)page->tiles->get(j);
+      tile = static_cast<PDFCoreTile *>(page->tiles->get(j));
       tile->xDest = tile->xMin - scrollX;
       if (continuousMode) {
 	tile->yDest = tile->yMin + pageY[page->page - 1] - scrollY;
@@ -715,7 +715,7 @@ void PDFCore::addPage(int pg, int rot) {
   }
   page = new PDFCorePage(pg, w, h, tileW, tileH);
   for (i = 0;
-       i < pages->getLength() && pg > ((PDFCorePage *)pages->get(i))->page;
+       i < pages->getLength() && pg > (static_cast<PDFCorePage *>(pages->get(i)))->page;
        ++i) ;
   pages->insert(i, page);
 }
@@ -727,7 +727,7 @@ void PDFCore::needTile(PDFCorePage *page, int x, int y) {
   int i;
 
   for (i = 0; i < page->tiles->getLength(); ++i) {
-    tile = (PDFCoreTile *)page->tiles->get(i);
+    tile = static_cast<PDFCoreTile *>(page->tiles->get(i));
     if (x == tile->xMin && y == tile->yMin) {
       return;
     }
@@ -856,7 +856,7 @@ bool PDFCore::gotoPrevPage(int dec, bool top, bool bottom) {
   } else if (top) {
     scrollYA = 0;
   } else if (bottom) {
-    scrollYA = ((PDFCorePage *)pages->get(0))->h - drawAreaHeight;
+    scrollYA = (static_cast<PDFCorePage *>(pages->get(0)))->h - drawAreaHeight;
     if (scrollYA < 0) {
       scrollYA = 0;
     }
@@ -951,7 +951,7 @@ void PDFCore::scrollDown(int nLines) {
 
 void PDFCore::scrollDownNextPage(int nLines) {
   if (!continuousMode &&
-      scrollY >= ((PDFCorePage *)pages->get(0))->h - drawAreaHeight) {
+      scrollY >= (static_cast<PDFCorePage *>(pages->get(0)))->h - drawAreaHeight) {
     gotoNextPage(1, true);
   } else {
     scrollTo(scrollX, scrollY + nLines);
@@ -968,7 +968,7 @@ void PDFCore::scrollPageUp() {
 
 void PDFCore::scrollPageDown() {
   if (!continuousMode &&
-      scrollY >= ((PDFCorePage *)pages->get(0))->h - drawAreaHeight) {
+      scrollY >= (static_cast<PDFCorePage *>(pages->get(0)))->h - drawAreaHeight) {
     gotoNextPage(1, true);
   } else {
     scrollTo(scrollX, scrollY + drawAreaHeight);
@@ -986,7 +986,7 @@ void PDFCore::scrollToLeftEdge() {
 void PDFCore::scrollToRightEdge() {
   PDFCorePage *page;
 
-  page = (PDFCorePage *)pages->get(0);
+  page = static_cast<PDFCorePage *>(pages->get(0));
   update(topPage, page->w - drawAreaWidth, scrollY,
 	 zoom, rotate, false, false);
 }
@@ -1003,12 +1003,12 @@ void PDFCore::scrollToBottomEdge() {
   int y, i;
 
   for (i = pages->getLength() - 1; i > 0; --i) {
-    page = (PDFCorePage *)pages->get(i);
+    page = static_cast<PDFCorePage *>(pages->get(i));
     if (page->yDest < drawAreaHeight) {
       break;
     }
   }
-  page = (PDFCorePage *)pages->get(i);
+  page = static_cast<PDFCorePage *>(pages->get(i));
   if (continuousMode) {
     y = pageY[page->page - 1] + page->h - drawAreaHeight;
   } else {
@@ -1029,12 +1029,12 @@ void PDFCore::scrollToBottomRight() {
   int x, y, i;
 
   for (i = pages->getLength() - 1; i > 0; --i) {
-    page = (PDFCorePage *)pages->get(i);
+    page = static_cast<PDFCorePage *>(pages->get(i));
     if (page->yDest < drawAreaHeight) {
       break;
     }
   }
-  page = (PDFCorePage *)pages->get(i);
+  page = static_cast<PDFCorePage *>(pages->get(i));
   x = page->w - drawAreaWidth;
   if (continuousMode) {
     y = pageY[page->page - 1] + page->h - drawAreaHeight;
@@ -1132,7 +1132,7 @@ void PDFCore::zoomCentered(double zoomA) {
 
   } else {
     dpi1 = 72.0 * zoomA / 100.0;
-    if ((page = (PDFCorePage *)pages->get(0)) && page->xDest > 0) {
+    if ((page = static_cast<PDFCorePage *>(pages->get(0))) && page->xDest > 0) {
       hAdjust = page->xDest;
     } else {
       hAdjust = 0;
@@ -1470,7 +1470,7 @@ void PDFCore::xorRectangle(int pg, int x0, int y0, int x1, int y1,
 
   if ((page = findPage(pg))) {
     for (i = 0; i < page->tiles->getLength(); ++i) {
-      tile = (PDFCoreTile *)page->tiles->get(i);
+      tile = static_cast<PDFCoreTile *>(page->tiles->get(i));
       if (!oneTile || tile == oneTile) {
 	splash = new Splash(tile->bitmap, false);
 	splash->setFillPattern(pattern->copy());
@@ -1697,7 +1697,7 @@ bool PDFCore::findU(Unicode *u, int len, bool caseSensitive,
 
   // found: change the selection
  found:
-  tile = (PDFCoreTile *)page->tiles->get(0);
+  tile = static_cast<PDFCoreTile *>(page->tiles->get(0));
   setSelection(pg, (int)floor(xMin), (int)floor(yMin),
 	       (int)ceil(xMax), (int)ceil(yMax));
 
@@ -1713,10 +1713,10 @@ bool PDFCore::cvtWindowToUser(int xw, int yw,
   int i;
 
   for (i = 0; i < pages->getLength(); ++i) {
-    page = (PDFCorePage *)pages->get(i);
+    page = static_cast<PDFCorePage *>(pages->get(i));
     if (xw >= page->xDest && xw < page->xDest + page->w &&
 	yw >= page->yDest && yw < page->yDest + page->h) {
-      tile = (PDFCoreTile *)page->tiles->get(0);
+      tile = static_cast<PDFCoreTile *>(page->tiles->get(0));
       *pg = page->page;
       xw -= tile->xDest;
       yw -= tile->yDest;
@@ -1735,7 +1735,7 @@ bool PDFCore::cvtWindowToDev(int xw, int yw, int *pg, int *xd, int *yd) {
   int i;
 
   for (i = 0; i < pages->getLength(); ++i) {
-    page = (PDFCorePage *)pages->get(i);
+    page = static_cast<PDFCorePage *>(pages->get(i));
     if (xw >= page->xDest && xw < page->xDest + page->w &&
 	yw >= page->yDest && yw < page->yDest + page->h) {
       *pg = page->page;
@@ -1755,7 +1755,7 @@ void PDFCore::cvtUserToWindow(int pg, double xu, double yu, int *xw, int *yw) {
 
   if ((page = findPage(pg)) &&
       page->tiles->getLength() > 0) {
-    tile = (PDFCoreTile *)page->tiles->get(0);
+    tile = static_cast<PDFCoreTile *>(page->tiles->get(0));
   } else if (curTile && curPage->page == pg) {
     tile = curTile;
   } else {
@@ -1779,7 +1779,7 @@ void PDFCore::cvtUserToDev(int pg, double xu, double yu, int *xd, int *yd) {
 
   if ((page = findPage(pg)) &&
       page->tiles->getLength() > 0) {
-    tile = (PDFCoreTile *)page->tiles->get(0);
+    tile = static_cast<PDFCoreTile *>(page->tiles->get(0));
   } else if (curTile && curPage->page == pg) {
     tile = curTile;
   } else {
@@ -1816,7 +1816,7 @@ void PDFCore::cvtDevToUser(int pg, int xd, int yd, double *xu, double *yu) {
 
   if ((page = findPage(pg)) &&
       page->tiles->getLength() > 0) {
-    tile = (PDFCoreTile *)page->tiles->get(0);
+    tile = static_cast<PDFCoreTile *>(page->tiles->get(0));
   } else if (curTile && curPage->page == pg) {
     tile = curTile;
   } else {
@@ -1852,7 +1852,7 @@ PDFCorePage *PDFCore::findPage(int pg) {
   int i;
 
   for (i = 0; i < pages->getLength(); ++i) {
-    page = (PDFCorePage *)pages->get(i);
+    page = static_cast<PDFCorePage *>(pages->get(i));
     if (page->page == pg) {
       return page;
     }
@@ -1862,7 +1862,7 @@ PDFCorePage *PDFCore::findPage(int pg) {
 
 void PDFCore::redrawCbk(void *data, int x0, int y0, int x1, int y1,
 			bool composited) {
-  PDFCore *core = (PDFCore *)data;
+  PDFCore *core = static_cast<PDFCore *>(data);
 
   core->curTile->bitmap = core->out->getBitmap();
 
@@ -1900,9 +1900,9 @@ void PDFCore::redrawWindow(int x, int y, int width, int height,
   }
 
   for (i = 0; i < pages->getLength(); ++i) {
-    page = (PDFCorePage *)pages->get(i);
+    page = static_cast<PDFCorePage *>(pages->get(i));
     for (j = 0; j < page->tiles->getLength(); ++j) {
-      tile = (PDFCoreTile *)page->tiles->get(j);
+      tile = static_cast<PDFCoreTile *>(page->tiles->get(j));
       if (tile->edges & pdfCoreTileTopEdge) {
 	if (tile->edges & pdfCoreTileLeftEdge) {
 	  xDest = 0;
@@ -1948,7 +1948,7 @@ void PDFCore::redrawWindow(int x, int y, int width, int height,
 	yDest = tile->yDest + (tile->yMax - tile->yMin);
 	clippedRedrawRect(NULL, 0, 0,
 			  xDest, yDest,
-			  w, ((PDFCorePage *)pages->get(i+1))->yDest - yDest,
+			  w, (static_cast<PDFCorePage *>(pages->get(i+1)))->yDest - yDest,
 			  x, y, width, height, false);
       }
       if (tile->edges & pdfCoreTileLeftEdge) {

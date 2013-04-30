@@ -258,7 +258,7 @@ XPDFViewer *XPDFApp::reopen(XPDFViewer *viewer, PDFDoc *doc, int page,
   int i;
 
   for (i = 0; i < viewers->getLength(); ++i) {
-    if (((XPDFViewer *)viewers->get(i)) == viewer) {
+    if (static_cast<XPDFViewer *>(viewers->get(i)) == viewer) {
       viewers->del(i);
       delete viewer;
     }
@@ -283,7 +283,7 @@ void XPDFApp::close(XPDFViewer *viewer, bool closeLast) {
   int i;
 
   if (viewers->getLength() == 1) {
-    if (viewer != (XPDFViewer *)viewers->get(0)) {
+    if (viewer != static_cast<XPDFViewer *>(viewers->get(0))) {
       return;
     }
     if (closeLast) {
@@ -293,10 +293,10 @@ void XPDFApp::close(XPDFViewer *viewer, bool closeLast) {
     }
   } else {
     for (i = 0; i < viewers->getLength(); ++i) {
-      if (((XPDFViewer *)viewers->get(i)) == viewer) {
+      if ((static_cast<XPDFViewer *>(viewers->get(i))) == viewer) {
 	viewers->del(i);
 	if (remoteAtom != None && remoteViewer == viewer) {
-	  remoteViewer = (XPDFViewer *)viewers->get(viewers->getLength() - 1);
+	  remoteViewer = static_cast<XPDFViewer *>(viewers->get(viewers->getLength() - 1));
 	  remoteWin = remoteViewer->getWindow();
 	  XSetSelectionOwner(display, remoteAtom, XtWindow(remoteWin),
 			     CurrentTime);
@@ -313,7 +313,7 @@ void XPDFApp::quit() {
     XSetSelectionOwner(display, remoteAtom, None, CurrentTime);
   }
   while (viewers->getLength() > 0) {
-    delete (XPDFViewer *)viewers->del(0);
+    delete static_cast<XPDFViewer *>(viewers->del(0));
   }
   /* check the need of this conditional compilation */
 #if HAVE_XTAPPSETEXITFLAG
@@ -404,7 +404,7 @@ void XPDFApp::remoteQuit() {
 
 void XPDFApp::remoteMsgCbk(Widget widget, XtPointer ptr,
 			   XEvent *event, Boolean *cont) {
-  XPDFApp *app = (XPDFApp *)ptr;
+  XPDFApp *app = static_cast<XPDFApp *>(ptr);
   char *cmd, *p0, *p1;
   Atom type;
   int format;
