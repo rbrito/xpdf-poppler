@@ -506,7 +506,7 @@ void XPDFViewer::doLink(int wx, int wy, bool onlyIfNoSelection,
 }
 
 void XPDFViewer::actionCbk(void *data, char *action) {
-  XPDFViewer *viewer = (XPDFViewer *)data;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(data);
 
   if (!strcmp(action, "Quit")) {
     viewer->app->quit();
@@ -519,7 +519,7 @@ void XPDFViewer::actionCbk(void *data, char *action) {
 
 void XPDFViewer::keyPressCbk(void *data, KeySym key, unsigned modifiers,
 			     XEvent *event) {
-  XPDFViewer *viewer = (XPDFViewer *)data;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(data);
   int keyCode;
   GooList *cmds;
   int i;
@@ -579,14 +579,14 @@ void XPDFViewer::keyPressCbk(void *data, KeySym key, unsigned modifiers,
 					  viewer->getModifiers(modifiers),
 					  viewer->getContext(modifiers)))) {
     for (i = 0; i < cmds->getLength(); ++i) {
-      viewer->execCmd((GooString *)cmds->get(i), event);
+      viewer->execCmd(static_cast<GooString *>(cmds->get(i)), event);
     }
     deleteGooList(cmds, GooString);
   }
 }
 
 void XPDFViewer::mouseCbk(void *data, XEvent *event) {
-  XPDFViewer *viewer = (XPDFViewer *)data;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(data);
   int keyCode;
   GooList *cmds;
   int i;
@@ -613,7 +613,7 @@ void XPDFViewer::mouseCbk(void *data, XEvent *event) {
 					  viewer->getContext(
 						      event->xkey.state)))) {
     for (i = 0; i < cmds->getLength(); ++i) {
-      viewer->execCmd((GooString *)cmds->get(i), event);
+      viewer->execCmd(static_cast<GooString *>(cmds->get(i)), event);
     }
     deleteGooList(cmds, GooString);
   }
@@ -2276,7 +2276,7 @@ void XPDFViewer::setZoomVal(double z) {
 
 void XPDFViewer::prevPageCbk(Widget widget, XtPointer ptr,
 			     XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->core->gotoPrevPage(1, true, false);
   viewer->core->takeFocus();
@@ -2284,7 +2284,7 @@ void XPDFViewer::prevPageCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::prevTenPageCbk(Widget widget, XtPointer ptr,
 				XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->core->gotoPrevPage(10, true, false);
   viewer->core->takeFocus();
@@ -2292,7 +2292,7 @@ void XPDFViewer::prevTenPageCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::nextPageCbk(Widget widget, XtPointer ptr,
 			     XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->core->gotoNextPage(1, true);
   viewer->core->takeFocus();
@@ -2300,7 +2300,7 @@ void XPDFViewer::nextPageCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::nextTenPageCbk(Widget widget, XtPointer ptr,
 				XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->core->gotoNextPage(10, true);
   viewer->core->takeFocus();
@@ -2308,7 +2308,7 @@ void XPDFViewer::nextTenPageCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::backCbk(Widget widget, XtPointer ptr,
 			 XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->core->goBackward();
   viewer->core->takeFocus();
@@ -2316,7 +2316,7 @@ void XPDFViewer::backCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::forwardCbk(Widget widget, XtPointer ptr,
 			    XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->core->goForward();
   viewer->core->takeFocus();
@@ -2326,7 +2326,7 @@ void XPDFViewer::forwardCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::zoomComboBoxCbk(Widget widget, XtPointer ptr,
 				 XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XmComboBoxCallbackStruct *data = (XmComboBoxCallbackStruct *)callData;
   double z;
   char *s;
@@ -2363,7 +2363,7 @@ void XPDFViewer::zoomComboBoxCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::zoomMenuCbk(Widget widget, XtPointer ptr,
 			     XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XmPushButtonCallbackStruct *data = (XmPushButtonCallbackStruct *)callData;
   XtPointer userData;
   double z;
@@ -2383,7 +2383,7 @@ void XPDFViewer::zoomMenuCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::findCbk(Widget widget, XtPointer ptr,
 			 XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   if (!viewer->core->getDoc()) {
     return;
@@ -2393,7 +2393,7 @@ void XPDFViewer::findCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::printCbk(Widget widget, XtPointer ptr,
 			  XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   if (!viewer->core->getDoc()) {
     return;
@@ -2403,42 +2403,42 @@ void XPDFViewer::printCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::aboutCbk(Widget widget, XtPointer ptr,
 			  XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   XtManageChild(viewer->aboutDialog);
 }
 
 void XPDFViewer::quitCbk(Widget widget, XtPointer ptr,
 			 XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->app->quit();
 }
 
 void XPDFViewer::openCbk(Widget widget, XtPointer ptr,
 			 XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->mapOpenDialog(false);
 }
 
 void XPDFViewer::openInNewWindowCbk(Widget widget, XtPointer ptr,
 				    XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->mapOpenDialog(true);
 }
 
 void XPDFViewer::reloadCbk(Widget widget, XtPointer ptr,
 			 XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->reloadFile();
 }
 
 void XPDFViewer::saveAsCbk(Widget widget, XtPointer ptr,
 			   XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   if (!viewer->core->getDoc()) {
     return;
@@ -2448,7 +2448,7 @@ void XPDFViewer::saveAsCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::continuousModeToggleCbk(Widget widget, XtPointer ptr,
 					 XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XmToggleButtonCallbackStruct *data =
       (XmToggleButtonCallbackStruct *)callData;
 
@@ -2457,7 +2457,7 @@ void XPDFViewer::continuousModeToggleCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::fullScreenToggleCbk(Widget widget, XtPointer ptr,
 				     XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XmToggleButtonCallbackStruct *data =
       (XmToggleButtonCallbackStruct *)callData;
 
@@ -2470,7 +2470,7 @@ void XPDFViewer::fullScreenToggleCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::rotateCCWCbk(Widget widget, XtPointer ptr,
 			      XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   int r;
 
   r = viewer->core->getRotate();
@@ -2481,7 +2481,7 @@ void XPDFViewer::rotateCCWCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::rotateCWCbk(Widget widget, XtPointer ptr,
 			     XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   int r;
 
   r = viewer->core->getRotate();
@@ -2492,7 +2492,7 @@ void XPDFViewer::rotateCWCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::zoomToSelectionCbk(Widget widget, XtPointer ptr,
 				    XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   int pg;
   double ulx, uly, lrx, lry;
 
@@ -2503,21 +2503,21 @@ void XPDFViewer::zoomToSelectionCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::closeCbk(Widget widget, XtPointer ptr,
 			  XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->app->close(viewer, false);
 }
 
 void XPDFViewer::closeMsgCbk(Widget widget, XtPointer ptr,
 			     XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->app->close(viewer, true);
 }
 
 void XPDFViewer::pageNumCbk(Widget widget, XtPointer ptr,
 			    XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   char *s, *p;
   int pg;
   char buf[20];
@@ -2548,7 +2548,7 @@ void XPDFViewer::pageNumCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::updateCbk(void *data, GooString *fileName,
 			   int pageNum, int numPages, char *linkString) {
-  XPDFViewer *viewer = (XPDFViewer *)data;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(data);
   GooString *title;
   char buf[20];
   XmString s;
@@ -2701,7 +2701,7 @@ void XPDFViewer::setupOutlineItems(GooList *items, Widget parent,
 
 void XPDFViewer::outlineSelectCbk(Widget widget, XtPointer ptr,
 				  XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XPDFTreeSelectCallbackStruct *data =
       (XPDFTreeSelectCallbackStruct *)callData;
   OutlineItem *item;
@@ -2878,7 +2878,7 @@ void XPDFViewer::mapOpenDialog(bool openInNewWindowA) {
 
 void XPDFViewer::openOkCbk(Widget widget, XtPointer ptr,
 			   XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XmFileSelectionBoxCallbackStruct *data =
     (XmFileSelectionBoxCallbackStruct *)callData;
   char *fileName;
@@ -3023,7 +3023,7 @@ void XPDFViewer::initFindDialog() {
 
 void XPDFViewer::findFindCbk(Widget widget, XtPointer ptr,
 			     XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   viewer->doFind(false);
 }
@@ -3051,7 +3051,7 @@ void XPDFViewer::doFind(bool next) {
 
 void XPDFViewer::findCloseCbk(Widget widget, XtPointer ptr,
 			      XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
 
   XtUnmanageChild(viewer->findDialog);
 }
@@ -3104,7 +3104,7 @@ void XPDFViewer::mapSaveAsDialog() {
 
 void XPDFViewer::saveAsOkCbk(Widget widget, XtPointer ptr,
 			     XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XmFileSelectionBoxCallbackStruct *data =
     (XmFileSelectionBoxCallbackStruct *)callData;
   char *fileName;
@@ -3393,7 +3393,7 @@ void XPDFViewer::initPrintDialog() {
 void XPDFViewer::printAllPagesBtnCbk(Widget widget,
   XtPointer ptr, XtPointer callData)
 {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XmToggleButtonCallbackStruct *data =
       (XmToggleButtonCallbackStruct *)callData;
 
@@ -3407,7 +3407,7 @@ void XPDFViewer::printAllPagesBtnCbk(Widget widget,
 void XPDFViewer::printEvenPagesBtnCbk(Widget widget,
   XtPointer ptr, XtPointer callData)
 {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XmToggleButtonCallbackStruct *data =
       (XmToggleButtonCallbackStruct *)callData;
 
@@ -3423,7 +3423,7 @@ void XPDFViewer::printEvenPagesBtnCbk(Widget widget,
 void XPDFViewer::printOddPagesBtnCbk(Widget widget,
   XtPointer ptr, XtPointer callData)
 {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XmToggleButtonCallbackStruct *data =
       (XmToggleButtonCallbackStruct *)callData;
 
@@ -3439,7 +3439,7 @@ void XPDFViewer::printOddPagesBtnCbk(Widget widget,
 void XPDFViewer::printBackOrderBtnCbk(Widget widget, XtPointer ptr,
   XtPointer callData)
 {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XmToggleButtonSetState(viewer->printWithCmdBtn, True, False);
   XmToggleButtonSetState(viewer->printToFileBtn, False, False);
 }
@@ -3485,7 +3485,7 @@ void XPDFViewer::setupPrintDialog() {
 
 void XPDFViewer::printWithCmdBtnCbk(Widget widget, XtPointer ptr,
 				    XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XmToggleButtonCallbackStruct *data =
       (XmToggleButtonCallbackStruct *)callData;
 
@@ -3499,7 +3499,7 @@ void XPDFViewer::printWithCmdBtnCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::printToFileBtnCbk(Widget widget, XtPointer ptr,
 				   XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   XmToggleButtonCallbackStruct *data =
       (XmToggleButtonCallbackStruct *)callData;
 
@@ -3518,7 +3518,7 @@ void XPDFViewer::printToFileBtnCbk(Widget widget, XtPointer ptr,
 
 void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
 			       XtPointer callData) {
-  XPDFViewer *viewer = (XPDFViewer *)ptr;
+  XPDFViewer *viewer = static_cast<XPDFViewer *>(ptr);
   unsigned char withCmd, printAll, printOdd, printEven, printBack;
   GooString *psFileName;
   int firstPage, lastPage;
