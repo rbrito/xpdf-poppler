@@ -646,6 +646,11 @@ void XPDFCore::doAction(LinkAction *action) {
     error(-1, "Unknown link action type: '%s'",
 	  ((LinkUnknown *)action)->getAction()->getCString());
     break;
+
+  // not handled above, case added to avoid warning, but keeping same behavior
+  // TODO: verify what to do with this action and fix this case
+  case actionOCGState:
+    break;
   }
 }
 
@@ -1108,6 +1113,10 @@ void XPDFCore::inputCbk(Widget widget, XtPointer ptr, XtPointer callData) {
 	      case actionUnknown:
 		s = "[unknown link]";
 		break;
+              // not handled above, case added to avoid warning, but keeping same behavior
+              // TODO: verify what to do with this action and fix this case
+              case actionOCGState:
+                break;
 	      }
 	      (*core->updateCbk)(core->updateCbkData, NULL, -1, -1, s);
 	    }

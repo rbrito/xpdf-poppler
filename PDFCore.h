@@ -61,7 +61,7 @@ public:
   ~PDFCorePage();
 
   int page;
-  GooList *tiles;			// cached tiles [PDFCoreTile]
+  GooList *tiles;		// cached tiles [PDFCoreTile]
   int xDest, yDest;		// position of upper-left corner
 				//   in the drawing area
   int w, h;			// size of whole page bitmap

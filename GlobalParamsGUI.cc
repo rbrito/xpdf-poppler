@@ -72,22 +72,21 @@
 static struct {
   char *name;
   char *t1FileName;
-  char *ttFileName;
 } displayFontTab[] = {
-  {"Courier",               "n022003l.pfb", "cour.ttf"},
-  {"Courier-Bold",          "n022004l.pfb", "courbd.ttf"},
-  {"Courier-BoldOblique",   "n022024l.pfb", "courbi.ttf"},
-  {"Courier-Oblique",       "n022023l.pfb", "couri.ttf"},
-  {"Helvetica",             "n019003l.pfb", "arial.ttf"},
-  {"Helvetica-Bold",        "n019004l.pfb", "arialbd.ttf"},
-  {"Helvetica-BoldOblique", "n019024l.pfb", "arialbi.ttf"},
-  {"Helvetica-Oblique",     "n019023l.pfb", "ariali.ttf"},
-  {"Symbol",                "s050000l.pfb", NULL},
-  {"Times-Bold",            "n021004l.pfb", "timesbd.ttf"},
-  {"Times-BoldItalic",      "n021024l.pfb", "timesbi.ttf"},
-  {"Times-Italic",          "n021023l.pfb", "timesi.ttf"},
-  {"Times-Roman",           "n021003l.pfb", "times.ttf"},
-  {"ZapfDingbats",          "d050000l.pfb", NULL},
+  {"Courier",               "n022003l.pfb"}, // tt filename: "cour.ttf"
+  {"Courier-Bold",          "n022004l.pfb"}, // tt filename: "courbd.ttf"
+  {"Courier-BoldOblique",   "n022024l.pfb"}, // tt filename: "courbi.ttf"
+  {"Courier-Oblique",       "n022023l.pfb"}, // tt filename: "couri.ttf"
+  {"Helvetica",             "n019003l.pfb"}, // tt filename: "arial.ttf"
+  {"Helvetica-Bold",        "n019004l.pfb"}, // tt filename: "arialbd.ttf"
+  {"Helvetica-BoldOblique", "n019024l.pfb"}, // tt filename: "arialbi.ttf"
+  {"Helvetica-Oblique",     "n019023l.pfb"}, // tt filename: "ariali.ttf"
+  {"Symbol",                "s050000l.pfb"}, // tt filename: none
+  {"Times-Bold",            "n021004l.pfb"}, // tt filename: "timesbd.ttf"
+  {"Times-BoldItalic",      "n021024l.pfb"}, // tt filename: "timesbi.ttf"
+  {"Times-Italic",          "n021023l.pfb"}, // tt filename: "timesi.ttf"
+  {"Times-Roman",           "n021003l.pfb"}, // tt filename: "times.ttf"
+  {"ZapfDingbats",          "d050000l.pfb"}, // tt filename: none
   {NULL}
 };
 

@@ -522,7 +522,6 @@ void XPDFViewer::keyPressCbk(void *data, KeySym key, unsigned modifiers,
   XPDFViewer *viewer = static_cast<XPDFViewer *>(data);
   int keyCode;
   GooList *cmds;
-  int i;
 
   if (key >= 0x20 && key <= 0xfe) {
     keyCode = (int)key;
@@ -578,7 +577,7 @@ void XPDFViewer::keyPressCbk(void *data, KeySym key, unsigned modifiers,
   if ((cmds = globalParamsGUI->getKeyBinding(keyCode,
 					  viewer->getModifiers(modifiers),
 					  viewer->getContext(modifiers)))) {
-    for (i = 0; i < cmds->getLength(); ++i) {
+    for (int i = 0; i < cmds->getLength(); ++i) {
       viewer->execCmd(static_cast<GooString *>(cmds->get(i)), event);
     }
     deleteGooList(cmds, GooString);
@@ -589,7 +588,6 @@ void XPDFViewer::mouseCbk(void *data, XEvent *event) {
   XPDFViewer *viewer = static_cast<XPDFViewer *>(data);
   int keyCode;
   GooList *cmds;
-  int i;
 
   if (event->type == ButtonPress) {
     if (event->xbutton.button >= 1 && event->xbutton.button <= 7) {
@@ -612,7 +610,7 @@ void XPDFViewer::mouseCbk(void *data, XEvent *event) {
 						      event->xkey.state),
 					  viewer->getContext(
 						      event->xkey.state)))) {
-    for (i = 0; i < cmds->getLength(); ++i) {
+    for (int i = 0; i < cmds->getLength(); ++i) {
       viewer->execCmd(static_cast<GooString *>(cmds->get(i)), event);
     }
     deleteGooList(cmds, GooString);
@@ -2615,7 +2613,6 @@ void XPDFViewer::setupOutline() {
   GooList *items;
   UnicodeMap *uMap;
   GooString *enc;
-  int i;
 
   if (outlineScroll == None) {
     return;
@@ -2624,7 +2621,7 @@ void XPDFViewer::setupOutline() {
   // unmanage and destroy the old labels
   if (outlineLabels) {
     XtUnmanageChildren(outlineLabels, outlineLabelsLength);
-    for (i = 0; i < outlineLabelsLength; ++i) {
+    for (int i = 0; i < outlineLabelsLength; ++i) {
       XtDestroyWidget(outlineLabels[i]);
     }
     gfree(outlineLabels);
@@ -3569,7 +3566,7 @@ void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
   // Additional prints mode's
   else
   {
-    int step=1, i;
+    int step=1;
     int beginPage, endPage;
 
     if (!printAll)
@@ -3601,7 +3598,7 @@ void XPDFViewer::printPrintCbk(Widget widget, XtPointer ptr,
 
     if (firstPage<=lastPage)
     {
-      for (i=beginPage;; i+=step)
+      for (int i=beginPage;; i+=step)
       {
         psOut = new PSOutputDev(psFileName->getCString(), doc, doc->getXRef(),
               doc->getCatalog(), NULL, i, i, psModePS);

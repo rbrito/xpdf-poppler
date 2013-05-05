@@ -280,8 +280,6 @@ XPDFViewer *XPDFApp::reopen(XPDFViewer *viewer, PDFDoc *doc, int page,
 }
 
 void XPDFApp::close(XPDFViewer *viewer, bool closeLast) {
-  int i;
-
   if (viewers->getLength() == 1) {
     if (viewer != static_cast<XPDFViewer *>(viewers->get(0))) {
       return;
@@ -292,7 +290,7 @@ void XPDFApp::close(XPDFViewer *viewer, bool closeLast) {
       viewer->clear();
     }
   } else {
-    for (i = 0; i < viewers->getLength(); ++i) {
+    for (int i = 0; i < viewers->getLength(); ++i) {
       if ((static_cast<XPDFViewer *>(viewers->get(i))) == viewer) {
 	viewers->del(i);
 	if (remoteAtom != None && remoteViewer == viewer) {
