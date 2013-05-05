@@ -1700,7 +1700,6 @@ bool PDFCore::findU(Unicode *u, int len, bool caseSensitive,
 
   // found: change the selection
  found:
-  tile = static_cast<PDFCoreTile *>(page->tiles->get(0));
   setSelection(pg, (int)floor(xMin), (int)floor(yMin),
 	       (int)ceil(xMax), (int)ceil(yMax));
 
