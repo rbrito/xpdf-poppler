@@ -35,8 +35,8 @@
 //------------------------------------------------------------------------
 
 PDFCorePage::PDFCorePage(int pageA, int wA, int hA, int tileWA, int tileHA):
-	page(pageA), tiles(new GooList()), w(wA), h(hA), tileW(tileWA),
-	tileH(tileHA), links(NULL), text(NULL)
+    page(pageA), tiles(new GooList()), xDest(0), yDest(0), w(wA), h(hA),
+    tileW(tileWA), tileH(tileHA), links(NULL), text(NULL)
 {}
 
 
@@ -55,7 +55,7 @@ PDFCorePage::~PDFCorePage()
 
 PDFCoreTile::PDFCoreTile(int xDestA, int yDestA):
 	xMin(0), yMin(0), xMax(0), yMax(0), xDest(xDestA), yDest(yDestA),
-        bitmap(NULL)
+        edges(0), bitmap(NULL), ctm(), ictm()
 {}
 
 PDFCoreTile::~PDFCoreTile() {
