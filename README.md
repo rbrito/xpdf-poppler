@@ -67,3 +67,7 @@ Rogério Brito
 [3]: http://poppler.freedesktop.org/
 [4]: http://git.debian.org/?p=collab-maint/xpdf.git
 [5]: http://github.com/rbrito/xpdf-poppler/tree/original-plus-xpdf-3.02
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/rbrito/xpdf-poppler/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
